@@ -1,1 +1,22 @@
-<p>header works!</p>
+<div class="app-header primaryColorBG text-center">
+
+  <span class="header_left">
+    <img src="assets/icones/logo-geosm.svg" style="width: 225px;height: 40px;left: 1px;top: 1px;position: absolute;"
+      alt="">
+    <img src="https://www.countryflags.io/{{ environment.countrycode }}/flat/64.png" class="drapeau_GC" alt="">
+
+    <span class="title_GC">{{environment.nom}} </span>
+  </span>
+
+
+  <mat-form-field appearance="standard" class="language_button" class="language_button ">
+    <mat-select (selectionChange)="change_language($event)" value="{{environment.default_language}}"
+      class="primary_transparent_bg">
+      <mat-option value="" disabled> -- --</mat-option>
+      <mat-option *ngFor="let lang of environment.avaible_language" value="{{lang}}"> <span
+          style="text-transform: capitalize;">{{lang}}</span> </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <img src="assets/icones/ID.png" class="Logos_GC_right" alt="">
+
+</div>

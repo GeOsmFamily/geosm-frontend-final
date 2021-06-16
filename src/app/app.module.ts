@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { MaterialModule } from './modules/material';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -23,6 +24,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MaterialModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
