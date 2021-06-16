@@ -1,0 +1,42 @@
+.app-header {
+  height: 60px;
+  position: relative;
+}
+
+
+.drapeau_GC {
+  position: absolute;
+  left: 125px;
+  bottom: 3px;
+  height: 15px;
+}
+
+.title_GC {
+  color: #fff;
+  position: absolute;
+  left: 144px;
+  bottom: 0px;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.language_button {
+  position: absolute;
+  right: 140px;
+  width: 45px;
+  height: 60px;
+  top: -12px;
+}
+
+.primary_transparent_bg {
+  background-color: #f2f7fa;
+  padding: 4px;
+  width: 40px;
+  text-transform: capitalize;
+}
+
+.Logos_GC_right {
+  position: absolute;
+  right: 65px;
+  top: 15px;
+}
