@@ -1,3 +1,4 @@
+@import "../../styles/theme.scss";
 $height: calc(100% - 60px);
 
 .loading-apps {
@@ -44,4 +45,49 @@ $height: calc(100% - 60px);
   overflow: hidden;
   background: url('/assets/icones/bandeau-GEOSM.svg');
   background-position-y: center;
+}
+
+.sidenav-right {
+  width: 219px;
+
+  .sidenav-right-content {
+    padding: 5px;
+    padding-top: 20px;
+  }
+
+  .sidenav-right-title {
+    background-color: $primary_transparent_bg;
+    color: $primary_color;
+    font-size: 13px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 5px 0px;
+    font-weight: bold;
+    position: fixed;
+    width: 218px;
+    z-index: 2;
+    top: 60px;
+    right: 0px;
+    height: 20px;
+  }
+
+  .sidenav-right-title-fake {
+    height: 20px;
+  }
+
+  app-download {
+    padding-bottom: 140px;
+  }
+}
+
+.toogle-sidenav-right {
+  position: absolute;
+  right: 0px;
+  top: 40px;
+  width: 65px;
+
+  ::ng-deep .mat-badge-content {
+    left: 39px !important;
+    top: -6px !important;
+  }
 }
