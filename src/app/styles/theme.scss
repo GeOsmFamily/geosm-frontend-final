@@ -1,5 +1,5 @@
 @import "~@angular/material/theming";
-@import "../../src//environments/color.scss";
+@import "../../../src/environments/color.scss";
 @include mat-core();
 
 @mixin theme-color-grabber($theme) {

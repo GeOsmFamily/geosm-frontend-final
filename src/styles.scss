@@ -2,7 +2,7 @@
 
 @import '~@angular/material/theming';
 @import "~@angular/cdk/overlay-prebuilt.css";
-@import './app/theme';
+@import './app/styles/theme';
 @include mat-core();
 @import './assets/font/avenir-next-rounded-pro-cufonfonts-webfont/style.scss';
 
