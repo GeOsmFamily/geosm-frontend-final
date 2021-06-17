@@ -1,3 +1,5 @@
+$height: calc(100% - 60px);
+
 .loading-apps {
   position: fixed;
   top: 0;
@@ -6,4 +8,27 @@
   right: 0;
   background: rgba(255, 255, 255, 0.7);
   z-index: 99999999999;
+}
+
+.sidenav-container {
+  width: 100%;
+  height: $height;
+}
+
+.sidenav-left {
+  width: 265px;
+  padding: 5px;
+  border: none !important;
+
+  app-vertical-page-secondaire {
+    position: absolute;
+    left: -265px;
+    top: 0px;
+    bottom: 0px;
+    width: 265px;
+    transition: 0.5s;
+    background: #fff;
+    z-index: 9;
+    overflow-y: auto;
+  }
 }
