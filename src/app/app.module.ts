@@ -9,6 +9,7 @@ import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { MaterialModule } from './modules/material';
+import { MapComponent } from './components/map/map.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -18,7 +19,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, MapComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
