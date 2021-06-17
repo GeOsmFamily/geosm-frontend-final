@@ -14,6 +14,11 @@ import { VerticalPagePrincipalComponent } from './components/map/vertical-page-l
 import { VerticalPageSecondaireComponent } from './components/map/vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { VerticalToolbarComponent } from './components/map/vertical-toolbar/vertical-toolbar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ActiveLayersComponent } from './components/map/vertical-page-right/active-layers/active-layers.component';
+import { MapToolsComponent } from './components/map/vertical-page-right/map-tools/map-tools.component';
+import { LegendsComponent } from './components/map/vertical-page-right/legends/legends.component';
+import { RoutingComponent } from './components/map/vertical-page-right/routing/routing.component';
+import { DownloadComponent } from './components/map/vertical-page-right/download/download.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -29,6 +34,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     VerticalPagePrincipalComponent,
     VerticalPageSecondaireComponent,
     VerticalToolbarComponent,
+    ActiveLayersComponent,
+    MapToolsComponent,
+    LegendsComponent,
+    RoutingComponent,
+    DownloadComponent,
   ],
   imports: [
     BrowserModule,
