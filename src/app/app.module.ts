@@ -12,6 +12,8 @@ import { MaterialModule } from './modules/material';
 import { MapComponent } from './components/map/map.component';
 import { VerticalPagePrincipalComponent } from './components/map/vertical-page-left/vertical-page-principal/vertical-page-principal.component';
 import { VerticalPageSecondaireComponent } from './components/map/vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
+import { VerticalToolbarComponent } from './components/map/vertical-toolbar/vertical-toolbar.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -26,6 +28,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     MapComponent,
     VerticalPagePrincipalComponent,
     VerticalPageSecondaireComponent,
+    VerticalToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient],
       },
     }),
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
