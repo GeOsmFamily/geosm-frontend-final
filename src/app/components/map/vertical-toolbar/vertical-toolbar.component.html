@@ -1,0 +1,53 @@
+<div matTooltip="{{ 'naviguation_tools.toogle_left_menu' | translate }}" (click)="toogleLeftSidenav()"
+  class="vertical-toolbar-close-sidenav-left pointer"
+  [ngStyle]="{'background-color': getBackgroundColorOfTheToogleSlidenav(),'color': getColorOfTheToogleSlidenav()}">
+  <em class="fas fa-angle-double-left fa-lg" [ngClass]="{ rotate_180: !this.sidenavContainer?.start?.opened }"></em>
+</div>
+
+<div style="height: 100%; padding: 0 10px;" class="primaryColorBG">
+  <div class="vertical-toolbar-groupe-btn-1">
+    <div id="zooms"> </div>
+    <div id="zoom-plus">
+      <button mat-mini-fab class="primaryColorBG" (click)="zoom('plus')"
+        matTooltip="{{ 'naviguation_tools.zoom_plus' | translate }}">
+        <em class="fas fa-plus fa-lg" style="color: #fff;"></em>
+      </button>
+    </div>
+
+    <div id="zoom-minus">
+      <button mat-mini-fab class="primaryColorBG" id="zoom-minus" (click)="zoom('minus')"
+        matTooltip="{{ 'naviguation_tools.zoom_minus' | translate }}">
+        <em class="fas fa-minus fa-lg" style="color: #fff;"></em>
+      </button>
+    </div>
+
+
+    <button mat-mini-fab class="primaryColorBG" matTooltip="{{ 'naviguation_tools.general_vieuw' | translate }} ">
+      <img src="{{ environment.global_logo }}" *ngIf="environment.global_logo" style="width: 24px;" alt="" />
+      <em *ngIf="!environment.global_logo" class="fas fa-globe fa-lg" style="color: #fff;"></em>
+    </button>
+
+    <button mat-mini-fab class="primaryColorBG" style="margin-top: 90px;"
+      matTooltip="{{ 'naviguation_tools.zoom_to_coordinates' | translate }}">
+      <em class="fas fa-map-marker fa-lg" style="color: #fff;"></em>
+    </button>
+
+    <button mat-mini-fab class="primaryColorBG" matTooltip="{{ 'naviguation_tools.past_view' | translate }} ">
+      <em class="fas fa-angle-left fa-lg" style="color: #fff;"></em>
+    </button>
+
+    <button mat-mini-fab class="primaryColorBG" matTooltip="{{ 'naviguation_tools.next_view' | translate }} ">
+      <em class="fas fa-angle-right fa-lg" style="color: #fff;"></em>
+    </button>
+  </div>
+
+  <div class="vertical-toolbar-groupe-btn-2">
+    <button matTooltip="{{ 'naviguation_tools.mappilary' | translate }} " class="primaryColorBG" mat-mini-fab>
+      <img src="assets/icones/mappilary.png" style="margin-top: -5px; height: 30px;" alt="" />
+    </button>
+
+    <button matTooltip="{{ 'naviguation_tools.compare_maps' | translate }}" mat-mini-fab class="primaryColorBG">
+      <img src="assets/icones/compare.svg" style="margin-bottom: 2px; height: 23px;" alt="" />
+    </button>
+  </div>
+</div>

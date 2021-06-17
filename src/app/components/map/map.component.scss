@@ -32,3 +32,16 @@ $height: calc(100% - 60px);
     overflow-y: auto;
   }
 }
+
+.sidenav-content {}
+
+.sidenav-content-toolbar {
+  position: absolute;
+  bottom: 0px;
+  top: 0px;
+  width: 60px;
+  left: 0px;
+  overflow: hidden;
+  background: url('/assets/icones/bandeau-GEOSM.svg');
+  background-position-y: center;
+}
