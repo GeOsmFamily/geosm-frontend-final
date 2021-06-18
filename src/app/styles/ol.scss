@@ -1,0 +1,112 @@
+.ol-zoom-out,
+.ol-zoom-in {
+  padding: 0px;
+  border: none;
+  background: transparent;
+}
+
+.ol-zoom-out:focus,
+.ol-zoom-in:focus {
+  outline: none;
+}
+
+.ol-rotate-reset {
+  background: transparent;
+  padding: 0px;
+  border: none;
+}
+
+.ol-rotate-reset:focus {
+  outline: none;
+}
+
+.faCompass svg {
+  transform: rotate(-46deg);
+}
+
+.ol-overlaycontainer-stopevent {
+  .ol-zoom {
+    display: none;
+  }
+}
+
+.ol-control button {
+  padding: 0;
+  color: white;
+  font-size: 1.14em;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 50%;
+  height: unset;
+  width: 40px;
+  height: 40px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.ol-control {
+  position: unset !important;
+  background: unset !important;
+  padding: 0px;
+}
+
+#ghostMap {
+  .ol-attribution {
+    display: none !important;
+  }
+}
+
+.ol-attribution {
+  background: rgba(255, 255, 255, 0.8) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  font-size: 11px;
+  padding: 3px;
+  position: absolute !important;
+  display: block !important;
+
+  button {
+    width: 25px !important;
+    height: 25px !important;
+    margin-bottom: 0px;
+    border-radius: 0px !important;
+    background: #023f5f94;
+  }
+}
+
+.tooltip.tooltip-static,
+.tooltip.tooltip-measure {
+  background-color: #3a3a3a;
+  color: white;
+  border-radius: 5px;
+  padding: 1px 3px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.tooltiphelp.hidden,
+.tooltiphelp {
+  background-color: white;
+  color: #3a3a3a;
+  border-radius: 5px;
+  padding: 1px 2px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.ol-scale-line-inner {
+  font-size: 13px !important;
+}
+
+.ol-scale-line {
+  background: #023f5f94 !important;
+  position: absolute;
+}
+
+.ol-mouse-position {
+  position: unset;
+
+
+}
