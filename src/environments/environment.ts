@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   global_logo: undefined,
+  url_prefix: '',
   primaryColor: '#023f5f',
   nom: 'CAMEROUN',
   countrycode: 'cm',

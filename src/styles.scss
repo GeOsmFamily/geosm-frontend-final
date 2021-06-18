@@ -3,6 +3,7 @@
 @import '~@angular/material/theming';
 @import "~@angular/cdk/overlay-prebuilt.css";
 @import './app/styles/theme';
+@import './app/styles/ol.scss';
 @include mat-core();
 @import './assets/font/avenir-next-rounded-pro-cufonfonts-webfont/style.scss';
 
@@ -243,7 +244,7 @@ mat-dialog-container::-webkit-scrollbar-thumb {
   height: 108px;
   display: inline-block;
   overflow: hidden;
-  background: #ffffff;
+  background: transparent;
 }
 
 .ldio-qrmvwweyigc {

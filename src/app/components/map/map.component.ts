@@ -1,7 +1,34 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenavContainer } from '@angular/material/sidenav';
 import * as $ from 'jquery';
+import { MapHelper } from 'src/app/helpers/mapHelper';
 import { RightMenuInterface } from 'src/app/interfaces/rightMenuInterface';
+import {
+  Attribution,
+  ScaleLine,
+  View,
+  Map,
+  TileLayer,
+  OSM,
+} from 'src/app/modules/ol';
+
+const scaleControl = new ScaleLine();
+var attribution = new Attribution({ collapsible: false });
+
+var view = new View({
+  center: [0, 0],
+  zoom: 4,
+  minZoom: 6,
+});
+
+export const map = new Map({
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
+  ],
+  view: view,
+});
 
 @Component({
   selector: 'app-map',
@@ -58,6 +85,11 @@ export class MapComponent implements OnInit {
     setInterval(() => {
       $('.loading-apps').hide();
     }, 3000);
+
+    map.setTarget('map');
+    map.updateSize();
+    map.addControl(MapHelper.scaleControl('scaleline', 'scale-map'));
+    map.addControl(MapHelper.mousePositionControl('mouse-position-map'));
   }
 
   getRightMenuActive(): RightMenuInterface | undefined {

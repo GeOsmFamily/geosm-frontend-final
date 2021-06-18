@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +19,7 @@ import { MapToolsComponent } from './components/map/vertical-page-right/map-tool
 import { LegendsComponent } from './components/map/vertical-page-right/legends/legends.component';
 import { RoutingComponent } from './components/map/vertical-page-right/routing/routing.component';
 import { DownloadComponent } from './components/map/vertical-page-right/download/download.component';
+import { setAppInjector } from './helpers/injectorHelper';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -58,4 +59,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(injector: Injector) {
+    setAppInjector(injector);
+  }
+}
