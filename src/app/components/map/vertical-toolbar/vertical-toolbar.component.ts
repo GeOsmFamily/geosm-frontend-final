@@ -2,8 +2,16 @@ import { StorageServiceService } from './../../../services/storage/storage-servi
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSidenavContainer } from '@angular/material/sidenav';
 import { MapHelper } from 'src/app/helpers/mapHelper';
-import { Map, Point } from 'src/app/modules/ol';
+import { Map, Overlay, Point } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { ZoomModalComponent } from '../../modal/zoom-modal/zoom-modal.component';
+import { transform } from 'ol/proj';
+import bboxPolygon from '@turf/bbox-polygon';
+import booleanContains from '@turf/boolean-contains';
+import { point } from '@turf/helpers';
+import * as $ from 'jquery';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-vertical-toolbar',
@@ -12,10 +20,13 @@ import { environment } from 'src/environments/environment';
 })
 export class VerticalToolbarComponent implements OnInit {
   environment;
+  private readonly notifier: NotifierService;
 
   @Input() sidenavContainer: MatSidenavContainer | undefined;
 
   @Input() map: Map | undefined;
+
+  @Input() dialog: MatDialog | undefined;
 
   userMovedMap: boolean = false;
 
@@ -26,8 +37,12 @@ export class VerticalToolbarComponent implements OnInit {
 
   indexHstoryMapPosition = 0;
 
-  constructor(public storageService: StorageServiceService) {
+  constructor(
+    public storageService: StorageServiceService,
+    notifierService: NotifierService
+  ) {
     this.environment = environment;
+    this.notifier = notifierService;
   }
 
   ngOnInit(): void {
@@ -130,5 +145,64 @@ export class VerticalToolbarComponent implements OnInit {
         this.userMovedMap = false;
       }, 2000);
     }
+  }
+
+  zoomTo() {
+    const dialogRef = this.dialog?.open(ZoomModalComponent, {
+      width: '400px',
+      data: { type: 'zoomto' },
+    });
+
+    dialogRef?.afterClosed().subscribe((modal_result) => {
+      if (modal_result.statut) {
+        var result = modal_result['data'];
+
+        if (result.projection == 'WGS84') {
+          var coord_wgs84 = Array();
+          coord_wgs84[0] = parseFloat(result.longitude);
+          coord_wgs84[1] = parseFloat(result.latitude);
+          var coord = transform(
+            [coord_wgs84[0], coord_wgs84[1]],
+            'EPSG:4326',
+            'EPSG:3857'
+          );
+
+          console.log(coord);
+
+          var point_geojson = point(coord);
+          var bbox_cam = bboxPolygon(
+            this.storageService.getConfigProjet().bbox
+          );
+
+          var bool = booleanContains(bbox_cam, point_geojson);
+
+          if (bool) {
+            var mapHelper = new MapHelper();
+            mapHelper.fit_view(new Point(coord), 17);
+
+            $('#setCoordOverlay').show();
+            var setCoordOverlay = new Overlay({
+              position: coord,
+              element: document.getElementById('setCoordOverlay')!,
+            });
+
+            this.map?.addOverlay(setCoordOverlay);
+
+            $('#setCoordOverlay').on('mousemove', (evt) => {
+              $('#setCoordOverlay em').show();
+            });
+
+            $('#setCoordOverlay').on('mouseout', (evt) => {
+              $('#setCoordOverlay em').hide();
+            });
+          } else {
+            this.notifier.notify(
+              'warning',
+              'Désolé mais vos coordonées sont hors du pays'
+            );
+          }
+        }
+      }
+    });
   }
 }

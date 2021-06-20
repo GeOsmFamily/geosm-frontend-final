@@ -2,6 +2,7 @@ import { ApiServiceService } from './services/api/api-service.service';
 import { StorageServiceService } from './services/storage/storage-service.service';
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,8 @@ import { RoutingComponent } from './components/map/vertical-page-right/routing/r
 import { DownloadComponent } from './components/map/vertical-page-right/download/download.component';
 import { setAppInjector } from './helpers/injectorHelper';
 import { NotifierModule } from 'angular-notifier';
+import { ZoomModalComponent } from './components/modal/zoom-modal/zoom-modal.component';
+import { ButtonSheetComponent } from './components/button-sheet/button-sheet/button-sheet.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -43,6 +46,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LegendsComponent,
     RoutingComponent,
     DownloadComponent,
+    ZoomModalComponent,
+    ButtonSheetComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +55,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {

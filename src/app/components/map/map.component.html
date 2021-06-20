@@ -36,9 +36,15 @@
       <div id="scale-map"></div>
       <div id="mouse-position-map"></div>
 
+      <div id="setCoordOverlay" style="display:none">
+        <button mat-mini-fab color="primary" (click)="close_setCoordOverlay()" matTooltip="Supprimer">
+          <em class="fas fa-times fa-lg" style="color:#fff;display:none"></em>
+        </button>
+      </div>
+
     </div>
 
-    <app-vertical-toolbar [map]="getMap()" [sidenavContainer]="sidenavContainer"
+    <app-vertical-toolbar [map]="getMap()" [dialog]="dialog" [sidenavContainer]="sidenavContainer"
       class="sidenav-content-toolbar whiteBG">
     </app-vertical-toolbar>
 
