@@ -22,21 +22,24 @@
     </div>
 
 
-    <button mat-mini-fab class="primaryColorBG" matTooltip="{{ 'naviguation_tools.general_vieuw' | translate }} ">
+    <button mat-mini-fab class="primaryColorBG" (click)="globalView()"
+      matTooltip="{{ 'naviguation_tools.general_vieuw' | translate }} ">
       <img src="{{ environment.global_logo }}" *ngIf="environment.global_logo" style="width: 24px;" alt="" />
       <em *ngIf="!environment.global_logo" class="fas fa-globe fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button mat-mini-fab class="primaryColorBG" style="margin-top: 90px;"
+    <button mat-mini-fab class="primaryColorBG" style="margin-top: 90px;" (click)="zoomTo()"
       matTooltip="{{ 'naviguation_tools.zoom_to_coordinates' | translate }}">
       <em class="fas fa-map-marker fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button mat-mini-fab class="primaryColorBG" matTooltip="{{ 'naviguation_tools.past_view' | translate }} ">
+    <button (click)="rollBack()" mat-mini-fab class="primaryColorBG"
+      matTooltip="{{ 'naviguation_tools.past_view' | translate }} ">
       <em class="fas fa-angle-left fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button mat-mini-fab class="primaryColorBG" matTooltip="{{ 'naviguation_tools.next_view' | translate }} ">
+    <button (click)="rollFront()" mat-mini-fab class="primaryColorBG"
+      matTooltip="{{ 'naviguation_tools.next_view' | translate }} ">
       <em class="fas fa-angle-right fa-lg" style="color: #fff;"></em>
     </button>
   </div>
