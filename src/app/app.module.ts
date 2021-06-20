@@ -1,3 +1,5 @@
+import { ApiServiceService } from './services/api/api-service.service';
+import { StorageServiceService } from './services/storage/storage-service.service';
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -20,6 +22,7 @@ import { LegendsComponent } from './components/map/vertical-page-right/legends/l
 import { RoutingComponent } from './components/map/vertical-page-right/routing/routing.component';
 import { DownloadComponent } from './components/map/vertical-page-right/download/download.component';
 import { setAppInjector } from './helpers/injectorHelper';
+import { NotifierModule } from 'angular-notifier';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -47,6 +50,20 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
+    NotifierModule.withConfig({
+      position: {
+        horizontal: {
+          position: 'right',
+          distance: 12,
+        },
+
+        vertical: {
+          position: 'top',
+          distance: 12,
+          gap: 10,
+        },
+      },
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -56,7 +73,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [StorageServiceService, ApiServiceService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

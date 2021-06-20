@@ -79,7 +79,7 @@ export class MapHelper {
   }
 
   //Construire le fond de carte grisé à partir d'un geojson
-  constructShadowLayer(geojsonLayer: Object): ImageLayer {
+  public static constructShadowLayer(geojsonLayer: Object): ImageLayer {
     var worldGeojson = {
       type: 'FeatureCollection',
       name: 'world_shadow',
@@ -175,5 +175,14 @@ export class MapHelper {
       var extent_view_error = this.map?.getView().calculateExtent();
       return extent_view_error;
     }
+  }
+
+  fit_view(geom, zoom, padding?) {
+    this.map!.getView().fit(geom, {
+      maxZoom: zoom,
+      size: this.map!.getSize(),
+      padding: [0, 0, 0, 0],
+      duration: 1000,
+    });
   }
 }

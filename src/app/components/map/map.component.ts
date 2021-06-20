@@ -1,3 +1,4 @@
+import { StorageServiceService } from './../../services/storage/storage-service.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenavContainer } from '@angular/material/sidenav';
 import * as $ from 'jquery';
@@ -11,6 +12,11 @@ import {
   TileLayer,
   OSM,
 } from 'src/app/modules/ol';
+import { NotifierService } from 'angular-notifier';
+import bbox from '@turf/bbox';
+import bboxPolygon from '@turf/bbox-polygon';
+import intersect from '@turf/intersect';
+import { toWgs84 } from '@turf/projection';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -36,6 +42,8 @@ export const map = new Map({
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  private readonly notifier: NotifierService;
+
   @ViewChild(MatSidenavContainer, { static: true })
   sidenavContainer: MatSidenavContainer | undefined;
 
@@ -79,17 +87,58 @@ export class MapComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(
+    public storageService: StorageServiceService,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService;
+  }
 
   ngOnInit(): void {
-    setInterval(() => {
-      $('.loading-apps').hide();
-    }, 3000);
+    this.storageService.loadProjectData().then(
+      (response) => {
+        $('.loading-apps').hide();
+        new MapHelper().fit_view(
+          this.storageService.getExtentOfProject(true),
+          13
+        );
+        this.notifier.notify('success', 'Téléchargement terminé');
+      },
+      (error) => {
+        $('.loading-apps').hide();
+        this.notifier.notify('error', 'Erreur lors du Téléchargement');
+      }
+    );
 
     map.setTarget('map');
     map.updateSize();
     map.addControl(MapHelper.scaleControl('scaleline', 'scale-map'));
     map.addControl(MapHelper.mousePositionControl('mouse-position-map'));
+
+    this.storageService.states.subscribe((value) => {
+      if (value.loadProjectData) {
+        map.on('moveend', () => {
+          var bbox_cam = bboxPolygon(
+            this.storageService.getConfigProjet().bbox
+          );
+          var bbox_view = bboxPolygon(map.getView().calculateExtent());
+
+          var bool = intersect(toWgs84(bbox_view), toWgs84(bbox_cam));
+
+          if (!bool) {
+            map.getView().fit(this.storageService.getConfigProjet().bbox, {
+              size: map.getSize(),
+              duration: 1000,
+            });
+          }
+        });
+        /* map.addLayer(
+          MapHelper.constructShadowLayer(
+            this.storageService.getConfigProjet().roiGeojson
+          )
+        );*/
+      }
+    });
   }
 
   getMap(): Map {
