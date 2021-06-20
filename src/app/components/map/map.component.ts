@@ -13,10 +13,10 @@ import {
   OSM,
 } from 'src/app/modules/ol';
 import { NotifierService } from 'angular-notifier';
-import bbox from '@turf/bbox';
 import bboxPolygon from '@turf/bbox-polygon';
 import intersect from '@turf/intersect';
 import { toWgs84 } from '@turf/projection';
+import { MatDialog } from '@angular/material/dialog';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -89,7 +89,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     public storageService: StorageServiceService,
-    notifierService: NotifierService
+    notifierService: NotifierService,
+    public dialog: MatDialog
   ) {
     this.notifier = notifierService;
   }
@@ -181,5 +182,9 @@ export class MapComponent implements OnInit {
       }
       menu!.active = true;
     }
+  }
+
+  close_setCoordOverlay() {
+    $('#setCoordOverlay').hide();
   }
 }

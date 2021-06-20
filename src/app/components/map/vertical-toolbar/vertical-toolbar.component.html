@@ -28,7 +28,7 @@
       <em *ngIf="!environment.global_logo" class="fas fa-globe fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button mat-mini-fab class="primaryColorBG" style="margin-top: 90px;"
+    <button mat-mini-fab class="primaryColorBG" style="margin-top: 90px;" (click)="zoomTo()"
       matTooltip="{{ 'naviguation_tools.zoom_to_coordinates' | translate }}">
       <em class="fas fa-map-marker fa-lg" style="color: #fff;"></em>
     </button>
