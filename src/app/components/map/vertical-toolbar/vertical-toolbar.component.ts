@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSidenavContainer } from '@angular/material/sidenav';
+import { Map } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -11,6 +12,8 @@ export class VerticalToolbarComponent implements OnInit {
   environment;
 
   @Input() sidenavContainer: MatSidenavContainer | undefined;
+
+  @Input() map: Map | undefined;
 
   constructor() {
     this.environment = environment;
@@ -40,9 +43,11 @@ export class VerticalToolbarComponent implements OnInit {
     }
   }
 
-  /**
-   * Zoom or de zoom
-   * @param type 'plus'|'minus'
-   */
-  zoom(type: 'plus' | 'minus') {}
+  zoom(type: 'plus' | 'minus') {
+    if (type == 'plus') {
+      this.map!.getView().setZoom(this.map!.getView().getZoom()! + 1);
+    } else {
+      this.map!.getView().setZoom(this.map!.getView().getZoom()! - 1);
+    }
+  }
 }
