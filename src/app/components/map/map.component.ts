@@ -92,6 +92,10 @@ export class MapComponent implements OnInit {
     map.addControl(MapHelper.mousePositionControl('mouse-position-map'));
   }
 
+  getMap(): Map {
+    return map;
+  }
+
   getRightMenuActive(): RightMenuInterface | undefined {
     for (let index = 0; index < this.ritghtMenus.length; index++) {
       if (this.ritghtMenus[index].active) {
