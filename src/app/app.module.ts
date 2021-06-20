@@ -24,6 +24,7 @@ import { RoutingComponent } from './components/map/vertical-page-right/routing/r
 import { DownloadComponent } from './components/map/vertical-page-right/download/download.component';
 import { setAppInjector } from './helpers/injectorHelper';
 import { NotifierModule } from 'angular-notifier';
+import { InfoModalComponent } from './components/modal/info-modal/info-modal.component';
 import { ZoomModalComponent } from './components/modal/zoom-modal/zoom-modal.component';
 import { ButtonSheetComponent } from './components/button-sheet/button-sheet/button-sheet.component';
 
@@ -48,6 +49,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DownloadComponent,
     ZoomModalComponent,
     ButtonSheetComponent,
+    InfoModalComponent,
   ],
   imports: [
     BrowserModule,
