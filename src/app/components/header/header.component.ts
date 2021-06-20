@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,7 +10,10 @@ import { environment } from 'src/environments/environment';
 })
 export class HeaderComponent implements OnInit {
   environment: any;
-  constructor(public translate: TranslateService) {
+  constructor(
+    public translate: TranslateService,
+    public componentHelper: ComponentHelper
+  ) {
     this.environment = environment;
     translate.addLangs(environment.avaible_language);
     translate.setDefaultLang(environment.default_language);
@@ -24,5 +28,9 @@ export class HeaderComponent implements OnInit {
     if (lang['value']) {
       this.translate.use(lang['value']);
     }
+  }
+
+  openModalInfo() {
+    this.componentHelper.openModalInfo([]);
   }
 }
