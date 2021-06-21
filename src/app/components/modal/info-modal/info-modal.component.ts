@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./info-modal.component.scss'],
 })
 export class InfoModalComponent {
-  lastSaturday = moment().subtract(0, 'weeks').isoWeekday(6).locale('fr');
+  lastSaturday = moment().subtract(1, 'weeks').isoWeekday(6).locale('fr');
   environment = environment;
   constructor(public dialogRef: MatDialogRef<InfoModalComponent>) {}
 

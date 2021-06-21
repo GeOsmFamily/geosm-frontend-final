@@ -1,3 +1,4 @@
+import { GeosmLayersService } from './services/geosm/geosm-layers.service';
 import { ApiServiceService } from './services/api/api-service.service';
 import { StorageServiceService } from './services/storage/storage-service.service';
 import { Injector, NgModule } from '@angular/core';
@@ -27,6 +28,8 @@ import { NotifierModule } from 'angular-notifier';
 import { InfoModalComponent } from './components/modal/info-modal/info-modal.component';
 import { ZoomModalComponent } from './components/modal/zoom-modal/zoom-modal.component';
 import { ButtonSheetComponent } from './components/button-sheet/button-sheet/button-sheet.component';
+import { GroupeCarteComponent } from './components/map/vertical-page-left/vertical-page-secondaire/groupe-carte/groupe-carte.component';
+import { CarteThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/groupe-carte/carte-thematique/carte-thematique.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -50,6 +53,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ZoomModalComponent,
     ButtonSheetComponent,
     InfoModalComponent,
+    GroupeCarteComponent,
+    CarteThematiqueComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +87,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     FontAwesomeModule,
   ],
-  providers: [StorageServiceService, ApiServiceService],
+  providers: [StorageServiceService, ApiServiceService, GeosmLayersService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, from } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { GroupCarteInterface } from 'src/app/interfaces/carteInterface';
+import {
+  CarteInterface,
+  GroupCarteInterface,
+} from 'src/app/interfaces/carteInterface';
 import { ConfigProjetInterface } from 'src/app/interfaces/configProjetInterface';
 import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
 import { ResponseOfSerachLimitInterface } from 'src/app/interfaces/responseSearchLimitInterface';
@@ -122,5 +125,72 @@ export class StorageServiceService {
 
   getConfigProjet(): ConfigProjetInterface {
     return this.configProject.getValue();
+  }
+
+  getPrincipalCarte(): {
+    groupCarte: GroupCarteInterface;
+    carte: CarteInterface;
+  } | null {
+    for (let index = 0; index < this.groupCartes.getValue().length; index++) {
+      const group = this.groupCartes.getValue()[index];
+      if (group.principal) {
+        // groupCarte = group
+        if (group.sous_cartes) {
+          for (let sIndex = 0; sIndex < group.sous_cartes.length; sIndex++) {
+            const sous_groupe = group.sous_cartes[sIndex];
+            for (
+              let cIndex = 0;
+              cIndex < sous_groupe.couches.length;
+              cIndex++
+            ) {
+              const carte = sous_groupe.couches[cIndex];
+              if (carte.principal) {
+                return {
+                  groupCarte: group,
+                  carte: carte,
+                };
+              }
+            }
+          }
+        } else {
+          for (let cIndex = 0; cIndex < group.couches!.length; cIndex++) {
+            const carte = group.couches![cIndex];
+            if (carte.principal) {
+              return {
+                groupCarte: group,
+                carte: carte,
+              };
+            }
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  //@ts-ignore
+  getGroupCarteFromIdCarte(id_carte: number): GroupCarteInterface {
+    for (let index = 0; index < this.groupCartes.getValue().length; index++) {
+      const groupCarte = this.groupCartes.getValue()[index];
+      if (groupCarte.sous_cartes) {
+        for (let sIndex = 0; sIndex < groupCarte.sous_cartes.length; sIndex++) {
+          const sous_groupe = groupCarte.sous_cartes[sIndex];
+          for (let cIndex = 0; cIndex < sous_groupe.couches.length; cIndex++) {
+            const carte = sous_groupe.couches[cIndex];
+            if (carte.key_couche == id_carte) {
+              return groupCarte;
+            }
+          }
+        }
+      } else {
+        for (let cIndex = 0; cIndex < groupCarte?.couches!.length; cIndex++) {
+          const carte = groupCarte?.couches![cIndex];
+          if (carte.key_couche == id_carte) {
+            return groupCarte;
+          }
+        }
+      }
+    }
   }
 }
