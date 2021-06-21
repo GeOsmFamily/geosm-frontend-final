@@ -1,5 +1,4 @@
 import { Map } from 'src/app/modules/ol';
-import { ComponentHelper } from './../../../../helpers/componentHelper';
 import { StorageServiceService } from './../../../../services/storage/storage-service.service';
 import { Component, Input, OnInit } from '@angular/core';
 import {
@@ -9,6 +8,7 @@ import {
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { environment } from 'src/environments/environment';
 import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
 
 @Component({
   selector: 'app-vertical-page-principal',

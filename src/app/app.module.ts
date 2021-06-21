@@ -33,6 +33,8 @@ import { GroupeCarteComponent } from './components/map/vertical-page-left/vertic
 import { CarteThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/groupe-carte/carte-thematique/carte-thematique.component';
 import { BibliothequeCarteComponent } from './components/map/vertical-page-left/vertical-page-principal/bibliotheque-carte/bibliotheque-carte.component';
 import { GroupeThematiqueComponent } from './components/map/vertical-page-left/vertical-page-principal/groupe-thematique/groupe-thematique.component';
+import { ListeThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/liste-thematique.component';
+import { CoucheThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/couche-thematique/couche-thematique.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -60,6 +62,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CarteThematiqueComponent,
     BibliothequeCarteComponent,
     GroupeThematiqueComponent,
+    ListeThematiqueComponent,
+    CoucheThematiqueComponent,
   ],
   imports: [
     NgpSortModule,
