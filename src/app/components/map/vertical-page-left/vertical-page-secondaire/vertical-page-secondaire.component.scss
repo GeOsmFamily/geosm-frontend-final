@@ -19,7 +19,7 @@
 
   .sidenav-left-second-header-img {
     height: 20px;
-    margin-left: 10px;
+    margin-left: -2px;
     margin-right: 5px;
     max-width: 25px;
     min-width: 25px;
@@ -27,14 +27,14 @@
 
   .sidenav-left-second-header-title {
     text-align: center;
-    float: right;
     padding: 0px;
-    margin-right: 60px;
     overflow: hidden !important;
     white-space: nowrap;
     text-overflow: ellipsis !important;
-    font-size: 17px;
+    font-size: 16px;
     padding-top: 2px;
+    margin-top: -35px;
+    margin-left: 35px;
   }
 }
 

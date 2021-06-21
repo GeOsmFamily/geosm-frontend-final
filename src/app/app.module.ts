@@ -30,6 +30,7 @@ import { ZoomModalComponent } from './components/modal/zoom-modal/zoom-modal.com
 import { ButtonSheetComponent } from './components/button-sheet/button-sheet/button-sheet.component';
 import { GroupeCarteComponent } from './components/map/vertical-page-left/vertical-page-secondaire/groupe-carte/groupe-carte.component';
 import { CarteThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/groupe-carte/carte-thematique/carte-thematique.component';
+import { BibliothequeCarteComponent } from './components/map/vertical-page-left/vertical-page-principal/bibliotheque-carte/bibliotheque-carte.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -55,6 +56,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoModalComponent,
     GroupeCarteComponent,
     CarteThematiqueComponent,
+    BibliothequeCarteComponent,
   ],
   imports: [
     BrowserModule,

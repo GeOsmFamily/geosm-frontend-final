@@ -193,4 +193,8 @@ export class StorageServiceService {
       }
     }
   }
+
+  getAllGroupCarte(): Array<GroupCarteInterface> {
+    return this.groupCartes.getValue();
+  }
 }
