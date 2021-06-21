@@ -24,7 +24,7 @@ var attribution = new Attribution({ collapsible: false });
 
 var view = new View({
   center: [0, 0],
-  zoom: 4,
+  zoom: 0,
   minZoom: 6,
 });
 
@@ -114,7 +114,7 @@ export class MapComponent implements OnInit {
         $('.loading-apps').hide();
         new MapHelper().fit_view(
           this.storageService.getExtentOfProject(true),
-          13
+          6
         );
         this.notifier.notify('success', 'Téléchargement terminé');
       },
