@@ -1,3 +1,5 @@
+import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { StorageServiceService } from './../../services/storage/storage-service.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenavContainer } from '@angular/material/sidenav';
@@ -9,8 +11,7 @@ import {
   ScaleLine,
   View,
   Map,
-  TileLayer,
-  OSM,
+  LayerGroup,
 } from 'src/app/modules/ol';
 import { NotifierService } from 'angular-notifier';
 import bboxPolygon from '@turf/bbox-polygon';
@@ -29,8 +30,9 @@ var view = new View({
 
 export const map = new Map({
   layers: [
-    new TileLayer({
-      source: new OSM(),
+    new LayerGroup({
+      //@ts-ignore
+      nom: 'group-layer-shadow',
     }),
   ],
   view: view,
@@ -46,6 +48,9 @@ export class MapComponent implements OnInit {
 
   @ViewChild(MatSidenavContainer, { static: true })
   sidenavContainer: MatSidenavContainer | undefined;
+
+  @ViewChild(VerticalPageSecondaireComponent, { static: true })
+  verticalPagePrincipalComponent: VerticalPageSecondaireComponent | undefined;
 
   layersInToc = [];
 
@@ -90,9 +95,17 @@ export class MapComponent implements OnInit {
   constructor(
     public storageService: StorageServiceService,
     notifierService: NotifierService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public componentHelper: ComponentHelper
   ) {
     this.notifier = notifierService;
+  }
+
+  ngAfterViewInit() {
+    this.componentHelper.setComponent(
+      'VerticalPageSecondaireComponent',
+      this.verticalPagePrincipalComponent
+    );
   }
 
   ngOnInit(): void {

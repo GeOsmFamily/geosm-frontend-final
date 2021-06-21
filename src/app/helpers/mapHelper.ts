@@ -13,11 +13,26 @@ import {
   ScaleLine,
   MousePosition,
   createStringXY,
+  TileLayer,
+  XYZ,
+  TileWMS,
+  ImageWMS,
+  LayerGroup,
+  Cluster,
+  CircleStyle,
+  Stroke,
+  Icon,
+  transformExtent,
+  Text,
 } from '../modules/ol';
 import { environment } from '../../environments/environment';
 import { AppInjector } from './injectorHelper';
 import { map as geoportailMap } from './../components/map/map.component';
 import * as $ from 'jquery';
+import { GeosmLayer } from '../interfaces/geosmLayersInterface';
+import { delayWhen, retryWhen, take, tap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { timer } from 'rxjs/internal/observable/timer';
 
 const typeLayer = [
   'geosmCatalogue',
@@ -79,7 +94,7 @@ export class MapHelper {
   }
 
   //Construire le fond de carte grisé à partir d'un geojson
-  public static constructShadowLayer(geojsonLayer: Object): ImageLayer {
+  constructShadowLayer(geojsonLayer: Object): ImageLayer {
     var worldGeojson = {
       type: 'FeatureCollection',
       name: 'world_shadow',
@@ -184,5 +199,430 @@ export class MapHelper {
       padding: [0, 0, 0, 0],
       duration: 1000,
     });
+  }
+
+  constructLayer(couche: GeosmLayer) {
+    var layer;
+    if (couche.type == 'xyz') {
+      layer = new TileLayer({
+        source: new XYZ({
+          url: couche.url,
+          crossOrigin: 'anonymous',
+          attributionsCollapsible: false,
+          attributions:
+            ' © contributeurs <a target="_blank" href="https://www.openstreetmap.org/copyright"> OpenStreetMap </a> ',
+        }),
+
+        className: couche.nom + '___' + couche.type_layer,
+      });
+    } else if (couche.type == 'wms') {
+      var wmsSourceTile = new TileWMS({
+        url: couche.url,
+        params: { LAYERS: couche.identifiant, TILED: true },
+        serverType: 'qgis',
+        crossOrigin: 'anonymous',
+      });
+
+      var layerTile = new TileLayer({
+        source: wmsSourceTile,
+        className: couche.nom + '___' + couche.type_layer,
+        minResolution: this.map?.getView().getResolutionForZoom(9),
+      });
+
+      var wmsSourceImage = new ImageWMS({
+        url: couche.url!,
+        params: { LAYERS: couche.identifiant, TILED: true },
+        serverType: 'qgis',
+        crossOrigin: 'anonymous',
+      });
+
+      var layerImage = new ImageLayer({
+        source: wmsSourceImage,
+
+        className: couche.nom + '___' + couche.type_layer,
+        maxResolution: this.map?.getView().getResolutionForZoom(9),
+      });
+
+      layer = new LayerGroup({
+        layers: [layerTile, layerImage],
+      });
+    } else if (couche.type == 'geojson') {
+      var vectorSource = new VectorSource({
+        format: new GeoJSON(),
+      });
+
+      var layer = new layer({
+        source: vectorSource,
+        style: couche.style,
+        className: couche.nom + '___' + couche.type_layer,
+      });
+
+      if (couche.cluster) {
+        var clusterSource = new Cluster({
+          distance: 80,
+          source: vectorSource,
+        });
+        var styleCache = {};
+        var styleCacheCopy = {};
+        layer = new VectorLayer({
+          source: clusterSource,
+          // @ts-ignore
+          style: (feature) => {
+            var size = feature.get('features').length;
+
+            if (size > 1) {
+              var styleDefault = styleCache[size];
+              if (!styleDefault) {
+                var radius = 10;
+                if (size > 99) {
+                  (radius = 12), 5;
+                }
+                styleDefault = new Style({
+                  text: new Text({
+                    text: size.toString(),
+                    fill: new Fill({
+                      color: '#fff',
+                    }),
+                    font: '12px sans-serif',
+                    offsetY: 1,
+                    offsetX: -0.5,
+                  }),
+                  image: new CircleStyle({
+                    radius: radius,
+
+                    stroke: new Stroke({
+                      color: '#fff',
+                      width: 2,
+                    }),
+                    fill: new Fill({
+                      color: environment.primaryColor,
+                    }),
+                  }),
+                });
+                styleCache[size] = styleDefault;
+              }
+
+              return [couche.style, styleDefault];
+            } else if (size == 1) {
+              return new Style({
+                image: new Icon({
+                  scale: couche.size,
+                  src: couche.icon,
+                }),
+              });
+            } else if (size == 0) {
+              return undefined!;
+            }
+          },
+          className: couche.nom + '___' + couche.type_layer,
+        });
+      }
+    } else if (couche.type == 'wfs') {
+      var source = new VectorSource({
+        format: new GeoJSON({
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857',
+        }),
+        loader: (extent, resolution, projection) => {
+          var extent_view = this.getCurrentMapExtent();
+          var url =
+            couche.url +
+            '?bbox=' +
+            transformExtent(extent_view!, 'EPSG:3857', 'EPSG:4326').join(',') +
+            '&SERVICE=WFS&VERSION=1.1.0&REQUEST=GETFEATURE&outputFormat=GeoJSON&typeName=' +
+            couche.identifiant;
+          this.apiServiceService
+            .getRequestFromOtherHostObserver(url)
+            .pipe(
+              /** retry 3 times after 2s if querry failed  */
+              retryWhen((errors) =>
+                errors.pipe(
+                  tap((val: HttpErrorResponse) => {
+                    // console.log(val)
+                  }),
+                  delayWhen((val: HttpErrorResponse) => timer(2000)),
+                  // delay(2000),
+                  take(3)
+                )
+              )
+            )
+            .subscribe(
+              (data) => {
+                // @ts-ignore
+                source.addFeatures(source.getFormat()?.readFeatures(data)!);
+                for (
+                  let index = 0;
+                  index < source.getFeatures().length;
+                  index++
+                ) {
+                  const feature = source.getFeatures()[index];
+                  feature.set('featureId', feature.getId());
+                }
+              },
+              (err: HttpErrorResponse) => {
+                source.removeLoadedExtent(extent_view!);
+              }
+            );
+        },
+      });
+
+      layer = new VectorLayer({
+        source: source,
+        style: new Style({
+          image: new Icon({
+            scale: couche.size,
+            src: couche.icon,
+          }),
+        }),
+
+        className: couche.nom + '___' + couche.type_layer,
+      });
+
+      if (couche.cluster) {
+        var clusterSource = new Cluster({
+          distance: 80,
+          source: source,
+        });
+        var styleCache = {};
+        var styleCacheCopy = {};
+        layer = new VectorLayer({
+          source: clusterSource,
+          // @ts-ignore
+          style: (feature) => {
+            var size = feature.get('features').length;
+
+            if (size > 1) {
+              var styleDefault = styleCache[size];
+              if (!styleDefault) {
+                var radius = 10;
+                if (size > 99) {
+                  (radius = 12), 5;
+                }
+                styleDefault = new Style({
+                  text: new Text({
+                    text: size.toString(),
+                    fill: new Fill({
+                      color: '#fff',
+                    }),
+                    font: '12px sans-serif',
+                    offsetY: 1,
+                    offsetX: -0.5,
+                  }),
+                  image: new CircleStyle({
+                    radius: radius,
+
+                    stroke: new Stroke({
+                      color: '#fff',
+                      width: 2,
+                    }),
+                    fill: new Fill({
+                      color: environment.primaryColor,
+                    }),
+                  }),
+                  /*  */
+                });
+                styleCache[size] = styleDefault;
+              }
+
+              return [
+                new Style({
+                  image: new Icon({
+                    scale: couche.size,
+                    src: couche.icon,
+                  }),
+                }),
+                styleDefault,
+              ];
+            } else if (size == 1) {
+              return new Style({
+                image: new Icon({
+                  scale: couche.size,
+                  src: couche.icon,
+                }),
+              });
+            } else if (size == 0) {
+              return;
+            }
+          },
+
+          className: couche.nom + '___' + couche.type_layer,
+        });
+      }
+    }
+
+    this.setPropertiesToLayer(layer, couche);
+
+    if (couche.zindex) {
+      this.setZindexToLayer(layer, couche.zindex);
+    }
+
+    if (couche.minzoom) {
+      layer.setminResolution(
+        this.map?.getView().getResolutionForZoom(couche.minzoom)
+      );
+    }
+
+    if (couche.maxzoom) {
+      layer.setmaxResolution(
+        this.map?.getView().getResolutionForZoom(couche.maxzoom)
+      );
+    }
+
+    layer.setVisible(couche.visible);
+
+    return layer;
+  }
+
+  setPropertiesToLayer(layer: any, couche: GeosmLayer) {
+    if (layer instanceof LayerGroup) {
+      for (
+        let index = 0;
+        index < layer.getLayers().getArray().length;
+        index++
+      ) {
+        const element = layer.getLayers().getArray()[index];
+        element.set('properties', couche.properties);
+        element.set('nom', couche.nom);
+        element.set('type_layer', couche.type_layer);
+        element.set('iconImagette', couche.iconImagette);
+        element.set('identifiant', couche.identifiant);
+        element.set('inToc', couche.inToc);
+        element.set('activeLayers', couche.activeLayers);
+        element.set('legendCapabilities', couche.legendCapabilities);
+        element.set(
+          'descriptionSheetCapabilities',
+          couche.descriptionSheetCapabilities
+        );
+      }
+    }
+
+    layer.set('properties', couche.properties);
+    layer.set('nom', couche.nom);
+    layer.set('type_layer', couche.type_layer);
+    layer.set('iconImagette', couche.iconImagette);
+    layer.set('identifiant', couche.identifiant);
+    layer.set('inToc', couche.inToc);
+    layer.set('activeLayers', couche.activeLayers);
+    layer.set('legendCapabilities', couche.legendCapabilities);
+    layer.set(
+      'descriptionSheetCapabilities',
+      couche.descriptionSheetCapabilities
+    );
+  }
+
+  setZindexToLayer(layer: any, zIndex: number) {
+    layer.setZIndex(zIndex);
+    if (layer instanceof LayerGroup) {
+      for (
+        let index = 0;
+        index < layer.getLayers().getArray().length;
+        index++
+      ) {
+        layer.getLayers().getArray()[index].setZIndex(zIndex);
+      }
+    }
+  }
+
+  addLayerToMap(layer: VectorLayer | ImageLayer, group: string = 'principal') {
+    if (!layer.get('nom')) {
+      throw new Error("Layer must have a 'nom' properties");
+    }
+
+    if (!layer.get('type_layer')) {
+      throw new Error("Layer must have a 'type_layer' properties");
+    }
+
+    if (typeLayer.indexOf(layer.get('type_layer')) == -1) {
+      throw new Error(
+        "Layer must have a 'type_layer' properties among " + typeLayer.join(',')
+      );
+    }
+
+    var zIndex = this.getMaxZindexInMap() + 1;
+
+    if (layer.get('nom') && layer.get('type_layer')) {
+      if (!layer.getZIndex()) {
+        this.setZindexToLayer(layer, zIndex);
+      }
+
+      // var groupLayer = this.getLayerGroupByNom(group)
+
+      this.map?.addLayer(layer);
+      this.map?.renderSync();
+      // console.log(groupLayer)
+      // groupLayer.getLayers().getArray().push(layer)
+    }
+  }
+
+  removeLayerToMap(layer: VectorLayer | ImageLayer) {
+    this.map?.removeLayer(layer);
+  }
+
+  getMaxZindexInMap(): number {
+    var allLayers = this.map?.getLayers().getArray();
+
+    var allZindex = [0];
+    for (let index = 0; index < allLayers!.length; index++) {
+      var layer = allLayers![index];
+
+      try {
+        if (layer.get('inToc')) {
+          allZindex.push(layer.getZIndex());
+        }
+        // console.log(layer.get('nom'),layer.getZIndex())
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return Math.max(...allZindex);
+  }
+
+  getLayerByPropertiesCatalogueGeosm(properties: {
+    group_id: number;
+    couche_id: number;
+    type: 'couche' | 'carte';
+  }): Array<any> {
+    var layer_to_remove = Array();
+    var all_layers = this.getAllLAyerInMap();
+    for (let index = 0; index < all_layers.length; index++) {
+      var layer = all_layers[index];
+      if (layer.get('properties')) {
+        if (
+          layer.get('properties')['type'] == properties.type &&
+          layer.get('properties')['group_id'] == properties.group_id &&
+          layer.get('properties')['couche_id'] == properties.couche_id
+        ) {
+          layer_to_remove.push(layer);
+        }
+      }
+    }
+
+    return layer_to_remove;
+  }
+
+  getAllLAyerInMap(): Array<any> {
+    var responseLayers = Array();
+    this.map?.getLayers().forEach((group) => {
+      responseLayers.push(group);
+    });
+    return responseLayers;
+  }
+
+  getLayerByName(name: string, isLayerGroup: boolean = false): Array<any> {
+    var layer_to_remove = Array();
+
+    if (isLayerGroup) {
+      var all_layers = this.map?.getLayers().getArray();
+    } else {
+      var all_layers = this.map?.getLayerGroup().getLayers().getArray();
+    }
+
+    for (let index = 0; index < all_layers!.length; index++) {
+      var layer = all_layers![index];
+      if (layer.get('nom') == name) {
+        layer_to_remove.push(layer);
+      }
+    }
+    return layer_to_remove;
   }
 }
