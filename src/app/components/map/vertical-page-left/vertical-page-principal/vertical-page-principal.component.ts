@@ -152,4 +152,18 @@ export class VerticalPagePrincipalComponent implements OnInit {
       mapHelper.removeLayerToMap(layer[index]);
     }
   }
+
+  displayLabelForBibliothequeArborescence() {
+    if (this.storageService.getAllGroupCarte().length > 1) {
+      return true;
+    } else if (
+      this.storageService.getAllGroupCarte().length == 1 &&
+      this.storageService.getAllGroupCarte()[0].id_cartes !=
+        this.donnePrincipalMap?.groupCarte.id_cartes
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
