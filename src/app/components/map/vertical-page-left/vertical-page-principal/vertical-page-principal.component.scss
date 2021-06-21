@@ -33,3 +33,17 @@ app-bibliotheque-carte {
   display: block;
   margin-bottom: 15px;
 }
+
+.arborescence-groupe-thematique {
+  float: left;
+  display: block;
+  position: relative;
+  width: 33.33333333%;
+  margin-bottom: 31px;
+
+  app-groupe-thematique {
+    display: block;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}

@@ -193,7 +193,7 @@ export class MapHelper {
   }
 
   fit_view(geom, zoom, padding?) {
-    this.map!.getView().fit(geom, {
+    this.map?.getView().fit(geom, {
       maxZoom: zoom,
       size: this.map!.getSize(),
       padding: [0, 0, 0, 0],
@@ -545,12 +545,8 @@ export class MapHelper {
         this.setZindexToLayer(layer, zIndex);
       }
 
-      // var groupLayer = this.getLayerGroupByNom(group)
-
       this.map?.addLayer(layer);
       this.map?.renderSync();
-      // console.log(groupLayer)
-      // groupLayer.getLayers().getArray().push(layer)
     }
   }
 
