@@ -8,6 +8,7 @@ import {
 } from 'src/app/interfaces/carteInterface';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { environment } from 'src/environments/environment';
+import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
 
 @Component({
   selector: 'app-vertical-page-principal',
@@ -165,5 +166,9 @@ export class VerticalPagePrincipalComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  openGroupThematiqueSlide(groupThematique: GroupThematiqueInterface) {
+    this.componentHelper.openGroupThematiqueSlide(groupThematique);
   }
 }

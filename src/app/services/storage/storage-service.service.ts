@@ -197,4 +197,42 @@ export class StorageServiceService {
   getAllGroupCarte(): Array<GroupCarteInterface> {
     return this.groupCartes.getValue();
   }
+
+  getAllGroupThematiques(): Array<GroupThematiqueInterface> {
+    return this.groupThematiques.getValue();
+  }
+
+  getGroupThematiqueFromIdCouche(id_couche: number): GroupThematiqueInterface {
+    var groupThematiqueResponse: GroupThematiqueInterface;
+    for (
+      let index = 0;
+      index < this.groupThematiques.getValue().length;
+      index++
+    ) {
+      const groupThematique = this.groupThematiques.getValue()[index];
+      if (groupThematique.sous_thematiques) {
+        for (
+          let sindex = 0;
+          sindex < groupThematique.sous_thematiques.length;
+          sindex++
+        ) {
+          const sous_thematique = groupThematique.sous_thematiques[sindex];
+          for (let jndex = 0; jndex < sous_thematique.couches.length; jndex++) {
+            const couche = sous_thematique.couches[jndex];
+            if (couche.key_couche == id_couche) {
+              groupThematiqueResponse = groupThematique;
+            }
+          }
+        }
+      } else {
+        for (let jndex = 0; jndex < groupThematique.couches!.length; jndex++) {
+          const couche = groupThematique.couches![jndex];
+          if (couche.key_couche == id_couche) {
+            groupThematiqueResponse = groupThematique;
+          }
+        }
+      }
+    }
+    return groupThematiqueResponse!;
+  }
 }

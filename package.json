@@ -33,6 +33,7 @@
     "angular-notifier": "9.0.1",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
+    "ngp-sort-pipe": "0.0.4",
     "ngx-translate-multi-http-loader": "^3.0.0",
     "ol": "^6.5.0",
     "rxjs": "~6.6.0",
