@@ -1,1 +1,15 @@
-<p>vertical-page-principal works!</p>
+<mat-card class="base-map-card">
+  <div mat-card-image id="ghostMap"></div>
+
+  <mat-card-actions *ngIf="donnePrincipalMap">
+    <mat-checkbox labelPosition="before" color="primary" [checked]="donnePrincipalMap.carte.check"
+      (change)="tooglePrincipalMapLayer()">
+      <span style="font-weight: bold;"> {{ donnePrincipalMap.carte.nom }} </span>
+    </mat-checkbox>
+  </mat-card-actions>
+</mat-card>
+
+<button *ngIf="donnePrincipalMap" mat-raised-button (click)="openGroupCarteSlide(donnePrincipalMap.groupCarte)"
+  class="white base-group-carte-btn" color="primary">
+  {{ donnePrincipalMap.groupCarte.nom }}
+</button>

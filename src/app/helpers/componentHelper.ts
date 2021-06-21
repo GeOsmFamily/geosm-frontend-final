@@ -1,11 +1,14 @@
+import { VerticalPageSecondaireComponent } from './../components/map/vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InfoModalComponent } from '../components/modal/info-modal/info-modal.component';
+import { GroupCarteInterface } from '../interfaces/carteInterface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ComponentHelper {
+  verticalPageSecondaire: VerticalPageSecondaireComponent | undefined;
   constructor(public dialog: MatDialog) {}
 
   openModalInfo(size: Array<string> | []) {
@@ -19,5 +22,16 @@ export class ComponentHelper {
       proprietes['height'] = size[1];
     }
     this.dialog.open(InfoModalComponent, proprietes);
+  }
+
+  openGroupCarteSlide(groupCarte: GroupCarteInterface) {
+    this.verticalPageSecondaire?.setGroupCarte(groupCarte);
+    this.verticalPageSecondaire?.open();
+  }
+
+  setComponent(component: string, comp: any) {
+    if (component == 'VerticalPageSecondaireComponent') {
+      this.verticalPageSecondaire = comp;
+    }
   }
 }
