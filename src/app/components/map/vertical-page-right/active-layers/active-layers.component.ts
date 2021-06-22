@@ -1,3 +1,5 @@
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
+import { ShareServiceService } from './../../../../services/share/share-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageServiceService } from './../../../../services/storage/storage-service.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -26,7 +28,9 @@ export class ActiveLayersComponent implements OnInit {
 
   constructor(
     public storageService: StorageServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public shareService: ShareServiceService,
+    public componentHelper: ComponentHelper
   ) {}
 
   ngOnInit(): void {
@@ -182,13 +186,13 @@ export class ActiveLayersComponent implements OnInit {
   }
 
   shareLayer(layer: LayersInMap) {
-    /* var params = this.ShareServiceService.shareLayer(
-      layer.properties['type'],
-      layer.properties['couche_id'],
-      layer.properties['group_id']
+    var params = this.shareService.shareLayer(
+      layer.properties!['type'],
+      layer.properties!['couche_id'],
+      layer.properties!['group_id']
     );
-    var url_share = environment.url_frontend + '/map?' + params;
-    this.manageCompHelper.openSocialShare(url_share, 7);*/
+    var url_share = environment.url_frontend + '?' + params;
+    this.componentHelper.openSocialShare(url_share, 7);
   }
 
   removeLayer(layer: LayersInMap) {
@@ -232,20 +236,20 @@ export class ActiveLayersComponent implements OnInit {
   }
 
   shareAllLayersInToc() {
-    /*  var pteToGetParams = [];
+    var pteToGetParams = Array();
     for (let index = 0; index < this.layersInToc.length; index++) {
       const layer = this.layersInToc[index];
-      if (layer.tocCapabilities.share) {
+      if (layer.activeLayers.share) {
         pteToGetParams.push({
-          typeLayer: layer.properties['type'],
-          id_layer: layer.properties['couche_id'],
-          group_id: layer.properties['group_id'],
+          typeLayer: layer.properties!['type'],
+          id_layer: layer.properties!['couche_id'],
+          group_id: layer.properties!['group_id'],
         });
       }
     }
-    var params = this.ShareServiceService.shareLayers(pteToGetParams);
-    var url_share = environment.url_frontend + '/map?' + params;
-    this.manageCompHelper.openSocialShare(url_share, 7);*/
+    var params = this.shareService.shareLayers(pteToGetParams);
+    var url_share = environment.url_frontend + '?' + params;
+    this.componentHelper.openSocialShare(url_share, 7);
   }
 
   clearMap() {

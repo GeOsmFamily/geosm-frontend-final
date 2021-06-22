@@ -1,3 +1,4 @@
+import { ShareServiceService } from './../../services/share/share-service.service';
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { StorageServiceService } from './../../services/storage/storage-service.service';
@@ -19,6 +20,7 @@ import intersect from '@turf/intersect';
 import { toWgs84 } from '@turf/projection';
 import { MatDialog } from '@angular/material/dialog';
 import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
+import { ActivatedRoute } from '@angular/router';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -97,7 +99,9 @@ export class MapComponent implements OnInit {
     public storageService: StorageServiceService,
     notifierService: NotifierService,
     public dialog: MatDialog,
-    public componentHelper: ComponentHelper
+    public componentHelper: ComponentHelper,
+    public shareService: ShareServiceService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.notifier = notifierService;
   }
@@ -147,6 +151,8 @@ export class MapComponent implements OnInit {
             });
           }
         });
+
+        this.handleMapParamsUrl();
       }
     });
 
@@ -212,5 +218,19 @@ export class MapComponent implements OnInit {
       return this.layersInToc.length;
     }
     return undefined!;
+  }
+
+  handleMapParamsUrl() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      console.log(params);
+      if (params['layers']) {
+        var layers = params['layers'].split(';');
+        this.shareService.addLayersFromUrl(layers);
+      }
+      if (params['feature']) {
+        var parametersShared = params['feature'].split(';');
+        this.shareService.displayFeatureShared(parametersShared);
+      }
+    });
   }
 }

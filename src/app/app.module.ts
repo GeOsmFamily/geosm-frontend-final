@@ -38,9 +38,20 @@ import { ListeThematiqueComponent } from './components/map/vertical-page-left/ve
 import { CoucheThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/couche-thematique/couche-thematique.component';
 import { MetadataModalComponent } from './components/modal/metadata-modal/metadata-modal.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { DescriptiveSheetModalComponent } from './components/modal/descriptive-sheet-modal/descriptive-sheet-modal.component';
+import { SocialShareComponent } from './components/social-share/social-share.component';
+
+import { ShareButtonsConfig } from 'ngx-sharebuttons';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+
+const customConfig: ShareButtonsConfig = {
+  include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
+  exclude: ['tumblr', 'stumble', 'vk'],
+  theme: 'circles-dark',
+  gaTracking: true,
+  twitterAccount: 'twitterUsername',
+};
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -72,6 +83,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CoucheThematiqueComponent,
     MetadataModalComponent,
     DescriptiveSheetModalComponent,
+    SocialShareComponent,
   ],
   imports: [
     NgpSortModule,
@@ -81,8 +93,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HttpClientModule,
     MaterialModule,
     FormsModule,
+    ShareButtonsModule.withConfig(customConfig),
     FlexLayoutModule,
-    ShareButtonsModule,
     ShareIconsModule,
     ReactiveFormsModule,
     NotifierModule.withConfig({
@@ -115,6 +127,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ShareServiceService,
   ],
   bootstrap: [AppComponent],
+  entryComponents: [MetadataModalComponent],
 })
 export class AppModule {
   constructor(injector: Injector) {
