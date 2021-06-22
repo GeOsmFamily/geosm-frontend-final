@@ -49,6 +49,7 @@ export class VerticalPageSecondaireComponent {
 
   clearAllGroup() {
     this.groupCarte = undefined;
+    this.groupThematique = undefined;
     this.activeGroup = undefined;
   }
 
