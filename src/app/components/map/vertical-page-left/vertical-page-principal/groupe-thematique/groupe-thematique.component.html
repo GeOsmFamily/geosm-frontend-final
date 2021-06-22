@@ -1,4 +1,5 @@
-<div class="border_red menu-thematiques-child text-center" [ngClass]="{ primaryColorBG: !groupThematique!.color }"
+<div [matBadge]="length " matBadgePosition="after" matBadgeColor="warn"
+  class="border_red menu-thematiques-child text-center" [ngClass]="{ primaryColorBG: !groupThematique!.color }"
   [ngStyle]="{ 'background-color': groupThematique!.color }" [matTooltip]="groupThematique!.nom">
 
 
