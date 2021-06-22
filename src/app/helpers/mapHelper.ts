@@ -1,3 +1,4 @@
+import { ActiveLayersInterface } from './../interfaces/activeLayersInterface';
 import { ApiServiceService } from './../services/api/api-service.service';
 import { Injectable } from '@angular/core';
 import {
@@ -33,6 +34,7 @@ import { GeosmLayer } from '../interfaces/geosmLayersInterface';
 import { delayWhen, retryWhen, take, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { timer } from 'rxjs/internal/observable/timer';
+import { LayersInMap } from '../interfaces/layersInMapInterface';
 
 const typeLayer = [
   'geosmCatalogue',
@@ -620,5 +622,80 @@ export class MapHelper {
       }
     }
     return layer_to_remove;
+  }
+
+  getAllLayersInToc(): Array<LayersInMap> {
+    var reponseLayers: Array<LayersInMap> = [];
+    var allLayers = this.map?.getLayers().getArray();
+
+    for (let index = 0; index < allLayers!.length; index++) {
+      const layer = allLayers![index];
+      if (layer.get('inToc')) {
+        reponseLayers.push(this.constructAlyerInMap(layer));
+      }
+    }
+
+    return reponseLayers;
+  }
+
+  constructAlyerInMap(layer: any): LayersInMap {
+    var data = null;
+    var activeLayers: ActiveLayersInterface = {} as ActiveLayersInterface;
+    if (layer.get('tocCapabilities')) {
+      activeLayers.opacity =
+        layer.get('tocCapabilities')['opacity'] != undefined
+          ? layer.get('tocCapabilities')['opacity']
+          : true;
+      activeLayers.share =
+        layer.get('tocCapabilities')['share'] != undefined
+          ? layer.get('tocCapabilities')['share']
+          : true;
+      activeLayers.metadata =
+        layer.get('tocCapabilities')['metadata'] != undefined
+          ? layer.get('tocCapabilities')['metadata']
+          : true;
+    } else {
+      activeLayers.opacity = true;
+      activeLayers.share = true;
+      activeLayers.metadata = true;
+    }
+
+    return {
+      activeLayers: activeLayers,
+      legendCapabilities: layer.get('legendCapabilities'),
+      nom: layer.get('nom'),
+      type_layer: layer.get('type_layer'),
+      properties: layer.get('properties'),
+      image: layer.get('iconImagette'),
+      data: data,
+      zIndex: layer.getZIndex(),
+      visible: layer.getVisible(),
+      layer: layer,
+      descriptionSheetCapabilities: layer.get('descriptionSheetCapabilities'),
+    };
+  }
+
+  editZindexOfLayer(layer: any, zIndex: number) {
+    for (let index = 0; index < this.getAllLayersInToc().length; index++) {
+      const layerInmap = this.getAllLayersInToc()[index].layer;
+
+      console.log(layer.getZIndex(), zIndex);
+      if (layer.getZIndex() < zIndex) {
+        // if the layer is going up
+        if (layerInmap.getZIndex() <= zIndex) {
+          this.setZindexToLayer(layerInmap, layerInmap.getZIndex() - 1);
+        } else if (layerInmap.getZIndex() > zIndex) {
+          this.setZindexToLayer(layerInmap, layerInmap.getZIndex() + 1);
+        }
+      } else if (layer.getZIndex() > zIndex) {
+        // if the layer is going down
+        if (layerInmap.getZIndex() >= zIndex) {
+          this.setZindexToLayer(layerInmap, layerInmap.getZIndex() + 1);
+        } else if (layerInmap.getZIndex() < zIndex) {
+          this.setZindexToLayer(layerInmap, layerInmap.getZIndex() - 1);
+        }
+      }
+    }
+    this.setZindexToLayer(layer, zIndex);
   }
 }
