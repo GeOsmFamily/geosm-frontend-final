@@ -11,7 +11,7 @@
       {{activeGroup.nom}}</h5>
 
   </div>
-  <app-liste-thematique class="scroll" *ngIf="groupThematique" [groupThematique]="groupThematique">
+  <app-liste-thematique class="scroll" *ngIf="groupThematique!" [groupThematique]="groupThematique">
   </app-liste-thematique>
-  <app-groupe-carte class="scroll" *ngIf="groupCarte" [groupCarte]="groupCarte"></app-groupe-carte>
+  <app-groupe-carte class="scroll" *ngIf="groupCarte!" [groupCarte]="groupCarte"></app-groupe-carte>
 </ng-container>
