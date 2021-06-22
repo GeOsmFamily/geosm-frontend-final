@@ -9,13 +9,15 @@ import LayerGroup from 'ol/layer/Group';
 import { MapHelper } from './mapHelper';
 import { DescriptiveSheet } from '../interfaces/DescriptiveSheet';
 import { DescriptiveSheetModalComponent } from '../components/modal/descriptive-sheet-modal/descriptive-sheet-modal.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SocialShareComponent } from '../components/social-share/social-share.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ComponentHelper {
   verticalPageSecondaire: VerticalPageSecondaireComponent | undefined;
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 
   openModalInfo(size: Array<string> | []) {
     var proprietes = {
@@ -128,6 +130,13 @@ export class ComponentHelper {
 
     modal.afterClosed().subscribe(async (result: any) => {
       callBack(result);
+    });
+  }
+
+  openSocialShare(url: string, durationInSeconds: number = 5) {
+    this._snackBar.openFromComponent(SocialShareComponent, {
+      duration: durationInSeconds * 1000,
+      data: { url: url },
     });
   }
 }
