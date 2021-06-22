@@ -698,4 +698,23 @@ export class MapHelper {
     }
     this.setZindexToLayer(layer, zIndex);
   }
+
+  getLayerQuerryBleInLayerGroup(layer: LayerGroup): any {
+    if (layer instanceof LayerGroup) {
+      for (
+        let index = 0;
+        index < layer.getLayers().getArray().length;
+        index++
+      ) {
+        const element = layer.getLayers().getArray()[index];
+        if (element instanceof TileLayer) {
+          return element;
+        } else if (element instanceof VectorLayer) {
+          return element;
+        }
+      }
+    } else {
+      return layer;
+    }
+  }
 }

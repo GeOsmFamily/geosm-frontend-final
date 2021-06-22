@@ -1,3 +1,4 @@
+import { ShareServiceService } from './services/share/share-service.service';
 import { GeosmLayersService } from './services/geosm/geosm-layers.service';
 import { ApiServiceService } from './services/api/api-service.service';
 import { StorageServiceService } from './services/storage/storage-service.service';
@@ -37,6 +38,9 @@ import { ListeThematiqueComponent } from './components/map/vertical-page-left/ve
 import { CoucheThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/couche-thematique/couche-thematique.component';
 import { MetadataModalComponent } from './components/modal/metadata-modal/metadata-modal.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { DescriptiveSheetModalComponent } from './components/modal/descriptive-sheet-modal/descriptive-sheet-modal.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -67,6 +71,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ListeThematiqueComponent,
     CoucheThematiqueComponent,
     MetadataModalComponent,
+    DescriptiveSheetModalComponent,
   ],
   imports: [
     NgpSortModule,
@@ -77,6 +82,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     MaterialModule,
     FormsModule,
     FlexLayoutModule,
+    ShareButtonsModule,
+    ShareIconsModule,
     ReactiveFormsModule,
     NotifierModule.withConfig({
       position: {
@@ -101,7 +108,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     FontAwesomeModule,
   ],
-  providers: [StorageServiceService, ApiServiceService, GeosmLayersService],
+  providers: [
+    StorageServiceService,
+    ApiServiceService,
+    GeosmLayersService,
+    ShareServiceService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
