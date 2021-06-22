@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   global_logo: undefined,
   url_prefix: 'http://admincameroun.geo.sm/',
+  url_frontend: 'http://localhost:4200',
   primaryColor: '#023f5f',
   nom: 'CAMEROUN',
   countrycode: 'cm',

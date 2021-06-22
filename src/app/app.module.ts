@@ -1,3 +1,4 @@
+import { ShareServiceService } from './services/share/share-service.service';
 import { GeosmLayersService } from './services/geosm/geosm-layers.service';
 import { ApiServiceService } from './services/api/api-service.service';
 import { StorageServiceService } from './services/storage/storage-service.service';
@@ -35,6 +36,22 @@ import { BibliothequeCarteComponent } from './components/map/vertical-page-left/
 import { GroupeThematiqueComponent } from './components/map/vertical-page-left/vertical-page-principal/groupe-thematique/groupe-thematique.component';
 import { ListeThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/liste-thematique.component';
 import { CoucheThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/couche-thematique/couche-thematique.component';
+import { MetadataModalComponent } from './components/modal/metadata-modal/metadata-modal.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { DescriptiveSheetModalComponent } from './components/modal/descriptive-sheet-modal/descriptive-sheet-modal.component';
+import { SocialShareComponent } from './components/social-share/social-share.component';
+
+import { ShareButtonsConfig } from 'ngx-sharebuttons';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+
+const customConfig: ShareButtonsConfig = {
+  include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
+  exclude: ['tumblr', 'stumble', 'vk'],
+  theme: 'circles-dark',
+  gaTracking: true,
+  twitterAccount: 'twitterUsername',
+};
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -64,6 +81,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     GroupeThematiqueComponent,
     ListeThematiqueComponent,
     CoucheThematiqueComponent,
+    MetadataModalComponent,
+    DescriptiveSheetModalComponent,
+    SocialShareComponent,
   ],
   imports: [
     NgpSortModule,
@@ -73,6 +93,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HttpClientModule,
     MaterialModule,
     FormsModule,
+    ShareButtonsModule.withConfig(customConfig),
+    FlexLayoutModule,
+    ShareIconsModule,
     ReactiveFormsModule,
     NotifierModule.withConfig({
       position: {
@@ -97,8 +120,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     FontAwesomeModule,
   ],
-  providers: [StorageServiceService, ApiServiceService, GeosmLayersService],
+  providers: [
+    StorageServiceService,
+    ApiServiceService,
+    GeosmLayersService,
+    ShareServiceService,
+  ],
   bootstrap: [AppComponent],
+  entryComponents: [MetadataModalComponent],
 })
 export class AppModule {
   constructor(injector: Injector) {

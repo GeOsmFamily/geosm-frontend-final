@@ -1,7 +1,7 @@
 import { ActiveLayersInterface } from './activeLayersInterface';
 import { LegendCapabilitiesInterface } from './legendInterface';
 
-export interface layersInMap {
+export interface LayersInMap {
   nom: string;
   type_layer:
     | 'geosmCatalogue'

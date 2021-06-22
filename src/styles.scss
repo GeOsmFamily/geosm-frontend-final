@@ -6,6 +6,7 @@
 @import './app/styles/ol.scss';
 @include mat-core();
 @import './assets/font/avenir-next-rounded-pro-cufonfonts-webfont/style.scss';
+@import '~ngx-sharebuttons/themes/circles/circles-dark-theme';
 
 html,
 body {

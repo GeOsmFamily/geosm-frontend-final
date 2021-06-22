@@ -1,3 +1,4 @@
+import { ShareServiceService } from './../../services/share/share-service.service';
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { StorageServiceService } from './../../services/storage/storage-service.service';
@@ -18,6 +19,8 @@ import bboxPolygon from '@turf/bbox-polygon';
 import intersect from '@turf/intersect';
 import { toWgs84 } from '@turf/projection';
 import { MatDialog } from '@angular/material/dialog';
+import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
+import { ActivatedRoute } from '@angular/router';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -52,7 +55,7 @@ export class MapComponent implements OnInit {
   @ViewChild(VerticalPageSecondaireComponent, { static: true })
   verticalPagePrincipalComponent: VerticalPageSecondaireComponent | undefined;
 
-  layersInToc = [];
+  layersInToc: Array<LayersInMap> = [];
 
   ritghtMenus: Array<RightMenuInterface> = [
     {
@@ -96,7 +99,9 @@ export class MapComponent implements OnInit {
     public storageService: StorageServiceService,
     notifierService: NotifierService,
     public dialog: MatDialog,
-    public componentHelper: ComponentHelper
+    public componentHelper: ComponentHelper,
+    public shareService: ShareServiceService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.notifier = notifierService;
   }
@@ -146,11 +151,18 @@ export class MapComponent implements OnInit {
             });
           }
         });
-        /* map.addLayer(
-          MapHelper.constructShadowLayer(
-            this.storageService.getConfigProjet().roiGeojson
-          )
-        );*/
+
+        this.handleMapParamsUrl();
+      }
+    });
+
+    map.getLayers().on('propertychange', (ObjectEvent) => {
+      let mapHelper = new MapHelper();
+
+      this.layersInToc = mapHelper.getAllLayersInToc();
+
+      if (this.layersInToc.length == 2 && !this.getRightMenu('toc')!.active) {
+        this.openRightMenu('toc');
       }
     });
   }
@@ -199,5 +211,26 @@ export class MapComponent implements OnInit {
 
   close_setCoordOverlay() {
     $('#setCoordOverlay').hide();
+  }
+
+  getBadgeLayers(name: string): number {
+    if (name == 'toc') {
+      return this.layersInToc.length;
+    }
+    return undefined!;
+  }
+
+  handleMapParamsUrl() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      console.log(params);
+      if (params['layers']) {
+        var layers = params['layers'].split(';');
+        this.shareService.addLayersFromUrl(layers);
+      }
+      if (params['feature']) {
+        var parametersShared = params['feature'].split(';');
+        this.shareService.displayFeatureShared(parametersShared);
+      }
+    });
   }
 }
