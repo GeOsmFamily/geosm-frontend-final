@@ -10,6 +10,7 @@ import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
 import { ResponseOfSerachLimitInterface } from 'src/app/interfaces/responseSearchLimitInterface';
 import { ApiServiceService } from '../api/api-service.service';
 import { GeoJSON } from 'src/app/modules/ol';
+import { CoucheInterface } from 'src/app/interfaces/coucheInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -234,5 +235,87 @@ export class StorageServiceService {
       }
     }
     return groupThematiqueResponse!;
+  }
+
+  //@ts-ignore
+  getGroupThematiqueById(id_thematique: number): GroupThematiqueInterface {
+    for (
+      let index = 0;
+      index < this.groupThematiques.getValue().length;
+      index++
+    ) {
+      const thematique = this.groupThematiques.getValue()[index];
+      if (thematique.id_thematique === id_thematique) {
+        return thematique;
+      }
+    }
+  }
+
+  //@ts-ignore
+  getCouche(id_Groupthematique: number, id_couche: number): CoucheInterface {
+    var groupThematique = this.getGroupThematiqueById(id_Groupthematique);
+    if (!groupThematique) {
+      return undefined!;
+    }
+
+    if (groupThematique.sous_thematiques) {
+      for (
+        let index = 0;
+        index < groupThematique.sous_thematiques.length;
+        index++
+      ) {
+        const sous_thematique = groupThematique.sous_thematiques[index];
+        for (let jndex = 0; jndex < sous_thematique.couches.length; jndex++) {
+          const couche = sous_thematique.couches[jndex];
+          if (couche.key_couche == id_couche) {
+            return couche;
+          }
+        }
+      }
+    } else {
+      for (let jndex = 0; jndex < groupThematique?.couches!.length; jndex++) {
+        const couche = groupThematique?.couches![jndex];
+        if (couche.key_couche == id_couche) {
+          return couche;
+        }
+      }
+    }
+  }
+
+  //@ts-ignore
+  getGroupcarteById(id_carte: number): GroupCarteInterface {
+    for (let index = 0; index < this.groupCartes.getValue().length; index++) {
+      const carte = this.groupCartes.getValue()[index];
+      if (carte.id_cartes == id_carte) {
+        return carte;
+      }
+    }
+  }
+
+  //@ts-ignore
+  getCarte(id_groupCarte: number, id_carte: number): CarteInterface {
+    var groupCarte = this.getGroupcarteById(id_groupCarte);
+    if (!groupCarte) {
+      return undefined!;
+    }
+
+    if (groupCarte.sous_cartes) {
+      for (let sIndex = 0; sIndex < groupCarte.sous_cartes.length; sIndex++) {
+        const sous_groupe = groupCarte.sous_cartes[sIndex];
+        for (let cIndex = 0; cIndex < sous_groupe.couches.length; cIndex++) {
+          const carte = sous_groupe.couches[cIndex];
+          if (carte.key_couche == id_carte) {
+            return carte;
+          }
+        }
+      }
+    } else {
+      for (let cIndex = 0; cIndex < groupCarte?.couches!.length; cIndex++) {
+        const carte = groupCarte?.couches![cIndex];
+        if (carte.key_couche == id_carte) {
+          return carte;
+        }
+      }
+    }
   }
 }

@@ -18,6 +18,7 @@ import bboxPolygon from '@turf/bbox-polygon';
 import intersect from '@turf/intersect';
 import { toWgs84 } from '@turf/projection';
 import { MatDialog } from '@angular/material/dialog';
+import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -52,7 +53,7 @@ export class MapComponent implements OnInit {
   @ViewChild(VerticalPageSecondaireComponent, { static: true })
   verticalPagePrincipalComponent: VerticalPageSecondaireComponent | undefined;
 
-  layersInToc = [];
+  layersInToc: Array<LayersInMap> = [];
 
   ritghtMenus: Array<RightMenuInterface> = [
     {
@@ -146,11 +147,16 @@ export class MapComponent implements OnInit {
             });
           }
         });
-        /* map.addLayer(
-          MapHelper.constructShadowLayer(
-            this.storageService.getConfigProjet().roiGeojson
-          )
-        );*/
+      }
+    });
+
+    map.getLayers().on('propertychange', (ObjectEvent) => {
+      let mapHelper = new MapHelper();
+
+      this.layersInToc = mapHelper.getAllLayersInToc();
+
+      if (this.layersInToc.length == 2 && !this.getRightMenu('toc')!.active) {
+        this.openRightMenu('toc');
       }
     });
   }
@@ -199,5 +205,12 @@ export class MapComponent implements OnInit {
 
   close_setCoordOverlay() {
     $('#setCoordOverlay').hide();
+  }
+
+  getBadgeLayers(name: string): number {
+    if (name == 'toc') {
+      return this.layersInToc.length;
+    }
+    return undefined!;
   }
 }

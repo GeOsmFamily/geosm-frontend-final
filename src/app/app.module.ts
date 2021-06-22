@@ -35,6 +35,8 @@ import { BibliothequeCarteComponent } from './components/map/vertical-page-left/
 import { GroupeThematiqueComponent } from './components/map/vertical-page-left/vertical-page-principal/groupe-thematique/groupe-thematique.component';
 import { ListeThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/liste-thematique.component';
 import { CoucheThematiqueComponent } from './components/map/vertical-page-left/vertical-page-secondaire/liste-thematique/liste-thematique/couche-thematique/couche-thematique.component';
+import { MetadataModalComponent } from './components/modal/metadata-modal/metadata-modal.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -64,6 +66,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     GroupeThematiqueComponent,
     ListeThematiqueComponent,
     CoucheThematiqueComponent,
+    MetadataModalComponent,
   ],
   imports: [
     NgpSortModule,
@@ -73,6 +76,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HttpClientModule,
     MaterialModule,
     FormsModule,
+    FlexLayoutModule,
     ReactiveFormsModule,
     NotifierModule.withConfig({
       position: {
