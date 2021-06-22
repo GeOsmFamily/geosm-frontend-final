@@ -1,0 +1,14 @@
+<div [matBadge]="length " matBadgePosition="after" matBadgeColor="warn"
+  class="border_red menu-thematiques-child text-center" [ngClass]="{ primaryColorBG: !groupThematique!.color }"
+  [ngStyle]="{ 'background-color': groupThematique!.color }" [matTooltip]="groupThematique!.nom">
+
+
+  <img src="{{ url_prefix + groupThematique!.img }}" class="img-responsive menu-thematiques-child-logo" alt="" />
+</div>
+<div class="text-center menu-thematiques-child-title">
+  <mat-list-item>
+    <p class="black">
+      {{ groupThematique!.nom }}
+    </p>
+  </mat-list-item>
+</div>

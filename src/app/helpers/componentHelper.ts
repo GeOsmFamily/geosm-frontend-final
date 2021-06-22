@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InfoModalComponent } from '../components/modal/info-modal/info-modal.component';
 import { GroupCarteInterface } from '../interfaces/carteInterface';
+import { GroupThematiqueInterface } from '../interfaces/groupeInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,11 @@ export class ComponentHelper {
 
   openGroupCarteSlide(groupCarte: GroupCarteInterface) {
     this.verticalPageSecondaire?.setGroupCarte(groupCarte);
+    this.verticalPageSecondaire?.open();
+  }
+
+  openGroupThematiqueSlide(groupThematique: GroupThematiqueInterface) {
+    this.verticalPageSecondaire?.setGroupThematique(groupThematique);
     this.verticalPageSecondaire?.open();
   }
 

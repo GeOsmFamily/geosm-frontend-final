@@ -84,7 +84,7 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   globalView() {
-    new MapHelper().fit_view(this.storageService.getExtentOfProject(true), 13);
+    new MapHelper().fit_view(this.storageService.getExtentOfProject(true), 6);
   }
 
   /**

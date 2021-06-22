@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { GroupCarteInterface } from 'src/app/interfaces/carteInterface';
-import { GroupInterface } from 'src/app/interfaces/groupeInterface';
+import {
+  GroupInterface,
+  GroupThematiqueInterface,
+} from 'src/app/interfaces/groupeInterface';
 import { environment } from 'src/environments/environment';
 import * as $ from 'jquery';
 
@@ -11,6 +14,8 @@ import * as $ from 'jquery';
 })
 export class VerticalPageSecondaireComponent {
   groupCarte: GroupCarteInterface | undefined;
+
+  groupThematique: GroupThematiqueInterface | undefined;
 
   activeGroup: GroupInterface | undefined;
 
@@ -29,6 +34,16 @@ export class VerticalPageSecondaireComponent {
       nom: this.groupCarte.nom,
       img: img,
       color: environment.primaryColor,
+    };
+  }
+
+  setGroupThematique(groupThematique: GroupThematiqueInterface) {
+    this.clearAllGroup();
+    this.groupThematique = groupThematique;
+    this.activeGroup = {
+      nom: this.groupThematique.nom,
+      img: environment.url_prefix + this.groupThematique.img,
+      color: this.groupThematique.color,
     };
   }
 
