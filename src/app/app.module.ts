@@ -1,3 +1,5 @@
+import { PrintService } from './services/print/print.service';
+import { PrintComponent } from './components/map/vertical-page-right/map-tools/print/print.component';
 import { MeasureComponent } from './components/map/vertical-page-right/map-tools/measure/measure.component';
 import { DrawComponent } from './components/map/vertical-page-right/map-tools/draw/draw.component';
 import { ShareServiceService } from './services/share/share-service.service';
@@ -89,6 +91,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SocialShareComponent,
     DrawComponent,
     MeasureComponent,
+    PrintComponent,
   ],
   imports: [
     NgpSortModule,
@@ -131,6 +134,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ApiServiceService,
     GeosmLayersService,
     ShareServiceService,
+    PrintService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [MetadataModalComponent],
