@@ -1,1 +1,33 @@
-<p>map-tools works!</p>
+<mat-accordion class="accordion-map-tools">
+  <mat-expansion-panel class="no_shadow" [expanded]="true"
+    style="margin-bottom: 15px; border-radius: 4px;position: relative;" (closed)="expansionClose('draw')">
+
+    <div class="accordion-draw-loading">
+      <div style="position:absolute;top:calc(50% - 30px);left:30%">
+        <div class="lds-ripple" style="width: 100px;
+    height: 100px;">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <mat-expansion-panel-header expandedHeight="40px" collapsedHeight="40px" style="padding-left: 15px;"
+      class="primary_transparent_bg">
+      <mat-panel-title>
+        <svg x="0px" y="0px" viewBox="0 0 21.5 20.4" style="width: 17.5px; height: 20.4px; margin-right: 10px;">
+          <path class="primaryColorFill" d="M8.8,20.2c2-0.8,1.6-3,0.6-4.4c-1.1-1.3-2.3-2.5-3.8-3.3c-1-0.6-1.9-1.4-2.6-2.3
+C2.6,9.8,1.9,9.1,2.6,9S4.4,9.5,5,9.7c1,0.4,2,0.9,3,1.5l1.1-1.9C7.3,8.1,5.2,7.2,3,6.8C1.8,6.7,0.5,6.9,0.1,8.2
+c-0.2,1.1,0.1,2.3,0.9,3.1c1.5,2.1,4,3.1,5.8,4.9c0.4,0.4,0.8,0.8,1.1,1.3C8.1,18,8,18.1,7.5,18.1c-1.4,0-3.2-1.1-4.3-1.8L2,18.2
+C3.8,19.2,6.6,20.9,8.8,20.2 M21.3,2.5c0.2-0.2,0.2-0.6,0-0.9c0,0,0,0,0,0l-1.5-1.5c-0.2-0.2-0.6-0.2-0.9,0l-1.1,1.2l2.4,2.4
+M10.2,9v2.4h2.4l7-7L17.1,2L10.2,9z" />
+        </svg>
+
+        <span class="primaryColor">
+          {{ "right_menu.tools.draw.title" | translate }}
+        </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-draw [map]="map"></app-draw>
+  </mat-expansion-panel>
+</mat-accordion>
