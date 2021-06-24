@@ -51,4 +51,22 @@ c0.5,0,0.8-0.4,0.9-0.8c0,0,0,0,0,0V0.9C24.4,0.4,24.1,0,23.6,0C23.6,0,23.6,0,23.6
     </mat-expansion-panel-header>
     <app-measure [map]="map"></app-measure>
   </mat-expansion-panel>
+
+  <mat-expansion-panel class="back_white no_shadow" style="margin-bottom: 15px; border-radius: 4px;position: relative;">
+
+    <mat-expansion-panel-header expandedHeight="40px" collapsedHeight="40px" style="padding-left: 15px;"
+      class="primary_transparent_bg">
+      <mat-panel-title>
+        <svg style="width: 17.5px;height: 20.4px;margin-right: 10px;" x="0px" y="0px" viewBox="0 0 19.4 17.5">
+
+          <path class="primaryColorFill" d="M16.5,4.9H2.9C1.3,4.9,0,6.2,0,7.8c0,0,0,0,0,0v5.8h3.9v3.9h11.7v-3.9h3.9V7.8
+C19.4,6.2,18.1,4.9,16.5,4.9C16.5,4.9,16.5,4.9,16.5,4.9z M13.6,15.5H5.8v-4.9h7.8V15.5z M16.5,8.7c-0.5,0-1-0.4-1-1
+c0-0.5,0.4-1,1-1c0.5,0,1,0.4,1,1C17.5,8.3,17,8.7,16.5,8.7L16.5,8.7z M15.5,0H3.9v3.9h11.7V0z" />
+        </svg>
+
+        <span class="primaryColor"> {{ 'right_menu.tools.print.title' | translate }} </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-print [map]="map"></app-print>
+  </mat-expansion-panel>
 </mat-accordion>
