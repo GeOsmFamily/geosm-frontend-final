@@ -1,3 +1,4 @@
+import { DrawComponent } from './components/map/vertical-page-right/map-tools/draw/draw.component';
 import { ShareServiceService } from './services/share/share-service.service';
 import { GeosmLayersService } from './services/geosm/geosm-layers.service';
 import { ApiServiceService } from './services/api/api-service.service';
@@ -44,6 +45,7 @@ import { SocialShareComponent } from './components/social-share/social-share.com
 
 import { ShareButtonsConfig } from 'ngx-sharebuttons';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -84,6 +86,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     MetadataModalComponent,
     DescriptiveSheetModalComponent,
     SocialShareComponent,
+    DrawComponent,
   ],
   imports: [
     NgpSortModule,
@@ -97,6 +100,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FlexLayoutModule,
     ShareIconsModule,
     ReactiveFormsModule,
+    ColorPickerModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {
