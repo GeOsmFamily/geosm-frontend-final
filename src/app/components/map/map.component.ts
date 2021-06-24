@@ -2,8 +2,8 @@ import { ShareServiceService } from './../../services/share/share-service.servic
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { StorageServiceService } from './../../services/storage/storage-service.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenavContainer } from '@angular/material/sidenav';
+import { Component, OnInit, QueryList, ViewChild } from '@angular/core';
+import { MatDrawer, MatSidenavContainer } from '@angular/material/sidenav';
 import * as $ from 'jquery';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { RightMenuInterface } from 'src/app/interfaces/rightMenuInterface';
@@ -106,6 +106,7 @@ export class MapComponent implements OnInit {
     this.notifier = notifierService;
   }
 
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit() {
     this.componentHelper.setComponent(
       'VerticalPageSecondaireComponent',
@@ -153,6 +154,13 @@ export class MapComponent implements OnInit {
         });
 
         this.handleMapParamsUrl();
+        map.updateSize();
+        var drawers: QueryList<MatDrawer> = this.sidenavContainer?._drawers!;
+        drawers.forEach((drawer) => {
+          drawer.openedChange.subscribe(() => {
+            map.updateSize();
+          });
+        });
       }
     });
 
