@@ -717,4 +717,16 @@ export class MapHelper {
       return layer;
     }
   }
+
+  getLayerGroupByNom(groupName: string): LayerGroup {
+    var groupLayer;
+    this.map?.getLayers().forEach((group) => {
+      if (group instanceof LayerGroup) {
+        if (group.get('nom') == groupName) {
+          groupLayer = group;
+        }
+      }
+    });
+    return groupLayer;
+  }
 }

@@ -281,13 +281,7 @@ export class DrawComponent implements OnInit {
     var keyEventStart = this.draw.on('drawstart', (DrawEvent: any) => {
       this._ngZone.run(() => {
         this.hideOverlay();
-        var mapHelper = new MapHelper(this.map);
-        var zIndex = mapHelper.getMaxZindexInMap();
-        console.log(zIndex);
-        console.log(this.vector.getZIndex());
-        if (this.vector.getZIndex() <= zIndex) {
-          this.vector.setZIndex(zIndex + 1);
-        }
+        this.vector.setZIndex(1000);
       });
     });
 

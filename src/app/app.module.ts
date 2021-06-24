@@ -1,3 +1,4 @@
+import { MeasureComponent } from './components/map/vertical-page-right/map-tools/measure/measure.component';
 import { DrawComponent } from './components/map/vertical-page-right/map-tools/draw/draw.component';
 import { ShareServiceService } from './services/share/share-service.service';
 import { GeosmLayersService } from './services/geosm/geosm-layers.service';
@@ -87,6 +88,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DescriptiveSheetModalComponent,
     SocialShareComponent,
     DrawComponent,
+    MeasureComponent,
   ],
   imports: [
     NgpSortModule,
