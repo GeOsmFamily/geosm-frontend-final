@@ -1,3 +1,5 @@
+import { ListDownloadLayersComponent } from './components/map/vertical-page-right/download/ListDownloadLayers/ListDownloadLayers.component';
+import { ChartOverlayComponent } from './components/map/vertical-page-right/download/chartOverlay/chartOverlay.component';
 import { PrintService } from './services/print/print.service';
 import { PrintComponent } from './components/map/vertical-page-right/map-tools/print/print.component';
 import { MeasureComponent } from './components/map/vertical-page-right/map-tools/measure/measure.component';
@@ -92,6 +94,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DrawComponent,
     MeasureComponent,
     PrintComponent,
+    ChartOverlayComponent,
+    ListDownloadLayersComponent,
   ],
   imports: [
     NgpSortModule,
