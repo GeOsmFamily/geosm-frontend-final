@@ -40,7 +40,7 @@ const typeLayer = [
   'geosmCatalogue',
   'draw',
   'mesure',
-  'mappilary',
+  'mapillary',
   'exportData',
   'other',
   'routing',

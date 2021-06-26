@@ -49,6 +49,8 @@ export const map = new Map({
 export class MapComponent implements OnInit {
   private readonly notifier: NotifierService;
 
+  modeMapillary;
+
   @ViewChild(MatSidenavContainer, { static: true })
   sidenavContainer: MatSidenavContainer | undefined;
 

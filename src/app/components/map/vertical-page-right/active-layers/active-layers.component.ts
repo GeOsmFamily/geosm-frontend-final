@@ -23,6 +23,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class ActiveLayersComponent implements OnInit {
   @Input() map: Map | undefined;
 
+  @Input() modeMapillary;
+
   layersInToc: Array<LayersInMap> = [];
   layerChange: Observable<any> = new Observable();
 
@@ -266,6 +268,10 @@ export class ActiveLayersComponent implements OnInit {
         if (!carte.principal) {
           this.removeLayer(layer);
         }
+      } else if (layer.nom == 'Mapillary') {
+        console.log('t');
+        this.modeMapillary = !this.modeMapillary;
+        this.removeLayer(layer);
       } else {
         this.removeLayer(layer);
       }

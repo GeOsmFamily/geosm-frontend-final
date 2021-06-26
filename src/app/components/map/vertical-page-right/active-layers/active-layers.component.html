@@ -10,6 +10,13 @@
         </mat-chip>
       </mat-chip-list>
 
+      <mat-chip-list style="position: absolute;top: -10px;left: 5px;" *ngIf="layer.nom==='Mapillary'">
+        <mat-chip style="padding: 5px 5px;min-height: 20px;font-size: 11px;" class="white"
+          [ngStyle]="{'background': '#34ac6c'}">
+          {{layer.nom}}
+        </mat-chip>
+      </mat-chip-list>
+
       <div mat-card-image class="table-of-contents-card-img">
         <img [src]="layer.image" [alt]="layer.nom">
 
@@ -18,11 +25,12 @@
       <mat-card-content>
 
         <p>
-          <em class="fa fa-info-circle pointer primaryColor" *ngIf="layer.activeLayers.metadata"
+          <em class="fa fa-info-circle pointer primaryColor"
+            *ngIf="layer.activeLayers.metadata && layer.nom !=='Mapillary'"
             matTooltip="{{ 'couche_en_cours.information_couche' | translate }}"
             style="margin-right: 10px;font-size: 17px;" (click)="openMetadata(layer)"></em>
-          <em class="fa fa-share-alt pointer primaryColor" *ngIf="layer.activeLayers.share" (click)="shareLayer(layer)"
-            matTooltip="{{ 'couche_en_cours.partager_couche' | translate }}"
+          <em class="fa fa-share-alt pointer primaryColor" *ngIf="layer.activeLayers.share && layer.nom !=='Mapillary'"
+            (click)="shareLayer(layer)" matTooltip="{{ 'couche_en_cours.partager_couche' | translate }}"
             style="margin-right: 10px;font-size: 15px;"></em>
           <em class="fa fa-trash pointer " (click)="removeLayer(layer)"
             matTooltip="{{ 'couche_en_cours.supprimer_couche' | translate }}"
