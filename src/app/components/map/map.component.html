@@ -42,9 +42,23 @@
         </button>
       </div>
 
+      <div id="popup_mapillary" class="back_white popup">
+        <div class="popover top"
+          style="border-radius: 15px;display: block; top: -140px; left: -100px;text-align: center;padding: 6px;">
+          <div class="arrow " style="left: 57%;"></div>
+          <div class="popover-content" style="  padding: 0px;">
+            <div class="ol-unselectable">
+              <div>
+                <img src="" id="img_mappilary" style="  height: 120px;width: 160px;  border-radius: 6px;" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <app-vertical-toolbar [modeMapillary]="modeMapillary" [map]="getMap()" [dialog]="dialog"
+    <app-vertical-toolbar [zone]="zone" [modeMapillary]="modeMapillary" [map]="getMap()" [dialog]="dialog"
       [sidenavContainer]="sidenavContainer" class="sidenav-content-toolbar whiteBG">
     </app-vertical-toolbar>
 

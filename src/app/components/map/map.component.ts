@@ -2,7 +2,7 @@ import { ShareServiceService } from './../../services/share/share-service.servic
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { StorageServiceService } from './../../services/storage/storage-service.service';
-import { Component, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatDrawer, MatSidenavContainer } from '@angular/material/sidenav';
 import * as $ from 'jquery';
 import { MapHelper } from 'src/app/helpers/mapHelper';
@@ -13,6 +13,11 @@ import {
   View,
   Map,
   LayerGroup,
+  Overlay,
+  Style,
+  CircleStyle,
+  Fill,
+  Stroke,
 } from 'src/app/modules/ol';
 import { NotifierService } from 'angular-notifier';
 import bboxPolygon from '@turf/bbox-polygon';
@@ -21,6 +26,7 @@ import { toWgs84 } from '@turf/projection';
 import { MatDialog } from '@angular/material/dialog';
 import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
 import { ActivatedRoute } from '@angular/router';
+import { transform } from 'ol/proj';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -103,7 +109,8 @@ export class MapComponent implements OnInit {
     public dialog: MatDialog,
     public componentHelper: ComponentHelper,
     public shareService: ShareServiceService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public zone: NgZone
   ) {
     this.notifier = notifierService;
   }

@@ -57,10 +57,13 @@ export class VerticalToolbarComponent implements OnInit {
 
   responseMapillary;
 
+  previewPointMapillary;
+
+  @Input() zone: NgZone | undefined;
+
   constructor(
     public storageService: StorageServiceService,
-    notifierService: NotifierService,
-    public zone: NgZone
+    notifierService: NotifierService
   ) {
     this.environment = environment;
     this.notifier = notifierService;
@@ -96,6 +99,151 @@ export class VerticalToolbarComponent implements OnInit {
             this.indexHstoryMapPosition = 0;
           }
         });
+      }
+    });
+
+    var popup_lot = new Overlay({
+      element: document.getElementById('popup_lot')!,
+      stopEvent: true,
+    });
+    this.map?.addOverlay(popup_lot);
+
+    var popup_mapillary = new Overlay({
+      element: document.getElementById('popup_mapillary')!,
+      stopEvent: true,
+    });
+    this.map?.addOverlay(popup_mapillary);
+
+    var target = this.map?.getTarget();
+    var jTarget = typeof target === 'string' ? $('#' + target) : $(target);
+    var cursor_on_popup = false;
+    var popup_once_open = false;
+
+    $(this.map?.getViewport()).on('mousemove', (evt) => {
+      var pixel = this.map?.getEventPixel(evt.originalEvent);
+
+      this.map?.forEachLayerAtPixel(pixel!, (layer) => {
+        if (layer.get('type') != 'mapillary') {
+          var hit = this.map?.forEachFeatureAtPixel(
+            pixel!,
+            function (feature, layer) {
+              if (layer && layer.get('type') != 'mapillary') {
+                return true;
+              }
+            }
+          );
+
+          if (hit) {
+            jTarget.css('cursor', 'pointer');
+          } else {
+            jTarget.css('cursor', '');
+          }
+        }
+      });
+
+      var feature = this.map?.forEachFeatureAtPixel(
+        pixel!,
+        (feature, layer) => {
+          return feature;
+        }
+      );
+
+      var layer = this.map?.forEachFeatureAtPixel(pixel!, (feature, layer) => {
+        return layer;
+      });
+
+      if (layer && feature && layer.get('type') == 'querry') {
+        //
+      } else if (
+        layer &&
+        feature &&
+        layer.get('type') == 'mapillaryPoint' &&
+        feature.getProperties()['data']
+      ) {
+        var pte = feature.getProperties()['data'];
+        console.log(this.responseMapillary);
+        var point = {
+          img: this.responseMapillary['features'][pte.i]['properties'][
+            'coordinateProperties'
+          ].image_keys[pte.j],
+          cas: this.responseMapillary['features'][pte.i]['properties'][
+            'coordinateProperties'
+          ].cas[pte.j],
+        };
+
+        var stActive = new Style({
+          image: new CircleStyle({
+            radius: 9,
+            fill: new Fill({
+              color: 'rgba(53, 175, 109,0.7)',
+            }),
+          }),
+        });
+
+        var rotation = (Math.PI / 2 + Math.PI * point.cas) / -360;
+
+        feature['setStyle'](stActive);
+
+        this.map?.addOverlay(popup_mapillary);
+        var coordinate = Object.create(feature.getGeometry()!).getCoordinates();
+        popup_mapillary.setPosition(coordinate);
+
+        $('#img_mappilary').attr(
+          'src',
+          'https://d1cuyjsrcm0gby.cloudfront.net/' +
+            point.img +
+            '/thumb-320.jpg'
+        );
+
+        this.zone?.run(() => {
+          this.previewPointMapillary = feature;
+        });
+      } else {
+        if (popup_once_open) {
+          $('#popup_lot').on('mousemove', (evt) => {
+            //console.log(1)
+            cursor_on_popup = true;
+          });
+
+          $('#popup_lot').on('mouseleave', (evt) => {
+            //console.log('out')
+            cursor_on_popup = false;
+
+            $('#popup_infos_contain').text('');
+            this.map?.removeOverlay(popup_lot);
+            popup_once_open = false;
+          });
+          setTimeout(() => {
+            if (cursor_on_popup == false) {
+              $('#popup_infos_contain').text('');
+              this.map?.removeOverlay(popup_lot);
+              popup_once_open = false;
+            }
+          }, 200);
+        }
+
+        if (this.previewPointMapillary) {
+          var st = new Style({
+            image: new CircleStyle({
+              radius: 4,
+              fill: new Fill({
+                color: '#fff',
+              }),
+              stroke: new Stroke({
+                color: 'rgba(53, 175, 109,0.7)',
+                width: 3,
+              }),
+            }),
+            stroke: new Stroke({
+              color: 'rgba(53, 175, 109,0.7)',
+              width: 4,
+            }),
+          });
+          this.previewPointMapillary.setStyle(st);
+          this.previewPointMapillary = undefined;
+          this.map?.removeOverlay(popup_mapillary);
+          $('#img_mappilary').attr('src', '');
+        }
       }
     });
   }
@@ -447,7 +595,7 @@ export class VerticalToolbarComponent implements OnInit {
 
         this.map?.addLayer(vectorLayer);
 
-        this.zone.run(() => {
+        this.zone?.run(() => {
           this.responseMapillary = data;
         });
       });
