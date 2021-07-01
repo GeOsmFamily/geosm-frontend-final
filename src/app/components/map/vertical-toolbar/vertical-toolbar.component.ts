@@ -14,11 +14,13 @@ import {
   CircleStyle,
   Fill,
   VectorSource,
+  Text,
+  View,
 } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { ZoomModalComponent } from '../../modal/zoom-modal/zoom-modal.component';
-import { transform } from 'ol/proj';
+import { fromLonLat, transform } from 'ol/proj';
 import bboxPolygon from '@turf/bbox-polygon';
 import booleanContains from '@turf/boolean-contains';
 import { point } from '@turf/helpers';
@@ -28,6 +30,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
 import { createXYZ } from 'ol/tilegrid';
+import { Viewer } from 'mapillary-js';
 
 @Component({
   selector: 'app-vertical-toolbar',
@@ -58,6 +61,14 @@ export class VerticalToolbarComponent implements OnInit {
   responseMapillary;
 
   previewPointMapillary;
+
+  mly;
+
+  mlyc;
+
+  point;
+
+  newMarker;
 
   @Input() zone: NgZone | undefined;
 
@@ -162,7 +173,7 @@ export class VerticalToolbarComponent implements OnInit {
       ) {
         var pte = feature.getProperties()['data'];
         console.log(this.responseMapillary);
-        var point = {
+        this.point = {
           img: this.responseMapillary['features'][pte.i]['properties'][
             'coordinateProperties'
           ].image_keys[pte.j],
@@ -180,7 +191,7 @@ export class VerticalToolbarComponent implements OnInit {
           }),
         });
 
-        var rotation = (Math.PI / 2 + Math.PI * point.cas) / -360;
+        var rotation = (Math.PI / 2 + Math.PI * this.point.cas) / -360;
 
         feature['setStyle'](stActive);
 
@@ -191,7 +202,7 @@ export class VerticalToolbarComponent implements OnInit {
         $('#img_mappilary').attr(
           'src',
           'https://d1cuyjsrcm0gby.cloudfront.net/' +
-            point.img +
+            this.point.img +
             '/thumb-320.jpg'
         );
 
@@ -223,6 +234,10 @@ export class VerticalToolbarComponent implements OnInit {
         }
 
         if (this.previewPointMapillary) {
+          this.notifier.notify(
+            'success',
+            'Cliquer sur un point pour lancer la navigation'
+          );
           var st = new Style({
             image: new CircleStyle({
               radius: 4,
@@ -451,6 +466,10 @@ export class VerticalToolbarComponent implements OnInit {
         this.space2underscore(data.nom) == 'mapillary'
       ) {
         this.modeMapillary = false;
+
+        this.sidenavContainer?.start?.open();
+        document.getElementById('mly')!.style.display = 'none';
+        this.map?.setTarget('map');
       }
 
       var layerInMap = mapHelper.getAllLAyerInMap();
@@ -544,12 +563,12 @@ export class VerticalToolbarComponent implements OnInit {
               'EPSG:3857'
             );
 
-            var newMarker = new Feature({
+            this.newMarker = new Feature({
               geometry: new Point(coord),
               data: { i: i, j: j, type: 'point' },
             });
 
-            point.push(newMarker);
+            point.push(this.newMarker);
           }
         }
 
@@ -599,6 +618,137 @@ export class VerticalToolbarComponent implements OnInit {
           this.responseMapillary = data;
         });
       });
+
+      this.map?.on('click', (e) => {
+        if (this.modeMapillary) {
+          this.displayViewMapillary(e.pixel, true);
+        }
+      });
     }
+  }
+
+  displayViewMapillary(pixel, isClick) {
+    //  this.mlyc.style.display = 'none';
+    var faCircleLineMarkerStyle = new Style({
+      image: new CircleStyle({
+        radius: 3,
+        fill: new Fill({
+          color: '#fff',
+        }),
+        stroke: new Stroke({
+          color: 'rgba(53, 175, 109,0.7)',
+          width: 2,
+        }),
+      }),
+      stroke: new Stroke({
+        color: 'rgba(53, 175, 109,0.7)',
+        width: 3,
+      }),
+    });
+
+    var faWifiStyle = new Style({
+      text: new Text({
+        text: '\uf1eb',
+        scale: 1.2,
+        font: 'normal 18px FontAwesome',
+        offsetY: -10,
+        rotation: 0,
+        fill: new Fill({ color: 'green' }),
+        stroke: new Stroke({ color: 'green', width: 3 }),
+      }),
+    });
+
+    var updateBearingStyle = (bearing) => {
+      var liveBearing = new Style({
+        text: new Text({
+          text: '\uf1eb',
+          scale: 1.2,
+          font: 'normal 18px FontAwesome',
+          offsetY: -10,
+          rotation: (bearing * Math.PI) / 180,
+          fill: new Fill({ color: 'green' }),
+          stroke: new Stroke({ color: 'green', width: 3 }),
+        }),
+      });
+
+      return [liveBearing, faCircleLineMarkerStyle];
+    };
+
+    var featureOverlay = new VectorLayer({
+      source: new VectorSource(),
+      map: this.map,
+      style: [faWifiStyle, faCircleLineMarkerStyle],
+    });
+    this.mlyc = document.getElementById('mly');
+    var old_html = $('#mly').html();
+
+    if (this.sidenavContainer?.start?.opened) {
+      this.sidenavContainer.start.close();
+    }
+
+    var highlight;
+
+    this.mlyc!.style.display = 'inline';
+    var feature = this.map?.forEachFeatureAtPixel(
+      pixel,
+      (feature1, layer) => {
+        return feature1;
+      },
+      {
+        hitTolerance: 5,
+      }
+    );
+
+    $('#mly').html(old_html);
+    this.mly = new Viewer({
+      apiClient: 'QnZyMGZ1VkU0OTFWNUJRb1d5bUhBTzo4MzQ1MzY3ODhlZjA1ZWFi',
+      component: { cover: false },
+      container: this.mlyc,
+      imageKey: this.point.img,
+    });
+
+    if (feature) {
+      if (isClick) {
+        var bearing = feature.get('ca');
+        this.mly.moveToKey(feature.get('key'));
+        featureOverlay.setStyle(updateBearingStyle(bearing));
+      }
+    } else {
+      return;
+    }
+    if (feature !== highlight) {
+      if (highlight) {
+        featureOverlay.getSource().removeFeature(highlight);
+      }
+
+      if (feature) {
+        //@ts-ignore
+        featureOverlay.getSource().addFeature(feature);
+      }
+
+      highlight = feature;
+    }
+    this.mly.on(Viewer.nodechanged, (node) => {
+      if (featureOverlay.getVisible()) {
+        featureOverlay.setVisible(false);
+      }
+
+      var lonLat = fromLonLat([
+        node.originalLatLon.lon,
+        node.originalLatLon.lat,
+      ]);
+
+      this.map?.getView().setCenter(lonLat);
+      this.newMarker.getGeometry().setCoordinates(lonLat);
+      this.newMarker.setStyle(updateBearingStyle(node.ca));
+      this.map?.setView(new View({ center: lonLat, zoom: 18 }));
+    });
+
+    this.map?.setTarget('mapi');
+    console.log(this.mly);
+
+    window.addEventListener('resize', () => {
+      this.mly.resize();
+    });
   }
 }
