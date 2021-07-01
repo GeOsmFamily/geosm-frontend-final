@@ -36,16 +36,33 @@
       <div id="scale-map"></div>
       <div id="mouse-position-map"></div>
 
+      <div id="mly"></div>
+      <div id="mapi"></div>
+
       <div id="setCoordOverlay" style="display:none">
         <button mat-mini-fab color="primary" (click)="close_setCoordOverlay()" matTooltip="Supprimer">
           <em class="fas fa-times fa-lg" style="color:#fff;display:none"></em>
         </button>
       </div>
 
+      <div id="popup_mapillary" class="back_white popup">
+        <div class="popover top"
+          style="border-radius: 15px;display: block; top: -140px; left: -100px;text-align: center;padding: 6px;">
+          <div class="arrow " style="left: 57%;"></div>
+          <div class="popover-content" style="  padding: 0px;">
+            <div class="ol-unselectable">
+              <div>
+                <img src="" id="img_mappilary" style="  height: 120px;width: 160px;  border-radius: 6px;" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <app-vertical-toolbar [map]="getMap()" [dialog]="dialog" [sidenavContainer]="sidenavContainer"
-      class="sidenav-content-toolbar whiteBG">
+    <app-vertical-toolbar [zone]="zone" [modeMapillary]="modeMapillary" [map]="getMap()" [dialog]="dialog"
+      [sidenavContainer]="sidenavContainer" class="sidenav-content-toolbar whiteBG">
     </app-vertical-toolbar>
 
 
@@ -109,7 +126,8 @@ c1.3-0.1,2.3-1.2,2.5-2.5l0-6.8L20.6,11.5z" />
     </div>
     <div class="sidenav-right-title-fake"></div>
     <div class="sidenav-right-content">
-      <app-active-layers [map]="getMap()" [hidden]="!getRightMenu('toc')?.active"></app-active-layers>
+      <app-active-layers [modeMapillary]="modeMapillary" [map]="getMap()" [hidden]="!getRightMenu('toc')?.active">
+      </app-active-layers>
       <app-map-tools [map]="getMap()" [hidden]="!getRightMenu('edition')?.active">
       </app-map-tools>
       <app-routing [map]="getMap()" [hidden]="!getRightMenu('routing')?.active"></app-routing>
