@@ -11,7 +11,7 @@ export interface GeosmLayer {
     | 'geosmCatalogue'
     | 'draw'
     | 'mesure'
-    | 'mappilary'
+    | 'mapillary'
     | 'exportData'
     | 'other'
     | 'routing';

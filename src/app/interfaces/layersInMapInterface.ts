@@ -7,7 +7,7 @@ export interface LayersInMap {
     | 'geosmCatalogue'
     | 'draw'
     | 'mesure'
-    | 'mappilary'
+    | 'mapillary'
     | 'exportData'
     | 'other'
     | 'routing';
