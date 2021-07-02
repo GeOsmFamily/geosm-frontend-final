@@ -39,6 +39,9 @@
       <div id="mly"></div>
       <div id="mapi"></div>
 
+      <input id="swipe" type="range"
+        style="background: transparent;width: 100%; z-index: 9999999999999999999999;  position: absolute;top: 45%;display: none;">
+
       <div id="setCoordOverlay" style="display:none">
         <button mat-mini-fab color="primary" (click)="close_setCoordOverlay()" matTooltip="Supprimer">
           <em class="fas fa-times fa-lg" style="color:#fff;display:none"></em>
@@ -61,8 +64,8 @@
 
     </div>
 
-    <app-vertical-toolbar [zone]="zone" [modeMapillary]="modeMapillary" [map]="getMap()" [dialog]="dialog"
-      [sidenavContainer]="sidenavContainer" class="sidenav-content-toolbar whiteBG">
+    <app-vertical-toolbar [zone]="zone" [modeCompare]="modeCompare" [modeMapillary]="modeMapillary" [map]="getMap()"
+      [dialog]="dialog" [sidenavContainer]="sidenavContainer" class="sidenav-content-toolbar whiteBG">
     </app-vertical-toolbar>
 
 

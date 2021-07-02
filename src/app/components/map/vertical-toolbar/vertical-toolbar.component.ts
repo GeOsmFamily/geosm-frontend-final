@@ -16,6 +16,7 @@ import {
   VectorSource,
   Text,
   View,
+  unByKey,
 } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,6 +32,8 @@ import VectorTileSource from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
 import { createXYZ } from 'ol/tilegrid';
 import { Viewer } from 'mapillary-js';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ButtonSheetComponent } from '../../button-sheet/button-sheet/button-sheet.component';
 
 @Component({
   selector: 'app-vertical-toolbar',
@@ -48,6 +51,8 @@ export class VerticalToolbarComponent implements OnInit {
   @Input() dialog: MatDialog | undefined;
 
   @Input() modeMapillary;
+
+  @Input() modeCompare;
 
   userMovedMap: boolean = false;
 
@@ -70,11 +75,20 @@ export class VerticalToolbarComponent implements OnInit {
 
   newMarker;
 
+  layerInCompare = Array();
+
+  precompose;
+
+  postcompose;
+
+  swipeEvent;
+
   @Input() zone: NgZone | undefined;
 
   constructor(
     public storageService: StorageServiceService,
-    notifierService: NotifierService
+    notifierService: NotifierService,
+    private bottomSheet: MatBottomSheet
   ) {
     this.environment = environment;
     this.notifier = notifierService;
@@ -212,12 +226,10 @@ export class VerticalToolbarComponent implements OnInit {
       } else {
         if (popup_once_open) {
           $('#popup_lot').on('mousemove', (evt) => {
-            //console.log(1)
             cursor_on_popup = true;
           });
 
           $('#popup_lot').on('mouseleave', (evt) => {
-            //console.log('out')
             cursor_on_popup = false;
 
             $('#popup_infos_contain').text('');
@@ -271,16 +283,10 @@ export class VerticalToolbarComponent implements OnInit {
     new MapHelper().fit_view(this.storageService.getExtentOfProject(true), 6);
   }
 
-  /**
-   * Get the color of the icon in  the div toogle sidenav left
-   */
   getColorOfTheToogleSlidenav(): string {
     return environment.primaryColor;
   }
 
-  /**
-   * Close/open left sidenav
-   */
   toogleLeftSidenav() {
     if (this.sidenavContainer?.start?.opened) {
       this.sidenavContainer.start.close();
@@ -470,6 +476,14 @@ export class VerticalToolbarComponent implements OnInit {
         this.sidenavContainer?.start?.open();
         document.getElementById('mly')!.style.display = 'none';
         this.map?.setTarget('map');
+      }
+
+      if (this.layerInCompare.length != 0) {
+        for (var i = 0; i < this.layerInCompare.length; i++) {
+          if (this.layerInCompare[i].nom == data.nom) {
+            this.closeModeCompare();
+          }
+        }
       }
 
       var layerInMap = mapHelper.getAllLAyerInMap();
@@ -750,5 +764,134 @@ export class VerticalToolbarComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.mly.resize();
     });
+  }
+
+  toogleCompare() {
+    var swipe = document.getElementById('swipe');
+    var mapHelper = new MapHelper();
+    var layerInMap = mapHelper.getAllLayersInToc();
+    if (!this.modeCompare) {
+      const buttonheet_compare = this.bottomSheet.open(ButtonSheetComponent, {
+        data: { type: 'compare', data: layerInMap },
+      });
+
+      this.modeCompare = true;
+
+      buttonheet_compare.afterDismissed().subscribe((result) => {
+        if (!result) {
+          this.modeCompare = false;
+          $('#swipe').hide();
+        } else {
+          $('#swipe').show();
+
+          var index1 = parseFloat(result['layer1']);
+          var index2 = parseFloat(result['layer2']);
+
+          var layer1;
+          var layer2;
+
+          this.map?.getLayers().forEach((layer) => {
+            if (layer.get('nom') == layerInMap[index1]['nom']) {
+              layer1 = layer;
+              console.log(layer1);
+              layer.setVisible(true);
+            } else if (layer.get('nom') == layerInMap[index2]['nom']) {
+              layer2 = layer;
+              console.log(layer2);
+              layer.setVisible(true);
+            } else if (layer.get('properties')?.type == 'carte') {
+              layer.setVisible(false);
+            }
+          });
+
+          for (var i = 0; i < layerInMap.length; i++) {
+            if (
+              //@ts-ignore
+              layerInMap[i]['properties']?.type == 'carte'
+            ) {
+              layerInMap[i]['visible'] = false;
+            }
+          }
+
+          this.toogleVisibilityLayer(layerInMap[index1]);
+          this.toogleVisibilityLayer(layerInMap[index2]);
+
+          layerInMap[index1]['visible'] = true;
+          layerInMap[index2]['visible'] = true;
+
+          this.layerInCompare[0] = layerInMap[index1];
+          this.layerInCompare[1] = layerInMap[index2];
+
+          if (layer1.getZIndex() > layer2.getZIndex()) {
+            var lay1 = layer1;
+          } else {
+            var lay1 = layer2;
+          }
+
+          this.precompose = lay1.on('prerender', function (event) {
+            var ctx = event.context;
+            var width = ctx.canvas.width * (swipe!['value'] / 100);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
+            ctx.clip();
+          });
+
+          this.postcompose = lay1.on('postrender', function (event) {
+            var ctx = event.context;
+            ctx.restore();
+          });
+
+          this.swipeEvent = swipe?.addEventListener(
+            'input',
+            () => {
+              this.map?.render();
+            },
+            false
+          );
+        }
+      });
+    } else {
+      this.closeModeCompare();
+    }
+  }
+
+  closeModeCompare() {
+    this.layerInCompare = Array();
+
+    unByKey(this.precompose);
+    unByKey(this.postcompose);
+    unByKey(this.swipeEvent);
+
+    this.modeCompare = false;
+
+    $('#swipe').hide();
+  }
+
+  toogleVisibilityLayer(data) {
+    console.log(data);
+
+    if (data.visible) {
+      this.map?.getLayers().forEach((layer) => {
+        if (layer.get('nom') == data.nom) {
+          layer.setVisible(false);
+        }
+
+        if (layer.get('type') == 'mapillaryPoint' && data.nom == 'mapillary') {
+          layer.setVisible(false);
+        }
+      });
+    } else {
+      this.map?.getLayers().forEach((layer) => {
+        if (layer.get('nom') == data.nom) {
+          layer.setVisible(true);
+        }
+
+        if (layer.get('type') == 'mapillaryPoint' && data.nom == 'mapillary') {
+          layer.setVisible(true);
+        }
+      });
+    }
   }
 }

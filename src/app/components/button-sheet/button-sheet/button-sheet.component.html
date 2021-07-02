@@ -1,1 +1,46 @@
-<p>button-sheet works!</p>
+<mat-nav-list>
+  <h3 class="text-center"> {{ 'compare_maps.title' | translate }} </h3>
+  <span>
+    <form [formGroup]="chooseLayer">
+
+      <a mat-list-item style="margin-top: 15px">
+
+        <mat-form-field style="width: 100%;">
+
+          <mat-select formControlName="layer1" name="ss">
+            <mat-option *ngFor="let lay of layer; let i = index" value="{{i}}"
+              [disabled]="lay.properties.type !== 'carte' && lay.properties.type !== 'wms' ">{{lay.nom}}</mat-option>
+          </mat-select>
+
+        </mat-form-field>
+
+      </a>
+
+      <a mat-list-item style="margin-top: 15px">
+
+        <mat-form-field style="width: 100%">
+
+          <mat-select formControlName="layer2" name="dd">
+            <mat-option *ngFor="let lay of layer; let i = index" value="{{i}}"
+              [disabled]="lay.properties.type !== 'carte' && lay.properties.type !== 'wms' ">{{lay.nom}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </a>
+
+      <a mat-list-item style="margin-top: 15px">
+
+        <button mat-raised-button color="primary" class=" white" (click)="compare()" style="width: 100%;" type="button"
+          [disabled]="chooseLayer.value['layer1'] === '' || chooseLayer.value['layer2'] === '' "
+          [ngClass]="{'back_black': chooseLayer.value['layer1'] === '' || chooseLayer.value['layer2'] === '' ,'primaryColorBG':chooseLayer.value['layer1'] !== '' && chooseLayer.value['layer2'] !== '' }">
+          {{ 'compare_maps.compare' | translate }}
+        </button>
+
+      </a>
+
+    </form>
+
+  </span>
+
+
+</mat-nav-list>
