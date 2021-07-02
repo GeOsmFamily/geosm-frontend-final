@@ -51,6 +51,7 @@ import { SocialShareComponent } from './components/social-share/social-share.com
 import { ShareButtonsConfig } from 'ngx-sharebuttons';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { SearchComponent } from './components/header/search/search.component';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -96,6 +97,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PrintComponent,
     ChartOverlayComponent,
     ListDownloadLayersComponent,
+    SearchComponent,
   ],
   imports: [
     NgpSortModule,

@@ -320,7 +320,7 @@ export class StorageServiceService {
   }
 
   //@ts-ignore
-  getCoucheFromKeyCouche(id_couche: number): coucheInterface {
+  getCoucheFromKeyCouche(id_couche: number): CoucheInterface {
     var coucheResponnse: CoucheInterface;
     for (
       let index = 0;
@@ -352,5 +352,30 @@ export class StorageServiceService {
       }
     }
     return coucheResponnse!;
+  }
+
+  //@ts-ignore
+  getCarteFromIdCarte(id_carte: number): CarteInterface {
+    for (let index = 0; index < this.groupCartes.getValue().length; index++) {
+      const groupCarte = this.groupCartes.getValue()[index];
+      if (groupCarte.sous_cartes) {
+        for (let sIndex = 0; sIndex < groupCarte.sous_cartes.length; sIndex++) {
+          const sous_groupe = groupCarte.sous_cartes[sIndex];
+          for (let cIndex = 0; cIndex < sous_groupe.couches.length; cIndex++) {
+            const carte = sous_groupe.couches[cIndex];
+            if (carte.key_couche == id_carte) {
+              return carte;
+            }
+          }
+        }
+      } else {
+        for (let cIndex = 0; cIndex < groupCarte.couches!.length; cIndex++) {
+          const carte = groupCarte.couches![cIndex];
+          if (carte.key_couche == id_carte) {
+            return carte;
+          }
+        }
+      }
+    }
   }
 }
