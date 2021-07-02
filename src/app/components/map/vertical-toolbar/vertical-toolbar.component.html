@@ -50,7 +50,8 @@
       <img src="assets/icones/mappilary.png" style="margin-top: -5px; height: 30px;" alt="" />
     </button>
 
-    <button matTooltip="{{ 'naviguation_tools.compare_maps' | translate }}" mat-mini-fab class="primaryColorBG">
+    <button matTooltip="{{ 'naviguation_tools.compare_maps' | translate }}" mat-mini-fab class="primaryColorBG"
+      (click)="toogleCompare()" [ngClass]="{'primaryColorBG': !modeCompare,'accentColorBG':modeCompare}">
       <img src="assets/icones/compare.svg" style="margin-bottom: 2px; height: 23px;" alt="" />
     </button>
   </div>
