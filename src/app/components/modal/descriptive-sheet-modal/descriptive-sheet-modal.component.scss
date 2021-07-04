@@ -1,0 +1,10 @@
+@import '../../../styles/modal.scss';
+
+.descriptive-sheet-header-ghost {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 40px;
+  bottom: 0px;
+  cursor: move;
+}

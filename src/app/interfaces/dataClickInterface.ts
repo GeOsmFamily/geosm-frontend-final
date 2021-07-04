@@ -1,12 +1,12 @@
+import { Coordinate } from 'ol/coordinate';
 import { Feature } from '../modules/ol';
 
 export interface DataFromClickOnMapInterface {
   type: 'vector' | 'raster' | 'clear';
   data: {
-    coord: [number, number];
+    coord: Coordinate;
     layers: Array<any>;
     feature?: Feature;
-    /** additional data */
     data?: {};
   };
 }
