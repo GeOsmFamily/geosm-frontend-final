@@ -55,25 +55,25 @@ export class RightMenuClickComponent implements OnInit {
           click: 'this.getInfoOnPoint',
         };
 
-        this.listItems[1] = {
+        /* this.listItems[1] = {
           name: res.partager,
           icon: 2,
           click: 'this.shareLocation',
-        };
+        };*/
 
-        this.listItems[2] = {
+        this.listItems[1] = {
           name: res.commenter,
           icon: 3,
           click: 'this.openModalComment',
         };
 
-        this.listItems[3] = {
+        this.listItems[2] = {
           name: res.ajouter_geosignet,
           icon: 4,
           click: 'this.addGeoSignets',
         };
 
-        this.listItems[4] = {
+        this.listItems[3] = {
           name: res.voir_geosignet,
           icon: 5,
           click: 'this.listGeoSignets',
