@@ -132,9 +132,9 @@ export class ComponentHelper {
 
     var proprietes: MatDialogConfig = {
       disableClose: false,
-      minWidth: 450,
+      minWidth: 550,
       maxHeight: 460,
-      width: '400px',
+      width: '550px',
       data: data,
       hasBackdrop: false,
       autoFocus: false,
