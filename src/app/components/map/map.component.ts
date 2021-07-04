@@ -250,6 +250,14 @@ export class MapComponent implements OnInit {
         var parametersShared = params['feature'].split(';');
         this.shareService.displayFeatureShared(parametersShared);
       }
+      if (params['share'] && params['path']) {
+        var parametersShared = params['share'].split(';');
+        var parametersPath = params['path'].split(';');
+        this.shareService.displayLocationShared(
+          parametersShared,
+          parametersPath
+        );
+      }
     });
   }
 

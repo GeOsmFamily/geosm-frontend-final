@@ -50,6 +50,22 @@
         </button>
       </div>
 
+      <div id="notifications">
+        <div class="text-center" id="spinner_loading">
+          <div class="lds-ripple">
+            <div style="background-color: #fff;"></div>
+            <div style="background-color: #fcfcfc;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="coord_caracteristics" style="display:none;margin-top: -20px;margin-left: -20px;">
+        <button mat-mini-fab color="primary" (click)="rightMenuClick?.close_caracteristique()" matTooltip="Fermer">
+          <em class="fas fa-times fa-lg" style="color:#fff;display:none"></em>
+          <em class="fas fa-dot-circle fa-lg" style="color:#fff;"></em>
+        </button>
+      </div>
+
       <div id="popup_mapillary" class="back_white popup">
         <div class="popover top"
           style="border-radius: 15px;display: block; top: -140px; left: -100px;text-align: center;padding: 6px;">

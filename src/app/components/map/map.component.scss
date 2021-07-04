@@ -211,6 +211,19 @@ $height: calc(100% - 60px);
         margin: 2px;
       }
     }
+
+
+
+    #notifications {
+      position: absolute;
+      top: 60px;
+      left: 65px;
+      z-index: 9999999;
+
+      #spinner_loading {
+        display: none
+      }
+    }
   }
 
   #mly {

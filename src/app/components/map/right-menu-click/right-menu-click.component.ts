@@ -1,10 +1,14 @@
+import { ComponentHelper } from './../../../helpers/componentHelper';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ShContextMenuComponent } from 'ng2-right-click-menu';
 import { Coordinate } from 'ol/coordinate';
 import { MapHelper } from 'src/app/helpers/mapHelper';
-import { Map } from 'src/app/modules/ol';
+import { Map, Overlay } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
+import * as $ from 'jquery';
+import { NotifierService } from 'angular-notifier';
+import { transform } from 'ol/proj';
 
 @Component({
   selector: 'app-right-menu-click',
@@ -12,6 +16,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./right-menu-click.component.scss'],
 })
 export class RightMenuClickComponent implements OnInit {
+  private readonly notifier: NotifierService;
   @ViewChild(ShContextMenuComponent, { static: true })
   menu: ShContextMenuComponent | undefined;
 
@@ -24,9 +29,16 @@ export class RightMenuClickComponent implements OnInit {
   zoomContextMenu: number | undefined;
 
   environment: any;
+  caracteristicsPoint = { display: false };
+  url_share: any;
 
-  constructor(public translate: TranslateService) {
+  constructor(
+    public translate: TranslateService,
+    public componentHelper: ComponentHelper,
+    notifierService: NotifierService
+  ) {
     this.environment = environment;
+    this.notifier = notifierService;
   }
 
   ngOnInit(): void {
@@ -82,5 +94,93 @@ export class RightMenuClickComponent implements OnInit {
     ]);
     this.coordinatesContextMenu = coord;
     this.zoomContextMenu = new MapHelper().map?.getView().getZoom();
+  }
+
+  getInfoOnPoint() {
+    $('#spinner_loading').show();
+
+    var coord = this.coordinatesContextMenu;
+
+    $('#coord_caracteristics').show();
+
+    this.componentHelper.openCaracteristic({
+      properties: this.caracteristicsPoint,
+      geometry: coord,
+      map: this.map!,
+      url_share: this.url_share,
+      notif: this.notifier,
+    });
+
+    var coord_caracteri = new Overlay({
+      position: coord,
+      element: document.getElementById('coord_caracteristics')!,
+    });
+
+    this.map?.addOverlay(coord_caracteri);
+
+    $('#coord_caracteristics').on('mousemove', (evt) => {
+      $('#coord_caracteristics .fa-times').show();
+
+      $('#coord_caracteristics .fa-dot-circle').hide();
+    });
+
+    $('#coord_caracteristics').on('mouseout', (evt) => {
+      $('#coord_caracteristics .fa-times').hide();
+
+      $('#coord_caracteristics .fa-dot-circle').show();
+    });
+
+    var coord_4326 = transform(coord!, 'EPSG:3857', 'EPSG:4326');
+
+    this.caracteristicsPoint['adresse'] = false;
+    this.caracteristicsPoint['position'] = false;
+
+    this.caracteristicsPoint['coord'] =
+      coord_4326[0].toFixed(4) + ' , ' + coord_4326[1].toFixed(4);
+
+    $.post(
+      this.environment.url_prefix + 'getLimite',
+      { coord: coord_4326 },
+      (data) => {
+        this.caracteristicsPoint['limites_adm'] = [];
+        if (typeof data == 'object') {
+          for (const key in data) {
+            if (data.hasOwnProperty(key) && data[key]) {
+              this.caracteristicsPoint['limites_adm'].push({
+                nom: key,
+                valeur: data[key],
+              });
+            }
+          }
+        }
+
+        $('#spinner_loading').hide();
+
+        this.caracteristicsPoint['display'] = true;
+
+        console.log(this.caracteristicsPoint);
+      }
+    );
+
+    var geocodeOsm =
+      'https://nominatim.openstreetmap.org/reverse?format=json&lat=' +
+      coord_4326[1] +
+      '&lon=' +
+      coord_4326[0] +
+      '&zoom=18&addressdetails=1';
+    this.caracteristicsPoint['lieu_dit'] = false;
+    $.get(geocodeOsm, (data) => {
+      console.log(data);
+      var name = data.display_name.split(',')[0];
+      var osm_url =
+        'https://www.openstreetmap.org/' + data.osm_type + '/' + data.osm_id;
+      this.caracteristicsPoint['lieu_dit'] = name;
+      this.caracteristicsPoint['url_osm'] = osm_url;
+    });
+  }
+
+  close_caracteristique() {
+    this.caracteristicsPoint['display'] = false;
+    $('#coord_caracteristics').hide();
   }
 }
