@@ -7,6 +7,7 @@ import { MapHelper } from 'src/app/helpers/mapHelper';
 import { Feature, Point, GeoJSON } from 'src/app/modules/ol';
 import { CoucheInterface } from 'src/app/interfaces/coucheInterface';
 import * as $ from 'jquery';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class ShareServiceService {
     typeLayer: 'carte' | 'couche',
     id_layer: number,
     group_id: number,
-    coordinates: [number, number],
+    coordinates: Coordinate,
     featureId: number
   ): string {
     return (
