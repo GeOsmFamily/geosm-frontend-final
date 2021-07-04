@@ -1,3 +1,5 @@
+import { CommentModalComponent } from './../../modal/comment-modal/comment-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 import { ComponentHelper } from './../../../helpers/componentHelper';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import * as $ from 'jquery';
 import { NotifierService } from 'angular-notifier';
 import { transform } from 'ol/proj';
+import { ApiServiceService } from 'src/app/services/api/api-service.service';
 
 @Component({
   selector: 'app-right-menu-click',
@@ -32,10 +35,13 @@ export class RightMenuClickComponent implements OnInit {
   caracteristicsPoint = { display: false };
   url_share: any;
 
+  @Input() dialog: MatDialog | undefined;
+
   constructor(
     public translate: TranslateService,
     public componentHelper: ComponentHelper,
-    notifierService: NotifierService
+    notifierService: NotifierService,
+    public apiService: ApiServiceService
   ) {
     this.environment = environment;
     this.notifier = notifierService;
@@ -182,5 +188,58 @@ export class RightMenuClickComponent implements OnInit {
   close_caracteristique() {
     this.caracteristicsPoint['display'] = false;
     $('#coord_caracteristics').hide();
+  }
+
+  openModalComment() {
+    const dialogRef = this.dialog?.open(CommentModalComponent, {
+      minWidth: '350px',
+    });
+
+    dialogRef?.afterClosed().subscribe((data_result) => {
+      if (data_result && data_result['statut']) {
+        var result = data_result['data'];
+        $('#spinner_loading').show();
+
+        var donne = {
+          data: Array(),
+          coordinates: this.coordinatesContextMenu,
+          table: 'comments',
+          shema: 'public',
+          geom: 'Point',
+        };
+
+        donne.data[0] = {
+          ind: 'nom',
+          val: result.nom,
+        };
+
+        donne.data[1] = {
+          ind: 'email',
+          val: result.email,
+        };
+
+        donne.data[2] = {
+          ind: 'description',
+          val: result.description,
+        };
+
+        donne.data[3] = {
+          ind: 'date',
+          val: new Date(),
+        };
+        console.log(result, donne);
+
+        this.apiService
+          .post_requete('addEntite', donne)
+          .then((data: Object[]) => {
+            $('#spinner_loading').hide();
+            console.log(data);
+
+            this.translate.get('notifications').subscribe((res: any) => {
+              this.notifier.notify('default', res.comment_added);
+            });
+          });
+      }
+    });
   }
 }

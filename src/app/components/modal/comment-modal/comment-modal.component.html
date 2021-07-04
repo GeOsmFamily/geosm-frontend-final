@@ -1,0 +1,51 @@
+<h1 mat-dialog-title style="    text-align: center;margin-left: -24px;
+margin-right: -24px;
+margin-top: -24px;
+margin-bottom: 0px;background-color: white;" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+  <svg viewBox="0 0 512 512" class="primaryColorBorder"
+    style="height: 20px;width: 20px;float: left; margin-left: 10px;margin-top: 5px;border-radius: 100%;padding: 5px;border: 1px solid;">
+    <path class="primaryColorFill"
+      d="m456.835938 0h-401.667969c-30.421875 0-55.167969 24.746094-55.167969 55.167969v294.238281c0 30.417969 24.746094 55.164062 55.167969
+		  55.164062h127.296875l42.15625 84.316407c7.34375 14.6875 18.777344 23.113281 31.378906 23.113281s24.035156-8.425781
+		   31.378906-23.113281l42.160156-84.3125h127.296876c30.417968 0 55.164062-24.75 55.164062-55.167969v-294.238281c0-30.421875-24.746094-55.167969-55.164062-55.167969zm0 0" />
+  </svg>
+
+
+
+  <span class="bold primaryColor " style="font-size: 17px;">{{ 'add_commentaire.title' | translate }}</span>
+
+
+
+  <em (click)="onNoClick()" class="fa fa-times primaryColor pointer close" style="opacity: 1;
+      font-size: 18px;;margin-right: 10px;margin-top: 6px;"></em>
+</h1>
+
+
+<mat-dialog-content style="background:rgba(255, 255, 255, 0.8);padding: 24px;overflow-x: hidden;">
+
+  <form [formGroup]="searchGpsForm">
+    <div class="example-container">
+
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="votre nom et prenom" formControlName="nom">
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="votre e-mail" formControlName="email" type="email">
+      </mat-form-field>
+      <p>{{ 'add_commentaire.title_commentaire' | translate }}</p>
+      <ckeditor [editor]="Editor" formControlName="description"></ckeditor>
+
+    </div>
+  </form>
+</mat-dialog-content>
+
+
+<div mat-dialog-actions style="margin: 0px -24px -24px;background:rgba(255, 255, 255, 0.8);padding-left: 10px;">
+  <button mat-button (click)="onNoClick()"
+    style="margin-right: 10px;">{{ 'add_commentaire.cancel' | translate }}</button>
+  <button
+    [disabled]="searchGpsForm.value['nom'] === '' || searchGpsForm.value['description'] === '' || searchGpsForm.value['email'] === '' "
+    mat-flat-button color="primary" (click)="valider()">{{ 'add_commentaire.save' | translate }}</button>
+</div>
