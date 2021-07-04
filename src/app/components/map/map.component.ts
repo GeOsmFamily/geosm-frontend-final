@@ -1,4 +1,3 @@
-import { RightMenuClickComponent } from './right-menu-click/right-menu-click.component';
 import { ShareServiceService } from './../../services/share/share-service.service';
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
@@ -23,6 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
 import { ActivatedRoute } from '@angular/router';
 import { DataFromClickOnMapInterface } from 'src/app/interfaces/dataClickInterface';
+import { RightMenuClickComponent } from './right-menu-click/right-menu-click.component';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
