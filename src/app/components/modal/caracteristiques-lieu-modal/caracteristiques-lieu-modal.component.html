@@ -1,0 +1,98 @@
+<h1 mat-dialog-title style="    text-align: center;margin-left: -24px;
+margin-right: -24px;
+margin-top: -24px;
+margin-bottom: 0px;background-color: white;" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+    y="0px" width="438.533px" height="438.533px" viewBox="0 0 438.533 438.533"
+    style="enable-background:new 0 0 438.533 438.533;" xml:space="preserve" style="height: 15px;
+width: 15px;
+float: left;
+margin-left: 10px;    margin-top: 2px;">
+    <g>
+      <g>
+        <path d="M409.133,109.203c-19.608-33.592-46.205-60.189-79.798-79.796C295.736,9.801,259.058,0,219.273,0
+c-39.781,0-76.47,9.801-110.063,29.407c-33.595,19.604-60.192,46.201-79.8,79.796C9.801,142.8,0,179.489,0,219.267
+c0,39.78,9.804,76.463,29.407,110.062c19.607,33.592,46.204,60.189,79.799,79.798c33.597,19.605,70.283,29.407,110.063,29.407
+s76.47-9.802,110.065-29.407c33.593-19.602,60.189-46.206,79.795-79.798c19.603-33.596,29.403-70.284,29.403-110.062
+C438.533,179.485,428.732,142.795,409.133,109.203z M353.742,297.208c-13.894,23.791-32.736,42.633-56.527,56.534
+c-23.791,13.894-49.771,20.834-77.945,20.834c-28.167,0-54.149-6.94-77.943-20.834c-23.791-13.901-42.633-32.743-56.527-56.534
+c-13.897-23.791-20.843-49.772-20.843-77.941c0-28.171,6.949-54.152,20.843-77.943c13.891-23.791,32.738-42.637,56.527-56.53
+c23.791-13.895,49.772-20.84,77.943-20.84c28.173,0,54.154,6.945,77.945,20.84c23.791,13.894,42.634,32.739,56.527,56.53
+c13.895,23.791,20.838,49.772,20.838,77.943C374.58,247.436,367.637,273.417,353.742,297.208z" class="primaryColorFill" />
+
+        <path d="M219.27,146.178c-20.177,0-37.401,7.139-51.678,21.411c-14.272,14.277-21.411,31.501-21.411,51.678
+c0,20.175,7.135,37.402,21.411,51.673c14.277,14.277,31.504,21.416,51.678,21.416c20.179,0,37.406-7.139,51.676-21.416
+c14.274-14.271,21.413-31.498,21.413-51.673c0-20.177-7.139-37.401-21.413-51.678C256.676,153.316,239.449,146.178,219.27,146.178
+z" class="primaryColorFill" />
+      </g>
+    </g>
+
+  </svg>
+
+  <span class="bold primaryColor " style="font-size: 17px;">{{ 'caracteristiques_lieu.titre' | translate }}</span>
+
+  <em (click)="close_caracteristique()" class="fa fa-times primaryColor pointer close" style="opacity: 1;
+      font-size: 18px;;margin-right: 10px;margin-top: 6px;"></em>
+</h1>
+
+
+<div mat-dialog-content class="form-group" style="cursor: default;width:360px;background: #fff;position:relative">
+
+  <div class="col-md-12 col-xs-12 bloc_caracteristique_body"
+    style="margin-left: 30px; background: rgba(0,0,0,.2);padding: 15px;">
+
+
+    <div class="col-md-12 col-xs-12 text-center primaryColor" style="text-align: center;margin-bottom: 10px;">
+      <mat-chip-list *ngIf="caracteristiquesModel.properties['lieu_dit']" style="display: inline-table;">
+        <mat-chip style="background: #fff;height: auto !important;" class="primaryColor bold">
+          <a href="{{caracteristiquesModel.properties['url_osm']}}" style="text-decoration: underline;" target="_blank">
+            {{caracteristiquesModel.properties.lieu_dit}} </a>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <div style="background: #fff;border-radius: 5px;padding-bottom: 10px;padding-top: 10px;"
+      class="col-md-12 col-xs-12">
+
+      <div class="col-md-12 col-xs-12" style="text-align: center;margin-top: 10px;">
+        <div class="bold "> {{ 'caracteristiques_lieu.titre_coord' | translate }} </div>
+
+        <div style="text-align: center;padding-left: 5px;"> {{caracteristiquesModel.properties['coord']}}
+
+        </div>
+
+      </div>
+
+      <div class="col-md-12 col-xs-12" *ngIf="caracteristiquesModel.properties['altitude']" style="margin-top: 10px;">
+        <div class="bold  "> {{ 'caracteristiques_lieu.altitude' | translate }} </div>
+        <div style="padding-left: 5px;"> {{caracteristiquesModel.properties['altitude']}} m </div>
+      </div>
+
+
+      <div class="col-md-12 col-xs-12" *ngFor="let limites_adm of caracteristiquesModel.properties['limites_adm']"
+        style="margin-top: 10px;">
+        <span *ngIf="caracteristiquesModel.properties['limites_adm']">
+          <div class="bold  "> {{limites_adm.nom}} </div>
+          <div style="padding-left: 5px;"> {{limites_adm.valeur}} </div>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-xs-12" style="text-align: center;margin-top: 12px;">
+
+      <button mat-flat-button color="primary" class="col-md-5 col-xs-5 " (click)="zoomToPoint()"
+        matTooltip="{{ 'caracteristiques_lieu.zoomer' | translate }}">
+        <em class="fa fa-location-arrow white"></em>
+      </button>
+
+      <button mat-flat-button color="primary" class="col-md-5 col-xs-5" (click)="shareLocation()"
+        style="margin-left: 16%;" matTooltip="{{ 'caracteristiques_lieu.partager' | translate }}">
+        <em class="fa fa-share-alt white"></em>
+      </button>
+    </div>
+
+  </div>
+
+</div>

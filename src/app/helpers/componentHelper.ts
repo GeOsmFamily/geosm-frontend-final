@@ -21,6 +21,8 @@ import { SocialShareComponent } from '../components/social-share/social-share.co
 import { DownloadDataModelInterface } from '../interfaces/downloadDataModelInterface';
 import { ListDownloadLayersComponent } from '../components/map/vertical-page-right/download/ListDownloadLayers/ListDownloadLayers.component';
 import { Coordinate } from 'ol/coordinate';
+import { CaracteristicSheet } from '../interfaces/caracteristicSheetInterface';
+import { CaracteristiquesLieuModalComponent } from '../components/modal/caracteristiques-lieu-modal/caracteristiques-lieu-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -197,5 +199,54 @@ export class ComponentHelper {
     appendTo.appendChild(domElem);
 
     return;
+  }
+
+  openCaracteristic(data: CaracteristicSheet) {
+    var position = {
+      top: '60px',
+      left:
+        window.innerWidth < 500
+          ? '0px'
+          : window.innerWidth / 2 - 400 / 2 + 'px',
+    };
+    for (let index = 0; index < this.dialog.openDialogs.length; index++) {
+      const elementDialog = this.dialog.openDialogs[index];
+
+      if (
+        elementDialog.componentInstance instanceof
+        DescriptiveSheetModalComponent
+      ) {
+        if (document.getElementById(elementDialog.id)) {
+          if (document.getElementById(elementDialog.id)?.parentElement) {
+            position.top =
+              document
+                .getElementById(elementDialog.id)
+                ?.parentElement?.getBoundingClientRect().top + 'px';
+            position.left =
+              document
+                .getElementById(elementDialog.id)
+                ?.parentElement?.getBoundingClientRect().left + 'px';
+          }
+        }
+
+        elementDialog.close();
+      }
+    }
+
+    var proprietes: MatDialogConfig = {
+      disableClose: false,
+      minWidth: 450,
+      maxHeight: 460,
+      width: '400px',
+      data: data,
+      hasBackdrop: false,
+      autoFocus: false,
+      position: position,
+    };
+
+    const modal = this.dialog.open(
+      CaracteristiquesLieuModalComponent,
+      proprietes
+    );
   }
 }
