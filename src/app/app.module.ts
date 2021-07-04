@@ -58,6 +58,8 @@ import { PrintService } from './services/print/print.service';
 import { CaracteristiquesLieuModalComponent } from './components/modal/caracteristiques-lieu-modal/caracteristiques-lieu-modal.component';
 import { CommentModalComponent } from './components/modal/comment-modal/comment-modal.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { GeosignetComponent } from './components/geosignet/geosignet/geosignet.component';
+import { ListGeosignetComponent } from './components/geosignet/list-geosignet/list-geosignet.component';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -108,6 +110,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RightMenuClickComponent,
     CaracteristiquesLieuModalComponent,
     CommentModalComponent,
+    GeosignetComponent,
+    ListGeosignetComponent,
   ],
   imports: [
     NgpSortModule,

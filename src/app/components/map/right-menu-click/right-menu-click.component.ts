@@ -12,6 +12,11 @@ import * as $ from 'jquery';
 import { NotifierService } from 'angular-notifier';
 import { transform } from 'ol/proj';
 import { ApiServiceService } from 'src/app/services/api/api-service.service';
+import { Geosignets } from 'src/app/utils/geoSignets';
+import { GeosignetComponent } from '../../geosignet/geosignet/geosignet.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { GeosignetInterface } from 'src/app/interfaces/geosignetsInterfaces';
+import { ListGeosignetComponent } from '../../geosignet/list-geosignet/list-geosignet.component';
 
 @Component({
   selector: 'app-right-menu-click',
@@ -41,7 +46,8 @@ export class RightMenuClickComponent implements OnInit {
     public translate: TranslateService,
     public componentHelper: ComponentHelper,
     notifierService: NotifierService,
-    public apiService: ApiServiceService
+    public apiService: ApiServiceService,
+    public _bottomSheet: MatBottomSheet
   ) {
     this.environment = environment;
     this.notifier = notifierService;
@@ -240,6 +246,43 @@ export class RightMenuClickComponent implements OnInit {
             });
           });
       }
+    });
+  }
+
+  addGeoSignets() {
+    this.componentHelper.openModalAddGeosignet([], (nameGeoSignet: string) => {
+      if (nameGeoSignet) {
+        new Geosignets().addGeoSignet({
+          nom: nameGeoSignet,
+          coord: this.coordinatesContextMenu!,
+          zoom: this.zoomContextMenu!,
+        });
+      }
+    });
+  }
+
+  openModalAddGeosignet(size: Array<string> | [], callBack: Function) {
+    var proprietes = {
+      disableClose: false,
+      minWidth: 400,
+    };
+
+    if (size.length > 0) {
+      proprietes['width'] = size[0];
+      proprietes['height'] = size[1];
+    }
+    const modal = this.dialog?.open(GeosignetComponent, proprietes);
+
+    modal?.afterClosed().subscribe(async (result: string) => {
+      callBack(result);
+    });
+  }
+
+  listGeoSignets() {
+    var allGeoSignets: GeosignetInterface[] =
+      new Geosignets().getAllGeosignets();
+    this._bottomSheet.open(ListGeosignetComponent, {
+      data: allGeoSignets,
     });
   }
 }
