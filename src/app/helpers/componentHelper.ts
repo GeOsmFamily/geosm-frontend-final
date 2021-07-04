@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SocialShareComponent } from '../components/social-share/social-share.component';
 import { DownloadDataModelInterface } from '../interfaces/downloadDataModelInterface';
 import { ListDownloadLayersComponent } from '../components/map/vertical-page-right/download/ListDownloadLayers/ListDownloadLayers.component';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
   providedIn: 'root',

@@ -17,6 +17,7 @@ import {
   Text,
   View,
   unByKey,
+  LayerGroup,
 } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';

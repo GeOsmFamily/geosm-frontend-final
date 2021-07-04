@@ -13,11 +13,6 @@ import {
   View,
   Map,
   LayerGroup,
-  Overlay,
-  Style,
-  CircleStyle,
-  Fill,
-  Stroke,
 } from 'src/app/modules/ol';
 import { NotifierService } from 'angular-notifier';
 import bboxPolygon from '@turf/bbox-polygon';
@@ -26,7 +21,7 @@ import { toWgs84 } from '@turf/projection';
 import { MatDialog } from '@angular/material/dialog';
 import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
 import { ActivatedRoute } from '@angular/router';
-import { transform } from 'ol/proj';
+import { DataFromClickOnMapInterface } from 'src/app/interfaces/dataClickInterface';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -165,6 +160,7 @@ export class MapComponent implements OnInit {
         });
 
         this.handleMapParamsUrl();
+        this.mapClicked();
         map.updateSize();
         var drawers: QueryList<MatDrawer> = this.sidenavContainer?._drawers!;
         drawers.forEach((drawer) => {
@@ -250,6 +246,61 @@ export class MapComponent implements OnInit {
         var parametersShared = params['feature'].split(';');
         this.shareService.displayFeatureShared(parametersShared);
       }
+    });
+  }
+
+  mapClicked() {
+    map.on('singleclick', (evt) => {
+      console.log(evt);
+      function compare(a, b) {
+        if (a.getZIndex() < b.getZIndex()) {
+          return 1;
+        }
+        if (a.getZIndex() > b.getZIndex()) {
+          return -1;
+        }
+        return 0;
+      }
+
+      this.zone.run(() => {
+        let mapHelper = new MapHelper();
+
+        mapHelper.mapHasCliked(evt, (data: DataFromClickOnMapInterface) => {
+          if (data.type == 'raster') {
+            var layers = data.data.layers.sort(compare);
+            var layerTopZindex = layers.length > 0 ? layers[0] : undefined;
+
+            if (layerTopZindex) {
+              var descriptionSheetCapabilities = layerTopZindex.get(
+                'descriptionSheetCapabilities'
+              );
+              this.componentHelper.openDescriptiveSheet(
+                descriptionSheetCapabilities,
+                mapHelper.constructAlyerInMap(layerTopZindex),
+                //@ts-ignore
+                data.data.coord
+              );
+            }
+          } else if (data.type == 'vector') {
+            var layers = data.data.layers.sort(compare);
+            var layerTopZindex = layers.length > 0 ? layers[0] : undefined;
+
+            if (layerTopZindex) {
+              var descriptionSheetCapabilities = layerTopZindex.get(
+                'descriptionSheetCapabilities'
+              );
+              this.componentHelper.openDescriptiveSheet(
+                descriptionSheetCapabilities,
+                mapHelper.constructAlyerInMap(layerTopZindex),
+                //@ts-ignore
+                data.data.coord,
+                data.data.feature?.getGeometry(),
+                data.data.feature?.getProperties()
+              );
+            }
+          }
+        });
+      });
     });
   }
 }
