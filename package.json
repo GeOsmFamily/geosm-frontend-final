@@ -22,6 +22,8 @@
     "@angular/platform-browser": "~12.0.0",
     "@angular/platform-browser-dynamic": "~12.0.0",
     "@angular/router": "~12.0.0",
+    "@ckeditor/ckeditor5-angular": "^2.0.1",
+    "@ckeditor/ckeditor5-build-classic": "^28.0.0",
     "@fortawesome/angular-fontawesome": "^0.9.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

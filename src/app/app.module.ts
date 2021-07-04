@@ -56,6 +56,8 @@ import { SearchComponent } from './components/header/search/search.component';
 import { OsmSheetComponent } from './components/modal/descriptive-sheet-modal/osm-sheet/osm-sheet.component';
 import { PrintService } from './services/print/print.service';
 import { CaracteristiquesLieuModalComponent } from './components/modal/caracteristiques-lieu-modal/caracteristiques-lieu-modal.component';
+import { CommentModalComponent } from './components/modal/comment-modal/comment-modal.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -105,6 +107,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     OsmSheetComponent,
     RightMenuClickComponent,
     CaracteristiquesLieuModalComponent,
+    CommentModalComponent,
   ],
   imports: [
     NgpSortModule,
@@ -120,6 +123,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     ColorPickerModule,
     ShContextMenuModule,
+    CKEditorModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {
