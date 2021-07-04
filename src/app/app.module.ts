@@ -1,9 +1,3 @@
-import { ListDownloadLayersComponent } from './components/map/vertical-page-right/download/ListDownloadLayers/ListDownloadLayers.component';
-import { ChartOverlayComponent } from './components/map/vertical-page-right/download/chartOverlay/chartOverlay.component';
-import { PrintService } from './services/print/print.service';
-import { PrintComponent } from './components/map/vertical-page-right/map-tools/print/print.component';
-import { MeasureComponent } from './components/map/vertical-page-right/map-tools/measure/measure.component';
-import { DrawComponent } from './components/map/vertical-page-right/map-tools/draw/draw.component';
 import { ShareServiceService } from './services/share/share-service.service';
 import { GeosmLayersService } from './services/geosm/geosm-layers.service';
 import { ApiServiceService } from './services/api/api-service.service';
@@ -51,8 +45,21 @@ import { SocialShareComponent } from './components/social-share/social-share.com
 import { ShareButtonsConfig } from 'ngx-sharebuttons';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { RightMenuClickComponent } from './components/map/right-menu-click/right-menu-click.component';
+import { ShContextMenuModule } from 'ng2-right-click-menu';
+import { DrawComponent } from './components/map/vertical-page-right/map-tools/draw/draw.component';
+import { MeasureComponent } from './components/map/vertical-page-right/map-tools/measure/measure.component';
+import { PrintComponent } from './components/map/vertical-page-right/map-tools/print/print.component';
+import { ChartOverlayComponent } from './components/map/vertical-page-right/download/chartOverlay/chartOverlay.component';
+import { ListDownloadLayersComponent } from './components/map/vertical-page-right/download/ListDownloadLayers/ListDownloadLayers.component';
 import { SearchComponent } from './components/header/search/search.component';
 import { OsmSheetComponent } from './components/modal/descriptive-sheet-modal/osm-sheet/osm-sheet.component';
+import { PrintService } from './services/print/print.service';
+import { CaracteristiquesLieuModalComponent } from './components/modal/caracteristiques-lieu-modal/caracteristiques-lieu-modal.component';
+import { CommentModalComponent } from './components/modal/comment-modal/comment-modal.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { GeosignetComponent } from './components/geosignet/geosignet/geosignet.component';
+import { ListGeosignetComponent } from './components/geosignet/list-geosignet/list-geosignet.component';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -100,6 +107,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ListDownloadLayersComponent,
     SearchComponent,
     OsmSheetComponent,
+    RightMenuClickComponent,
+    CaracteristiquesLieuModalComponent,
+    CommentModalComponent,
+    GeosignetComponent,
+    ListGeosignetComponent,
   ],
   imports: [
     NgpSortModule,
@@ -114,6 +126,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ShareIconsModule,
     ReactiveFormsModule,
     ColorPickerModule,
+    ShContextMenuModule,
+    CKEditorModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {

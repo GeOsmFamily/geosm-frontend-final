@@ -1,3 +1,4 @@
+import { RightMenuClickComponent } from './right-menu-click/right-menu-click.component';
 import { ShareServiceService } from './../../services/share/share-service.service';
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
@@ -59,6 +60,9 @@ export class MapComponent implements OnInit {
 
   @ViewChild(VerticalPageSecondaireComponent, { static: true })
   verticalPagePrincipalComponent: VerticalPageSecondaireComponent | undefined;
+
+  @ViewChild(RightMenuClickComponent, { static: true })
+  rightMenuClick: RightMenuClickComponent | undefined;
 
   layersInToc: Array<LayersInMap> = [];
 
@@ -245,6 +249,14 @@ export class MapComponent implements OnInit {
       if (params['feature']) {
         var parametersShared = params['feature'].split(';');
         this.shareService.displayFeatureShared(parametersShared);
+      }
+      if (params['share'] && params['path']) {
+        var parametersShared = params['share'].split(';');
+        var parametersPath = params['path'].split(';');
+        this.shareService.displayLocationShared(
+          parametersShared,
+          parametersPath
+        );
       }
     });
   }

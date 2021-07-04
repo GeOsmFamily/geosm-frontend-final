@@ -15,7 +15,7 @@
     "altitude": "Altitude",
     "fermer": "Fermer",
     "partager": "Partager ce lieu",
-    "titre": "Caractéristique du lieu",
+    "titre": "Caractéristiques du lieu",
     "titre_coord": "Coordonnées (WGS84)",
     "zoomer": "Zoomer dessus"
   },
@@ -86,7 +86,7 @@
   },
   "menu_contextuel": {
     "ajouter_geosignet": "Ajouter un géosignet sur ce lieu",
-    "caracteristique": "Caractéristique du lieu",
+    "caracteristique": "Caractéristiques du lieu",
     "commenter": "Commenter ce lieu",
     "partager": "Partager ce lieu",
     "voir_geosignet": "Vos géosignets"
@@ -208,7 +208,6 @@
     "limites": "Limites adminstratives (OSM)",
     "photon": "Lieux (Photon)",
     "nominatim": "Lieux ",
-    "adresseFr": "Adresse (API Data Gouv)",
     "layer": "Données et cartes"
   },
   "zoom_to_coordinates": {

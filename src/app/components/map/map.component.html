@@ -32,7 +32,9 @@
 
   <mat-sidenav-content class="sidenav-content">
 
-    <div id="map">
+    <div id="map" (contextmenu)="
+        rightMenuClick ? rightMenuClick.setRightClickPixel($event) : undefined
+      " [shAttachMenu]=" rightMenuClick?.menu!" [shMenuData]="rightMenuClick ? rightMenuClick.listItems : []">
       <div id="scale-map"></div>
       <div id="mouse-position-map"></div>
 
@@ -45,6 +47,22 @@
       <div id="setCoordOverlay" style="display:none">
         <button mat-mini-fab color="primary" (click)="close_setCoordOverlay()" matTooltip="Supprimer">
           <em class="fas fa-times fa-lg" style="color:#fff;display:none"></em>
+        </button>
+      </div>
+
+      <div id="notifications">
+        <div class="text-center" id="spinner_loading">
+          <div class="lds-ripple">
+            <div style="background-color: #fff;"></div>
+            <div style="background-color: #fcfcfc;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="coord_caracteristics" style="display:none;margin-top: -20px;margin-left: -20px;">
+        <button mat-mini-fab color="primary" (click)="rightMenuClick?.close_caracteristique()" matTooltip="Fermer">
+          <em class="fas fa-times fa-lg" style="color:#fff;display:none"></em>
+          <em class="fas fa-dot-circle fa-lg" style="color:#fff;"></em>
         </button>
       </div>
 
@@ -139,3 +157,4 @@ c1.3-0.1,2.3-1.2,2.5-2.5l0-6.8L20.6,11.5z" />
     </div>
   </mat-sidenav>
 </mat-sidenav-container>
+<app-right-menu-click [dialog]="dialog" [map]="getMap()"></app-right-menu-click>
