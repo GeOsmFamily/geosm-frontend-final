@@ -23,6 +23,7 @@ import { ListDownloadLayersComponent } from '../components/map/vertical-page-rig
 import { Coordinate } from 'ol/coordinate';
 import { CaracteristicSheet } from '../interfaces/caracteristicSheetInterface';
 import { CaracteristiquesLieuModalComponent } from '../components/modal/caracteristiques-lieu-modal/caracteristiques-lieu-modal.component';
+import { GeosignetComponent } from '../components/geosignet/geosignet/geosignet.component';
 
 @Injectable({
   providedIn: 'root',
@@ -248,5 +249,22 @@ export class ComponentHelper {
       CaracteristiquesLieuModalComponent,
       proprietes
     );
+  }
+
+  openModalAddGeosignet(size: Array<string> | [], callBack: Function) {
+    var proprietes = {
+      disableClose: false,
+      minWidth: 400,
+    };
+
+    if (size.length > 0) {
+      proprietes['width'] = size[0];
+      proprietes['height'] = size[1];
+    }
+    const modal = this.dialog.open(GeosignetComponent, proprietes);
+
+    modal.afterClosed().subscribe(async (result: string) => {
+      callBack(result);
+    });
   }
 }
