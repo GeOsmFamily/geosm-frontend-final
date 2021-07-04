@@ -32,7 +32,9 @@
 
   <mat-sidenav-content class="sidenav-content">
 
-    <div id="map">
+    <div id="map" (contextmenu)="
+        rightMenuClick ? rightMenuClick.setRightClickPixel($event) : undefined
+      " [shAttachMenu]=" rightMenuClick?.menu!" [shMenuData]="rightMenuClick ? rightMenuClick.listItems : []">
       <div id="scale-map"></div>
       <div id="mouse-position-map"></div>
 
@@ -139,3 +141,4 @@ c1.3-0.1,2.3-1.2,2.5-2.5l0-6.8L20.6,11.5z" />
     </div>
   </mat-sidenav>
 </mat-sidenav-container>
+<app-right-menu-click [map]="getMap()"></app-right-menu-click>
