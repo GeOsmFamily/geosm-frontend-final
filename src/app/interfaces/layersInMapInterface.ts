@@ -9,6 +9,7 @@ export interface LayersInMap {
     | 'mesure'
     | 'mapillary'
     | 'exportData'
+    | 'comments'
     | 'other'
     | 'routing';
   image: string;

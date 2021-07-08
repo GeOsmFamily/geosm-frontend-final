@@ -14,6 +14,7 @@ export interface GeosmLayer {
     | 'mapillary'
     | 'exportData'
     | 'other'
+    | 'comments'
     | 'routing';
   type: 'geojson' | 'wfs' | 'wms' | 'xyz';
   crs?: string;

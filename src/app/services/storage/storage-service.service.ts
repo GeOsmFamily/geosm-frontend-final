@@ -37,13 +37,13 @@ export class StorageServiceService {
   loadProjectData(): Promise<{ error: boolean; msg?: string }> {
     return new Promise((resolve, reject) => {
       forkJoin([
-        from(this.apiApiService.getRequest('/geoportail/getCatalogue')),
+        from(this.apiApiService.getRequest('geoportail/getCatalogue')),
         from(
-          this.apiApiService.getRequest('/api/v1/RestFull/catalogAdminCartes')
+          this.apiApiService.getRequest('api/v1/RestFull/catalogAdminCartes')
         ),
-        from(this.apiApiService.getRequest('/getZoneInteret')),
-        from(this.apiApiService.getRequest('/geoportail/getAllExtents')),
-        from(this.apiApiService.getRequest('/config_bd_projet')),
+        from(this.apiApiService.getRequest('getZoneInteret')),
+        from(this.apiApiService.getRequest('geoportail/getAllExtents')),
+        from(this.apiApiService.getRequest('config_bd_projet')),
       ])
         .pipe(
           catchError((err) => {
