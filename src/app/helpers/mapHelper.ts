@@ -46,6 +46,7 @@ const typeLayer = [
   'mesure',
   'mapillary',
   'exportData',
+  'comments',
   'other',
   'routing',
 ];

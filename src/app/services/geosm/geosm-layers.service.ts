@@ -46,7 +46,7 @@ export class GeosmLayersService {
           couche_id: carte.key_couche,
           type: 'carte',
         },
-        iconImagette: environment.url_prefix + '/' + carte.image_src,
+        iconImagette: environment.url_prefix + carte.image_src,
         descriptionSheetCapabilities: undefined!,
       });
 
@@ -83,7 +83,7 @@ export class GeosmLayersService {
       this.notifier.notify('error', 'Cette couche est déja ajoutée à la carte');
     } else {
       this.geDimensionsOfImage(
-        environment.url_prefix + '/' + couche.img,
+        environment.url_prefix + couche.img,
         (dimension: { width: number; height: number }) => {
           let size = 0.4;
 
@@ -105,8 +105,8 @@ export class GeosmLayersService {
               couche_id: couche.key_couche,
               type: 'couche',
             },
-            iconImagette: environment.url_prefix + '/' + pathImg,
-            icon: environment.url_prefix + '/' + couche.img,
+            iconImagette: environment.url_prefix + pathImg,
+            icon: environment.url_prefix + couche.img,
             cluster: true,
             size: size,
             legendCapabilities: {

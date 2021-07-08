@@ -41,6 +41,11 @@
       <div id="mly"></div>
       <div id="mapi"></div>
 
+      <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+      </div>
+
       <input id="swipe" type="range"
         style="background: transparent;width: 100%; z-index: 9999999999999999999999;  position: absolute;top: 45%;display: none;">
 
@@ -149,7 +154,7 @@ c1.3-0.1,2.3-1.2,2.5-2.5l0-6.8L20.6,11.5z" />
     <div class="sidenav-right-content">
       <app-active-layers [modeMapillary]="modeMapillary" [map]="getMap()" [hidden]="!getRightMenu('toc')?.active">
       </app-active-layers>
-      <app-map-tools [map]="getMap()" [hidden]="!getRightMenu('edition')?.active">
+      <app-map-tools [map]="getMap()" [modeComment]="modeComment" [hidden]="!getRightMenu('edition')?.active">
       </app-map-tools>
       <app-routing [map]="getMap()" [hidden]="!getRightMenu('routing')?.active"></app-routing>
       <app-legends [map]="getMap()" [hidden]="!getRightMenu('legend')?.active"></app-legends>

@@ -109,7 +109,7 @@ export class VerticalPagePrincipalComponent implements OnInit {
           metadata: true,
           opacity: true,
         },
-        iconImagette: environment.url_prefix + '/' + carte.image_src,
+        iconImagette: environment.url_prefix + carte.image_src,
         descriptionSheetCapabilities: undefined!,
       });
 
