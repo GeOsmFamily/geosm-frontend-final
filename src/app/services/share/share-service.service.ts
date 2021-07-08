@@ -1,10 +1,23 @@
+import { DataHelper } from './../../helpers/dataHelper';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { GeosmLayersService } from './../geosm/geosm-layers.service';
 import { ApiServiceService } from './../api/api-service.service';
 import { Injectable } from '@angular/core';
 import { StorageServiceService } from '../storage/storage-service.service';
 import { MapHelper } from 'src/app/helpers/mapHelper';
-import { Feature, Point, GeoJSON, Overlay } from 'src/app/modules/ol';
+import {
+  Feature,
+  Point,
+  GeoJSON,
+  Overlay,
+  Style,
+  CircleStyle,
+  Stroke,
+  Text,
+  Fill,
+  VectorSource,
+  VectorLayer,
+} from 'src/app/modules/ol';
 import { CoucheInterface } from 'src/app/interfaces/coucheInterface';
 import * as $ from 'jquery';
 import { Coordinate } from 'ol/coordinate';
@@ -15,12 +28,28 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ShareServiceService {
+  count_draw;
+
+  source_draw = new VectorSource();
+
+  vector_draw = new VectorLayer();
+
   constructor(
     public apiService: ApiServiceService,
     public geosmLayerService: GeosmLayersService,
     public storageService: StorageServiceService,
     public componentHelper: ComponentHelper
-  ) {}
+  ) {
+    this.count_draw = {
+      Point: Array(),
+      LineString: Array(),
+      Polygon: Array(),
+      text: Array(),
+    };
+    this.vector_draw = new VectorLayer({
+      source: this.source_draw,
+    });
+  }
 
   shareFeature(
     typeLayer: 'carte' | 'couche',
@@ -297,5 +326,122 @@ export class ShareServiceService {
         notif: notifier,
       });
     }
+  }
+
+  displayDrawShared(parametersShared: any, parametersId: any) {
+    var mapHelper = new MapHelper();
+    $('#spinner_loading').show();
+
+    this.apiService
+      .post_requete('geoportail/getDraw/', {
+        code_dessin: parametersId,
+      })
+      .then((data) => {
+        $('#spinner_loading').hide();
+
+        if (data['status'] == 'ok') {
+          var dessins = {
+            point: Array(),
+            polygon: Array(),
+            linestring: Array(),
+            text: Array(),
+          };
+
+          for (var index = 0; index < data['dessins'].length; index++) {
+            var element = data['dessins'][index];
+
+            if (element['type_dessin'] == 'Point') {
+              var i = dessins['point'].length;
+              dessins['point'].push('element');
+            } else if (element['type_dessin'] == 'Polygon') {
+              var i = dessins['polygon'].length;
+              dessins['polygon'].push(element);
+            } else if (element['type_dessin'] == 'LineString') {
+              var i = dessins['linestring'].length;
+              dessins['linestring'].push(element);
+            } else if (element['type_dessin'] == 'text') {
+              var i = dessins['text'].length;
+              dessins['text'].push(element);
+            }
+
+            var type = element['type_dessin'];
+            var primaryColor = element['hexa_code'];
+            var rgb = DataHelper.hexToRgb(primaryColor)!;
+
+            var feature = new GeoJSON().readFeature(element.geometry);
+            feature.set('descripion', element['descripion']);
+            feature.set('type', type);
+            feature.set('id', i!);
+
+            if (element['type_dessin'] == 'text') {
+              feature.setStyle(
+                new Style({
+                  image: new CircleStyle({
+                    radius: 1,
+                    stroke: new Stroke({
+                      color: primaryColor,
+                    }),
+                  }),
+                  text: new Text({
+                    font: 'bold 18px Calibri,sans-serif',
+                    fill: new Fill({
+                      color: primaryColor,
+                    }),
+                    text: element['descripion'],
+                    stroke: new Stroke({ color: '#fff', width: 2 }),
+                  }),
+                })
+              );
+            } else {
+              feature.setStyle(
+                new Style({
+                  fill: new Fill({
+                    color: [rgb.r, rgb.g, rgb.b, 0.1],
+                  }),
+                  stroke: new Stroke({
+                    color: primaryColor,
+                    width: 4,
+                  }),
+                  image: new CircleStyle({
+                    radius: 6,
+                    fill: new Fill({
+                      color: primaryColor,
+                    }),
+                  }),
+                })
+              );
+            }
+
+            this.count_draw[type].push({
+              id: i!,
+              comment: element['descripion'],
+              type: type,
+              geometry: JSON.parse(element.geometry).coordinates,
+              hexa_code: primaryColor,
+            });
+            this.source_draw.addFeature(feature);
+          }
+
+          setTimeout(() => {
+            console.log(this.source_draw.getExtent());
+            this.vector_draw.set(
+              'iconImagette',
+              environment.url_frontend + '/assets/icones/draw.svg'
+            );
+            this.vector_draw.set('inToc', true);
+            this.vector_draw.setZIndex(1000);
+            this.vector_draw.set('name', 'draw');
+            this.vector_draw.set('nom', 'draw');
+            this.vector_draw.set('type_layer', 'draw');
+            mapHelper.addLayerToMap(this.vector_draw);
+            mapHelper.map?.getView().fit(this.source_draw.getExtent(), {
+              size: mapHelper.map.getSize(),
+              duration: 1000,
+            });
+          }, 5000);
+
+          console.log(this.count_draw);
+        }
+      });
   }
 }

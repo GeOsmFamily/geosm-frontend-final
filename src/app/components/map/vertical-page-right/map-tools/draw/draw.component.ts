@@ -522,7 +522,7 @@ export class DrawComponent implements OnInit {
       }
       $('.accordion-draw-loading').show();
       this.apiService
-        .post_requete('/geoportail/saveDraw/', {
+        .post_requete('geoportail/saveDraw/', {
           donnes: dataToSendInDB,
         })
         .then(
