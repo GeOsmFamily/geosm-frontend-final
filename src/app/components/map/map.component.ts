@@ -260,6 +260,11 @@ export class MapComponent implements OnInit {
           parametersPath
         );
       }
+      if (params['share'] && params['id']) {
+        var parametersShared = params['share'].split(';');
+        var parametersId = params['id'];
+        this.shareService.displayDrawShared(parametersShared, parametersId);
+      }
     });
   }
 

@@ -6,7 +6,7 @@ export const environment = {
   url_frontend: 'urlFrontend/',
   url_service: 'https://service.geo.sm/',
   path_qgis: '/var/www/geosm/',
-  pojet_nodejs: 'pojet_nodejs_value',
+  projet_nodejs: 'pojet_nodejs_value',
   nom: 'nomInstance',
   countrycode: 'code_country',
   avaible_language: ['fr', 'en'],
