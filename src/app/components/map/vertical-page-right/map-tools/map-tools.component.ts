@@ -11,6 +11,8 @@ import { MeasureComponent } from './measure/measure.component';
 export class MapToolsComponent {
   @Input() map: Map | undefined;
 
+  @Input() modeComment;
+
   @ViewChild(DrawComponent) drawComp: DrawComponent | undefined;
 
   @ViewChild(MeasureComponent) measureComp: MeasureComponent | undefined;

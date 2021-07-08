@@ -55,6 +55,8 @@ export class MapComponent implements OnInit {
 
   modeCompare = false;
 
+  modeComment = false;
+
   @ViewChild(MatSidenavContainer, { static: true })
   sidenavContainer: MatSidenavContainer | undefined;
 

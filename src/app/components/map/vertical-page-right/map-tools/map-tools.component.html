@@ -57,6 +57,24 @@ c0.5,0,0.8-0.4,0.9-0.8c0,0,0,0,0,0V0.9C24.4,0.4,24.1,0,23.6,0C23.6,0,23.6,0,23.6
     <mat-expansion-panel-header expandedHeight="40px" collapsedHeight="40px" style="padding-left: 15px;"
       class="primary_transparent_bg">
       <mat-panel-title>
+        <svg style="width: 17.5px;height: 20.4px;margin-right: 10px;" x="0px" y="0px" viewBox="0 0 18.8 18.8">
+
+          <path class="primaryColorFill" d="M6.6,18.8c-0.5,0-0.9-0.4-0.9-0.9v-2.8H1.9c-1,0-1.9-0.8-1.9-1.9l0,0V1.9C0,0.8,0.8,0,1.9,0
+c0,0,0,0,0,0h15.1c1,0,1.9,0.8,1.9,1.9v11.3c0,1-0.8,1.9-1.9,1.9h-5.7l-3.5,3.5c-0.2,0.2-0.4,0.3-0.7,0.3L6.6,18.8 M2.8,2.8v1.9H16
+V2.8L2.8,2.8 M2.8,6.6v1.9h7.5V6.6H2.8 M2.8,10.4v1.9h9.4v-1.9L2.8,10.4z" />
+        </svg>
+
+        <span class="primaryColor"> {{ 'right_menu.tools.comment.title' | translate }} </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-comment [modeComment]="modeComment" [map]="map"></app-comment>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel class="back_white no_shadow" style="margin-bottom: 15px; border-radius: 4px;position: relative;">
+
+    <mat-expansion-panel-header expandedHeight="40px" collapsedHeight="40px" style="padding-left: 15px;"
+      class="primary_transparent_bg">
+      <mat-panel-title>
         <svg style="width: 17.5px;height: 20.4px;margin-right: 10px;" x="0px" y="0px" viewBox="0 0 19.4 17.5">
 
           <path class="primaryColorFill" d="M16.5,4.9H2.9C1.3,4.9,0,6.2,0,7.8c0,0,0,0,0,0v5.8h3.9v3.9h11.7v-3.9h3.9V7.8
