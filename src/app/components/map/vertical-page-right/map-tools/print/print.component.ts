@@ -1,18 +1,18 @@
 import { IpServiceService } from './../../../../../services/ip-service/ip-service.service';
 import { PrintService } from './../../../../../services/print/print.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Map } from 'src/app/modules/ol';
 import * as $ from 'jquery';
-import { getPointResolution, transform } from 'ol/proj';
 import domtoimage from 'dom-to-image-more';
 import { environment } from 'src/environments/environment';
+import { transform } from 'ol/proj';
 
 @Component({
   selector: 'app-print',
   templateUrl: './print.component.html',
   styleUrls: ['./print.component.scss'],
 })
-export class PrintComponent {
+export class PrintComponent implements OnInit {
   @Input() map: Map | undefined;
   titre = '';
   description = '';
@@ -61,18 +61,8 @@ export class PrintComponent {
       },
     };
 
-    var resolution = 90;
-    var scale = 250;
     var width = this.map?.getSize()![0];
     var height = this.map?.getSize()![1];
-    var viewResolution = this.map?.getView().getResolution();
-    var scaleResolution =
-      scale /
-      getPointResolution(
-        this.map?.getView().getProjection()!,
-        resolution / 25.4,
-        this.map?.getView().getCenter()!
-      );
 
     this.map?.once('rendercomplete', () => {
       exportOptions.width = width!;

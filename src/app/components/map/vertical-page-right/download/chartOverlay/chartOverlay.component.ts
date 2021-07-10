@@ -19,8 +19,11 @@ export class ChartOverlayComponent {
 
   myChart;
 
-  constructor() {}
+  constructor() {
+    //Constructor
+  }
 
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit(): void {
     console.log(
       this.idChart,
