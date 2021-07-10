@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   global_logo: undefined,
   primaryColor: '#023f5f',
   url_prefix: 'url_backend/',
