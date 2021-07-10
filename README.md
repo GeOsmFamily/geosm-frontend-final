@@ -14,6 +14,10 @@ $ npm install
 
 ```
 
+- download the [country.geojson](https://service.geo.sm/var/www/country.geojson) file which contains the boundary of your country (by default it is Cameroon) and place it in /src/assets
+
+- If you want to change the payload replace the content of country.geojson by the geojson of your country
+
 create the enviroment.ts(/src/environments/environment.ts) file and add your configurations to it
 
 ```sh

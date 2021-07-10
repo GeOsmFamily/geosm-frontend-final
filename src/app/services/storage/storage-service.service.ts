@@ -41,7 +41,9 @@ export class StorageServiceService {
         from(
           this.apiApiService.getRequest('api/v1/RestFull/catalogAdminCartes')
         ),
-        from(this.apiApiService.getRequest('getZoneInteret')),
+        from(
+          this.apiApiService.getRequestFromOtherHost('/assets/country.geojson')
+        ),
         from(this.apiApiService.getRequest('geoportail/getAllExtents')),
         from(this.apiApiService.getRequest('config_bd_projet')),
       ])
@@ -61,7 +63,7 @@ export class StorageServiceService {
             bbox: results[4]['bbox'],
             limites: results[4]['limites'],
             geosignetsProject: results[3],
-            roiGeojson: JSON.parse(results[2]['data']['geometry']),
+            roiGeojson: results[2]['features'][0]['geometry'],
           });
 
           this.states.getValue().loadProjectData = true;
