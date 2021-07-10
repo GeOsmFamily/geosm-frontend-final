@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../../services/ip-service/ip-service.service';
 import { ComponentHelper } from './../../../../helpers/componentHelper';
 import { SelectLayersForDownload } from './download-select-layers';
 import { StorageServiceService } from './../../../../services/storage/storage-service.service';
@@ -80,12 +81,14 @@ export class DownloadComponent
     public storageService: StorageServiceService,
     public fb: FormBuilder,
     public apiService: ApiServiceService,
-    public componentHelper: ComponentHelper
+    public componentHelper: ComponentHelper,
+    public ipService: IpServiceService
   ) {
     super(storageService, fb);
   }
 
   ngOnInit(): void {
+    this.ipService.getIP();
     this.storageService.states.subscribe((value) => {
       if (value.loadProjectData) {
         this.configProject = this.storageService.getConfigProjet();
@@ -393,6 +396,18 @@ export class DownloadComponent
           nom_file: nom_shp,
           id: layer.key_couche,
         });
+
+        $.post(
+          environment.url_prefix + 'analytics',
+          {
+            type: 'download',
+            nom_thematique: layer.nom,
+            ip: this.ipService.getIP(),
+          },
+          (data) => {
+            // data
+          }
+        );
       }
 
       this.displayResultExport(
@@ -420,6 +435,17 @@ export class DownloadComponent
         ).id_thematique,
         key_couche: layer.key_couche,
       });
+      $.post(
+        environment.url_prefix + 'analytics',
+        {
+          type: 'download',
+          nom_thematique: layer.nom,
+          ip: this.ipService.getIP(),
+        },
+        (data) => {
+          // data
+        }
+      );
     }
     var parameters = {
       querry: listLayer,

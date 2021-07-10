@@ -1,9 +1,11 @@
+import { IpServiceService } from './../../../../../services/ip-service/ip-service.service';
 import { PrintService } from './../../../../../services/print/print.service';
 import { Component, Input } from '@angular/core';
 import { Map } from 'src/app/modules/ol';
 import * as $ from 'jquery';
 import { getPointResolution, transform } from 'ol/proj';
 import domtoimage from 'dom-to-image-more';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-print',
@@ -14,16 +16,32 @@ export class PrintComponent {
   @Input() map: Map | undefined;
   titre = '';
   description = '';
-  ip = '';
   image;
   layer;
 
-  constructor(public printService: PrintService) {}
+  constructor(
+    public printService: PrintService,
+    public ipService: IpServiceService
+  ) {}
+
+  ngOnInit(): void {
+    this.ipService.getIP();
+  }
 
   printMap() {
     $('#loading_print').show();
 
-    console.log(this.ip);
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'draw',
+        draw_name: 'print',
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
 
     console.log(this.map?.getViewport());
     console.log(this.map?.getView().calculateExtent(this.map.getSize()));

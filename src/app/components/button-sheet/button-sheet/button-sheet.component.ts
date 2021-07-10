@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../services/ip-service/ip-service.service';
 import { Component, Inject, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
@@ -7,6 +8,8 @@ import {
 import { containsExtent, intersects } from 'ol/extent';
 import { transform } from 'ol/proj';
 import { boundingExtent } from 'src/app/modules/ol';
+import * as $ from 'jquery';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-button-sheet',
@@ -21,7 +24,8 @@ export class ButtonSheetComponent implements OnInit {
     private bottomSheetRef: MatBottomSheetRef<ButtonSheetComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private ngZone: NgZone,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    public ipService: IpServiceService
   ) {}
 
   public chooseLayer = this.builder.group({
@@ -36,12 +40,24 @@ export class ButtonSheetComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.ipService.getIP();
     this.typeButton = this.data['type'];
     this.layer = this.data['data'];
     console.log(this.layer);
   }
 
   compare() {
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'draw',
+        draw_name: 'compare',
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
     var index1 = this.chooseLayer.value['layer1'];
     var index2 = this.chooseLayer.value['layer2'];
 
