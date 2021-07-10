@@ -232,14 +232,7 @@ export class RoutingComponent implements OnInit {
         ',' +
         b[1] +
         '?overview=full';
-      $.get(url, (data) => {
-        this.data_itineraire.route.loading = false;
-
-        if (data['routes'] && data['routes'].length > 0) {
-          this.data_itineraire.route.data = data;
-          this.display_itineraire(data);
-        }
-      });
+      this.run(url);
     } else if (
       this.data_itineraire.depart.coord.length == 2 &&
       this.data_itineraire.destination.coord.length == 2
@@ -258,15 +251,19 @@ export class RoutingComponent implements OnInit {
         ',' +
         b[1] +
         '?overview=full';
-      $.get(url, (data) => {
-        this.data_itineraire.route.loading = false;
-
-        if (data['routes'] && data['routes'].length > 0) {
-          this.data_itineraire.route.data = data;
-          this.display_itineraire(data);
-        }
-      });
+      this.run(url);
     }
+  }
+
+  run(url) {
+    $.get(url, (data) => {
+      this.data_itineraire.route.loading = false;
+
+      if (data['routes'] && data['routes'].length > 0) {
+        this.data_itineraire.route.data = data;
+        this.display_itineraire(data);
+      }
+    });
   }
 
   display_itineraire(data) {

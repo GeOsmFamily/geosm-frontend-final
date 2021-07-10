@@ -269,7 +269,7 @@ export class SearchComponent implements OnInit {
     if (this.storageService.configProject.value.limites.length > 0) {
       querryObs.push(
         from(
-          this.apiService.post_requete('/searchLimite', {
+          this.apiService.post_requete('searchLimite', {
             word: value.toString(),
           })
         ).pipe(

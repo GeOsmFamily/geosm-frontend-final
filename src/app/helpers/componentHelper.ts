@@ -20,7 +20,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SocialShareComponent } from '../components/social-share/social-share.component';
 import { DownloadDataModelInterface } from '../interfaces/downloadDataModelInterface';
 import { ListDownloadLayersComponent } from '../components/map/vertical-page-right/download/ListDownloadLayers/ListDownloadLayers.component';
-import { Coordinate } from 'ol/coordinate';
 import { CaracteristicSheet } from '../interfaces/caracteristicSheetInterface';
 import { CaracteristiquesLieuModalComponent } from '../components/modal/caracteristiques-lieu-modal/caracteristiques-lieu-modal.component';
 import { GeosignetComponent } from '../components/geosignet/geosignet/geosignet.component';
@@ -89,7 +88,9 @@ export class ComponentHelper {
           coordinates_3857: coordinates_3857,
         },
         [],
-        () => {}
+        () => {
+          // function
+        }
       );
     }
   }
@@ -245,10 +246,7 @@ export class ComponentHelper {
       position: position,
     };
 
-    const modal = this.dialog.open(
-      CaracteristiquesLieuModalComponent,
-      proprietes
-    );
+    this.dialog.open(CaracteristiquesLieuModalComponent, proprietes);
   }
 
   openModalAddGeosignet(size: Array<string> | [], callBack: Function) {
