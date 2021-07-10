@@ -54,6 +54,8 @@ export const environment = {
 
 - If you wish to use our backend already available and hosted on our servers, send us an email (infos@geo.sm) and we will assist you in your configuration
 
+- You can submit a new language by creating a language file with the language code in: assets/i18n/{languagecode}.json
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -69,3 +71,5 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Contributions
 
 - This Project is open source and open to all your improvements.
+
+Thank you for supporting our Project
