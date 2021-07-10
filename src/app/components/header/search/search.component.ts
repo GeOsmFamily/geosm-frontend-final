@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../services/ip-service/ip-service.service';
 import { ApiServiceService } from './../../../services/api/api-service.service';
 import { StorageServiceService } from 'src/app/services/storage/storage-service.service';
 import { Component, OnInit } from '@angular/core';
@@ -34,6 +35,7 @@ import {
 } from 'rxjs/operators';
 import { from, merge as observerMerge, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-search',
@@ -163,10 +165,12 @@ export class SearchComponent implements OnInit {
   constructor(
     public storageService: StorageServiceService,
     public apiService: ApiServiceService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    public ipService: IpServiceService
   ) {}
 
   ngOnInit(): void {
+    this.ipService.getIP();
     this.isLoading = false;
     this.storageService.states.subscribe((value) => {
       if (value.loadProjectData) {
@@ -214,13 +218,24 @@ export class SearchComponent implements OnInit {
   }
 
   getQuerryForSerach(value: string): Observable<{
-    type: String;
+    type: string;
     error: boolean;
     value: { [key: string]: any };
   }>[] {
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'search',
+        keyword: value,
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
     var querryObs = [
       from(
-        this.apiService.post_requete('/searchCouche', {
+        this.apiService.post_requete('searchCouche', {
           word: value.toString(),
         })
       ).pipe(

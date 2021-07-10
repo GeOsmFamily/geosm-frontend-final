@@ -1,3 +1,4 @@
+import { IpServiceService } from './services/ip-service/ip-service.service';
 import { ShareServiceService } from './services/share/share-service.service';
 import { GeosmLayersService } from './services/geosm/geosm-layers.service';
 import { ApiServiceService } from './services/api/api-service.service';
@@ -159,6 +160,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     GeosmLayersService,
     ShareServiceService,
     PrintService,
+    IpServiceService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [MetadataModalComponent],

@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../../../services/ip-service/ip-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DataHelper } from './../../../../../helpers/dataHelper';
 import { ApiServiceService } from './../../../../../services/api/api-service.service';
@@ -112,7 +113,8 @@ export class MeasureComponent implements OnInit {
   constructor(
     public apiService: ApiServiceService,
     public translate: TranslateService,
-    public _ngZone: NgZone
+    public _ngZone: NgZone,
+    public ipService: IpServiceService
   ) {
     this.environment = environment;
   }
@@ -128,6 +130,7 @@ export class MeasureComponent implements OnInit {
   };
 
   ngOnInit() {
+    this.ipService.getIP();
     var mapHelper = new MapHelper(this.map);
     var groupLayerShadow = mapHelper.getLayerGroupByNom('group-layer-shadow');
     this.vector.setZIndex(1000);
@@ -141,6 +144,17 @@ export class MeasureComponent implements OnInit {
   }
 
   toogleMeasureInteraction(type: 'Polygon' | 'LineString' | 'Circle') {
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'draw',
+        draw_name: type,
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
     if (this.measureModel[type].active) {
       this.measureModel[type].active = false;
       this.clearDraw();

@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../../../services/ip-service/ip-service.service';
 import { ComponentHelper } from './../../../../../helpers/componentHelper';
 import { ApiServiceService } from './../../../../../services/api/api-service.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -197,12 +198,14 @@ export class DrawComponent implements OnInit {
     public fb: FormBuilder,
     public translate: TranslateService,
     public apiService: ApiServiceService,
-    public componentHelper: ComponentHelper
+    public componentHelper: ComponentHelper,
+    public ipService: IpServiceService
   ) {
     this.notifier = notifierService;
   }
 
   ngOnInit() {
+    this.ipService.getIP();
     this.map?.addOverlay(this.overlay);
     this.map?.addOverlay(this.overlayColor);
     var mapHelper = new MapHelper(this.map);
@@ -216,6 +219,17 @@ export class DrawComponent implements OnInit {
   }
 
   toogleAddDraw(type: 'Point' | 'LineString' | 'Polygon') {
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'draw',
+        draw_name: type,
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
     this.desactivateAllModificationTool();
     if (this.drawTools[type].active) {
       this.desactivateAllAddTool();

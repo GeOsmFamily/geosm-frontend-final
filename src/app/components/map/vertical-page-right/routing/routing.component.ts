@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../../services/ip-service/ip-service.service';
 import { ApiServiceService } from './../../../../services/api/api-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, Input, NgZone, OnInit } from '@angular/core';
@@ -62,12 +63,14 @@ export class RoutingComponent implements OnInit {
   constructor(
     notifierService: NotifierService,
     public translate: TranslateService,
-    public _ngZone: NgZone
+    public _ngZone: NgZone,
+    public ipService: IpServiceService
   ) {
     this.notifier = notifierService;
   }
 
   ngOnInit(): void {
+    this.ipService.getIP();
     this.inittialiseRouting();
   }
 
@@ -195,6 +198,16 @@ export class RoutingComponent implements OnInit {
   }
 
   calculate_itineraire() {
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'itineraire',
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
     if (
       this.data_itineraire.depart.coord.length == 2 &&
       this.data_itineraire.destination.coord.length == 2 &&

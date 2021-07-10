@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../services/ip-service/ip-service.service';
 import { StorageServiceService } from './../../../services/storage/storage-service.service';
 import { Component, Input, OnInit, NgZone } from '@angular/core';
 import { MatSidenavContainer } from '@angular/material/sidenav';
@@ -89,13 +90,15 @@ export class VerticalToolbarComponent implements OnInit {
   constructor(
     public storageService: StorageServiceService,
     notifierService: NotifierService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    public ipService: IpServiceService
   ) {
     this.environment = environment;
     this.notifier = notifierService;
   }
 
   ngOnInit(): void {
+    this.ipService.getIP();
     this.storageService.states.subscribe((value) => {
       if (value.loadProjectData) {
         this.map?.on('movestart', () => {
@@ -398,6 +401,17 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   toogleMapillary() {
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'draw',
+        draw_name: 'mappilary',
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
     if (!this.modeMapillary) {
       var data = {
         type: 'mapillary',

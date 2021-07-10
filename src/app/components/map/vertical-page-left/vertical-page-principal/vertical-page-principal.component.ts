@@ -1,3 +1,4 @@
+import { IpServiceService } from './../../../../services/ip-service/ip-service.service';
 import { Map } from 'src/app/modules/ol';
 import { StorageServiceService } from './../../../../services/storage/storage-service.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -9,7 +10,7 @@ import { MapHelper } from 'src/app/helpers/mapHelper';
 import { environment } from 'src/environments/environment';
 import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-vertical-page-principal',
   templateUrl: './vertical-page-principal.component.html',
@@ -31,10 +32,12 @@ export class VerticalPagePrincipalComponent implements OnInit {
 
   constructor(
     public storageService: StorageServiceService,
-    public componentHelper: ComponentHelper
+    public componentHelper: ComponentHelper,
+    public ipService: IpServiceService
   ) {}
 
   ngOnInit(): void {
+    this.ipService.getIP();
     this.loadPrincipalMapLayer();
   }
 
@@ -65,6 +68,17 @@ export class VerticalPagePrincipalComponent implements OnInit {
 
   openGroupCarteSlide(groupCarte: GroupCarteInterface) {
     this.componentHelper.openGroupCarteSlide(groupCarte);
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'libraries',
+        bibliotheque: groupCarte.nom,
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
   }
 
   tooglePrincipalMapLayer() {
@@ -170,5 +184,16 @@ export class VerticalPagePrincipalComponent implements OnInit {
 
   openGroupThematiqueSlide(groupThematique: GroupThematiqueInterface) {
     this.componentHelper.openGroupThematiqueSlide(groupThematique);
+    $.post(
+      environment.url_prefix + 'analytics',
+      {
+        type: 'thematique',
+        nom_thematique: groupThematique.nom,
+        ip: this.ipService.getIP(),
+      },
+      (data) => {
+        // data
+      }
+    );
   }
 }
