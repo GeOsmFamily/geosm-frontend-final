@@ -164,9 +164,11 @@ export class ActiveLayersComponent implements OnInit {
         },
       });
 
-      MetaData.afterClosed().subscribe((result) => {});
+      MetaData.afterClosed().subscribe((result) => {
+        // Result
+      });
     } else {
-      const MetaData = this.dialog.open(MetadataModalComponent, {
+      this.dialog.open(MetadataModalComponent, {
         minWidth: '350px',
         data: {
           exist: false,

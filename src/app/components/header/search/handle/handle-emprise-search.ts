@@ -92,7 +92,7 @@ export class HandleEmpriseSearch {
   }
 
   _getGeometryOfEmprise(params: { table: string; id: number }): Promise<any> {
-    return this.apiService.post_requete('/getLimitById', params).then(
+    return this.apiService.post_requete('getLimitById', params).then(
       (response) => {
         var geojson = JSON.parse(response['geometry']);
         var feature = new GeoJSON().readFeature(geojson, {

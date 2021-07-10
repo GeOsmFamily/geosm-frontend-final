@@ -17,7 +17,9 @@ export class MapToolsComponent {
 
   @ViewChild(MeasureComponent) measureComp: MeasureComponent | undefined;
 
-  constructor() {}
+  constructor() {
+    // Constructor
+  }
 
   expansionClose(type: string) {
     if (type == 'measure') {

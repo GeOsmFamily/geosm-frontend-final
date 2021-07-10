@@ -211,7 +211,7 @@ export class DrawComponent implements OnInit {
     var mapHelper = new MapHelper(this.map);
     this.vector.set(
       'iconImagette',
-      environment.url_frontend + '/assets/icones/draw.svg'
+      environment.url_frontend + 'assets/icones/draw.svg'
     );
     this.vector.set('inToc', false);
 

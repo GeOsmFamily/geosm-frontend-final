@@ -199,7 +199,7 @@ export class DownloadComponent
         }),
         map((value) => {
           return from(
-            this.apiService.post_requete('/searchLimite', {
+            this.apiService.post_requete('searchLimite', {
               word: value.toString(),
             })
           );
@@ -453,7 +453,7 @@ export class DownloadComponent
       id_lim: this.downloadModel.parametersGeometryDB?.id,
     };
     $('.export-data-loading').show();
-    this.apiService.post_requete('/thematique/donwload', parameters).then(
+    this.apiService.post_requete('thematique/donwload', parameters).then(
       (
         response: Array<{
           index: number;
