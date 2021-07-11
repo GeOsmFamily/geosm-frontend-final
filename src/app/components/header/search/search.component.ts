@@ -193,7 +193,8 @@ export class SearchComponent implements OnInit {
         }),
         switchMap((value) => {
           return observerMerge(...this.getQuerryForSerach(value)).pipe(
-            map((value) => value)
+            map((value) => value),
+            catchError((_err) => of({ error: true }))
           );
         })
       )

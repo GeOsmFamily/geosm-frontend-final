@@ -20,6 +20,7 @@ export class ApiServiceService {
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Origin', '*');
     this.headers_nodejs.append('Content-Type', 'application/json');
+    this.headers.append('No-Auth', 'True');
   }
 
   get_header() {
