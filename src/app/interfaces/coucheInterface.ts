@@ -99,7 +99,7 @@ export interface CoucheInterface {
   /**
    * Method to render layer
    */
-  type_couche: 'wms' | 'wfs';
+  type_couche: 'wms' | 'wfs' | 'couche';
   /**
    * render layer in wms ?, if false, render layer in wfs
    */

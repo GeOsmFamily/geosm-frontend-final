@@ -81,6 +81,8 @@ export class GeosmLayersService {
     );
     if (mapHelper.getLayerByName(couche.nom).length > 0) {
       this.notifier.notify('error', 'Cette couche est déja ajoutée à la carte');
+    } else if (couche.type_couche == 'couche') {
+      this.notifier.notify('error', "Cette couche n'est pas encore definie");
     } else {
       this.geDimensionsOfImage(
         environment.url_prefix + couche.img,
@@ -92,9 +94,11 @@ export class GeosmLayersService {
           }
 
           var pathImg = couche.logo_src ? couche.logo_src : couche.img;
+          console.log(couche);
           var layer = mapHelper.constructLayer({
             nom: couche.nom,
-            type: couche.service_wms == false ? 'wfs' : couche.type_couche,
+            type:
+              couche.type_couche == 'couche' ? 'geojson' : couche.type_couche,
             identifiant: couche.identifiant,
             type_layer: 'geosmCatalogue',
             url: couche.url,

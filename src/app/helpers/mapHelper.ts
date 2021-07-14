@@ -254,11 +254,12 @@ export class MapHelper {
         layers: [layerTile, layerImage],
       });
     } else if (couche.type == 'geojson') {
+      console.log(couche);
       var vectorSource = new VectorSource({
         format: new GeoJSON(),
       });
 
-      var layer = new layer({
+      layer = new VectorLayer({
         source: vectorSource,
         style: couche.style,
         className: couche.nom + '___' + couche.type_layer,
