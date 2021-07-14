@@ -16,7 +16,11 @@ $ npm install
 
 - download the [country.geojson](https://service.geo.sm/var/www/country.geojson) file which contains the boundary of your country (by default it is Cameroon) and place it in /src/assets
 
-- If you want to change the payload replace the content of country.geojson by the geojson of your country
+- if you want to replace the boundaries of a country, make its geojson from its shapefile and replace its content in country.geojson
+
+  - you can download the shapifiles at this address [Shapefiles](https://www.diva-gis.org/gdata)
+
+  - to convert your shapfiles to geojson go here [Ogr2ogr online](https://ogre.adc4gis.com/)
 
 create the enviroment.ts(/src/environments/environment.ts) file and add your configurations to it
 
