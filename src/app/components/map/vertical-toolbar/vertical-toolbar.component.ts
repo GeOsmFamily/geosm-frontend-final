@@ -284,7 +284,10 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   globalView() {
-    new MapHelper().fit_view(this.storageService.getExtentOfProject(true), 6);
+    this.map?.getView().fit(this.storageService.getConfigProjet().bbox, {
+      size: [this.map.getSize()?.[0]!, this.map.getSize()?.[1]! - 50],
+      duration: 1000,
+    });
   }
 
   getColorOfTheToogleSlidenav(): string {
