@@ -649,9 +649,11 @@ export class VerticalToolbarComponent implements OnInit {
       });
 
       this.map?.on('click', (e) => {
-        if (this.modeMapillary) {
-          this.displayViewMapillary(e.pixel, true);
-        }
+        this.map?.forEachLayerAtPixel(e.pixel, (layer) => {
+          if (this.modeMapillary && layer.get('type') == 'mapillaryPoint') {
+            this.displayViewMapillary(e.pixel, true);
+          }
+        });
       });
     }
   }
