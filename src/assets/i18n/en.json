@@ -51,7 +51,8 @@
   },
   "draw_in_map": {
     "apply_draw": "APPLY",
-    "save": ""
+    "save": "SAVE",
+    "your_comment_placeholder": "Your Comment"
   },
   "header": {
     "toolpit_info": "GeOsm ?"
