@@ -30,7 +30,7 @@ var attribution = new Attribution({ collapsible: false });
 var view = new View({
   center: [0, 0],
   zoom: 0,
-  minZoom: 6,
+  minZoom: 4,
 });
 
 export const map = new Map({
@@ -130,10 +130,10 @@ export class MapComponent implements OnInit {
     this.storageService.loadProjectData().then(
       (response) => {
         $('.loading-apps').hide();
-        new MapHelper().fit_view(
-          this.storageService.getExtentOfProject(true),
-          6
-        );
+        map.getView().fit(this.storageService.getConfigProjet().bbox, {
+          size: [map.getSize()?.[0]!, map.getSize()?.[1]! - 50],
+          duration: 1000,
+        });
         this.notifier.notify('success', 'Téléchargement terminé');
       },
       (error) => {
@@ -159,7 +159,7 @@ export class MapComponent implements OnInit {
 
           if (!bool) {
             map.getView().fit(this.storageService.getConfigProjet().bbox, {
-              size: map.getSize(),
+              size: [map.getSize()?.[0]!, map.getSize()?.[1]! - 50],
               duration: 1000,
             });
           }
