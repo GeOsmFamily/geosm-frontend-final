@@ -492,6 +492,7 @@ export class VerticalToolbarComponent implements OnInit {
         this.modeMapillary = false;
 
         this.sidenavContainer?.start?.open();
+        this.mly.remove();
         document.getElementById('mly')!.style.display = 'none';
         this.map?.setTarget('map');
       }
@@ -782,7 +783,7 @@ export class VerticalToolbarComponent implements OnInit {
     console.log(this.mly);
 
     window.addEventListener('resize', () => {
-      this.mly.resize();
+      this.mly.remove();
     });
   }
 
