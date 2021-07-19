@@ -492,7 +492,11 @@ export class VerticalToolbarComponent implements OnInit {
         this.modeMapillary = false;
 
         this.sidenavContainer?.start?.open();
-        this.mly.remove();
+
+        if (this.mly != undefined) {
+          console.log(1);
+          this.mly.remove();
+        }
         document.getElementById('mly')!.style.display = 'none';
         this.map?.setTarget('map');
       }
