@@ -81,8 +81,8 @@ export class CommentComponent {
           style: new Style({
             image: new Icon({
               crossOrigin: 'anonymous',
-              src: 'assets/icones/comment.png',
-              scale: 0.1,
+              src: 'assets/icones/message.png',
+              scale: 0.2,
             }),
           }),
         });

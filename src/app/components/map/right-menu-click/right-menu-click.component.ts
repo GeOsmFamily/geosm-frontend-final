@@ -242,7 +242,7 @@ export class RightMenuClickComponent implements OnInit {
             console.log(data);
 
             this.translate.get('notifications').subscribe((res: any) => {
-              this.notifier.notify('default', res.comment_added);
+              this.notifier.notify('success', res.comment_added);
             });
           });
       }
