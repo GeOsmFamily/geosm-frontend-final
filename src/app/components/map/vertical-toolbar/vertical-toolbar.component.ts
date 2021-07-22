@@ -302,6 +302,14 @@ export class VerticalToolbarComponent implements OnInit {
     }
   }
 
+  toogleRightSidenav() {
+    if (this.sidenavContainer?.end?.opened) {
+      this.sidenavContainer.end.close();
+    } else {
+      this.sidenavContainer?.end?.open();
+    }
+  }
+
   zoom(type: 'plus' | 'minus') {
     if (type == 'plus') {
       this.map?.getView().setZoom(this.map?.getView().getZoom()! + 1);
@@ -491,7 +499,8 @@ export class VerticalToolbarComponent implements OnInit {
       ) {
         this.modeMapillary = false;
 
-        this.sidenavContainer?.start?.open();
+        this.toogleLeftSidenav();
+        this.toogleRightSidenav();
 
         if (this.mly != undefined) {
           console.log(1);
@@ -667,6 +676,9 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   displayViewMapillary(pixel, isClick) {
+    this.toogleLeftSidenav();
+    this.toogleRightSidenav();
+
     //  this.mlyc.style.display = 'none';
     var faCircleLineMarkerStyle = new Style({
       image: new CircleStyle({

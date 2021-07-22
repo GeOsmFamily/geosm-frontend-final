@@ -99,7 +99,7 @@ export class SearchComponent implements OnInit {
         }
       }
 
-      var color = this.colors[Math.floor(Math.random() * this.colors.length)];
+      var color = '#ade36b';
       return new Style({
         fill: new Fill({
           color: [
@@ -110,7 +110,7 @@ export class SearchComponent implements OnInit {
           ],
         }),
         stroke: new Stroke({
-          color: this.colors[Math.floor(Math.random() * this.colors.length)],
+          color: environment.primaryColor,
           width: 6,
         }),
         image: new Icon({

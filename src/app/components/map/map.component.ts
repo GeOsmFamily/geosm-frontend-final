@@ -134,7 +134,7 @@ export class MapComponent implements OnInit {
           size: [map.getSize()?.[0]!, map.getSize()?.[1]! - 50],
           duration: 1000,
         });
-        this.notifier.notify('success', 'Téléchargement terminé');
+        //  this.notifier.notify('success', 'Téléchargement terminé');
       },
       (error) => {
         $('.loading-apps').hide();
