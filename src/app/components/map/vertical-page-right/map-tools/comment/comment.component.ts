@@ -135,7 +135,7 @@ export class CommentComponent {
     });
 
     closer!.onclick = function () {
-      overlay.setPosition(undefined);
+      overlay.setPosition(undefined!);
       closer?.blur();
       return false;
     };

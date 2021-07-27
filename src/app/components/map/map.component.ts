@@ -131,7 +131,7 @@ export class MapComponent implements OnInit {
       (response) => {
         $('.loading-apps').hide();
         map.getView().fit(this.storageService.getConfigProjet().bbox, {
-          size: [map.getSize()?.[0]!, map.getSize()?.[1]! - 50],
+          size: [map.getSize()?.[0]!, map.getSize()?.[1]!],
           duration: 1000,
         });
         //  this.notifier.notify('success', 'Téléchargement terminé');
@@ -151,8 +151,10 @@ export class MapComponent implements OnInit {
       if (value.loadProjectData) {
         map.on('moveend', () => {
           var bbox_cam = bboxPolygon(
+            //@ts-ignore
             this.storageService.getConfigProjet().bbox
           );
+          //@ts-ignore
           var bbox_view = bboxPolygon(map.getView().calculateExtent());
 
           var bool = intersect(toWgs84(bbox_view), toWgs84(bbox_cam));
