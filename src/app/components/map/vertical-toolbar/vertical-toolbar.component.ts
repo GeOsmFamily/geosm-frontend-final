@@ -18,7 +18,6 @@ import {
   Text,
   View,
   unByKey,
-  LayerGroup,
 } from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -285,7 +284,7 @@ export class VerticalToolbarComponent implements OnInit {
 
   globalView() {
     this.map?.getView().fit(this.storageService.getConfigProjet().bbox, {
-      size: [this.map.getSize()?.[0]!, this.map.getSize()?.[1]! - 50],
+      size: [this.map.getSize()?.[0]!, this.map.getSize()?.[1]!],
       duration: 1000,
     });
   }
@@ -376,6 +375,7 @@ export class VerticalToolbarComponent implements OnInit {
 
           var point_geojson = point(coord);
           var bbox_cam = bboxPolygon(
+            //@ts-ignore
             this.storageService.getConfigProjet().bbox
           );
 
@@ -499,11 +499,14 @@ export class VerticalToolbarComponent implements OnInit {
       ) {
         this.modeMapillary = false;
 
-        this.toogleLeftSidenav();
-        this.toogleRightSidenav();
+        if (!this.sidenavContainer?.start?.opened) {
+          this.toogleLeftSidenav();
+        }
+        if (!this.sidenavContainer?.end?.opened) {
+          this.toogleRightSidenav();
+        }
 
         if (this.mly != undefined) {
-          console.log(1);
           this.mly.remove();
         }
         document.getElementById('mly')!.style.display = 'none';
