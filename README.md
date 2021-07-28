@@ -81,3 +81,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 - This Project is open source and open to all your improvements.
 
 Thank you for supporting our Project
+
+## Join us
+
+https://join.slack.com/t/geosm/shared_invite/zt-t58ecq0x-Z74zx4pT2ypCBYw7BItDfA

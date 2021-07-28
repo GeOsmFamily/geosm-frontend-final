@@ -34,6 +34,7 @@
     "@turf/turf": "^6.4.0",
     "@types/ol": "^6.5.1",
     "angular-notifier": "9.0.1",
+    "angular2-draggable": "^2.3.2",
     "chart.js": "^3.3.2",
     "dom-to-image-more": "^2.8.0",
     "jquery": "^3.6.0",
