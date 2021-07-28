@@ -1,3 +1,5 @@
+import { Chart } from 'src/app/modules/chart';
+import { MapToolsComponent } from './vertical-page-right/map-tools/map-tools.component';
 import { ShareServiceService } from './../../services/share/share-service.service';
 import { VerticalPageSecondaireComponent } from './vertical-page-left/vertical-page-secondaire/vertical-page-secondaire.component';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
@@ -57,6 +59,8 @@ export class MapComponent implements OnInit {
 
   modeComment = false;
 
+  chart_drape: Chart | undefined;
+
   @ViewChild(MatSidenavContainer, { static: true })
   sidenavContainer: MatSidenavContainer | undefined;
 
@@ -65,6 +69,9 @@ export class MapComponent implements OnInit {
 
   @ViewChild(RightMenuClickComponent, { static: true })
   rightMenuClick: RightMenuClickComponent | undefined;
+
+  @ViewChild(MapToolsComponent, { static: true })
+  mapTools: MapToolsComponent | undefined;
 
   layersInToc: Array<LayersInMap> = [];
 
