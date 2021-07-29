@@ -70,6 +70,43 @@ V2.8L2.8,2.8 M2.8,6.6v1.9h7.5V6.6H2.8 M2.8,10.4v1.9h9.4v-1.9L2.8,10.4z" />
     <app-comment [modeComment]="modeComment" [map]="map"></app-comment>
   </mat-expansion-panel>
 
+  <mat-expansion-panel *ngIf="environment.countrycode==='cm'" class="back_white no_shadow"
+    style="margin-bottom: 15px; border-radius: 4px;position: relative;">
+
+    <mat-expansion-panel-header expandedHeight="40px" collapsedHeight="40px"
+      style="padding-left: 15px;margin-bottom: 15px;" class="primary_transparent_bg">
+      <mat-panel-title>
+
+        <svg style="width: 17.5px;height: 20.4px;margin-right: 10px;" x="0px" y="0px" viewBox="0 0 22.1 17.2">
+
+          <g id="Groupe_56" transform="translate(-283.894 -12.804)">
+            <path id="Tracé_44" class="primaryColorFill" d="M305.4,30L305.4,30l-2.6-0.1h-18.3c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.2-0.4V19.1
+		c0-0.3,0.3-0.6,0.6-0.6h1.5c0.3,0,0.6,0.3,0.6,0.6c0,0,0,0,0,0l0,0v1.6h1.7V18c0-0.3,0.3-0.6,0.6-0.6h3.2v-4c0-0.3,0.3-0.6,0.6-0.6
+		h1.3c0.3,0,0.6,0.3,0.6,0.6c0,0,0,0,0,0l0,0v6.2h1.4V15c0-0.3,0.3-0.6,0.6-0.6h1.4c0.3,0,0.6,0.3,0.6,0.6c0,0,0,0,0,0l0,0
+		c0,4.1,0,1.6,0,3.2h2.2c0.3,0,0.6,0.3,0.6,0.6c0,0,0,0,0,0v3.6h1.8v-4.9c0-0.3,0.3-0.6,0.6-0.6h1.8c0.3,0,0.6,0.3,0.6,0.6
+		c0,0,0,0,0,0l0,0v12c0,0.2-0.1,0.3-0.2,0.4C305.7,29.9,305.5,30,305.4,30" />
+          </g>
+        </svg>
+
+        <span class="primaryColor"> {{ 'right_menu.tools.altimetry.title' | translate }} </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field style="width: 100%;  padding: 0 5px;">
+      <mat-select placeholder="Choisisser la source du MNT" [(ngModel)]="altimetrie.source_profil_alti">
+        <mat-option value="srtm" style="color:#000"> SRTM sur le Cameroun </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="button-row" style="padding: 0 5px;" *ngIf="altimetrie.source_profil_alti">
+      <button mat-raised-button color="primary" [ngClass]="{'accentColorBG': altimetrie.active }"
+        style="width: 100%;margin-bottom:7px;color: #fff;font-size: 14px;font-weight: bold"
+        (click)="toogleProfilAlti()">
+        <img src="assets/icones/distance.svg" style="margin-bottom: 2px;height: 17px;" alt="">
+        <span> Profil Altimetrique </span>
+      </button>
+    </div>
+
+  </mat-expansion-panel>
+
   <mat-expansion-panel class="back_white no_shadow" style="margin-bottom: 15px; border-radius: 4px;position: relative;">
 
     <mat-expansion-panel-header expandedHeight="40px" collapsedHeight="40px" style="padding-left: 15px;"
