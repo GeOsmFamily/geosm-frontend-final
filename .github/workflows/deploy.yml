@@ -43,9 +43,102 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo chown -R postgres:postgres /var/www/
-            chmod +x ./install_geosm.sh
-            dos2unix ./install_geosm.sh
-            ./install_geosm.sh
             cd /var/www/backend_nodejs
-            ./create_project.sh
-            exit
+            su - postgres
+            echo "====== Création et initialisation de la BD ======"
+            psql -c "DROP DATABASE germany"
+            psql -c "CREATE DATABASE germany"
+            echo "db created"
+            psql -d  germany -c "CREATE EXTENSION postgis"
+            psql -d germany -c "CREATE EXTENSION hstore"
+            psql -d germany -c "CREATE EXTENSION unaccent"
+            pg_restore -U postgres -d germany  ./BD/template_en_bd.backup --verbose
+            echo "template english"
+            wget http://download.geofabrik.de/europe/germany-latest.osm.pbf -O osm.pbf
+            echo "====== Création et initialisation de la BD terminé ======"
+            echo "====== import termine et telechargement du osm.pbf ======"
+            osm2pgsql --cache 10000 --number-processes 5 --extra-attributes --slim -G -c -U postgres -d germany -H localhost --hstore-all -S ./BD/default.style osm.pbf
+            echo "====== import du osm.pbf termine ======"
+            colones=`psql -d germany  -c "select distinct(action) as key from sous_categorie"`
+
+            echo "====== Creation des index ======"
+
+            for col in $colones; do
+              echo "Creation des index sur la colomne $col"
+              psql -d germany  -c "CREATE INDEX planet_osm_point${col}_idx on planet_osm_point($col)"
+              psql -d germany  -c "CREATE INDEX planet_osm_polygon${col}_idx on planet_osm_polygon($col)"
+              psql -d germany  -c "CREATE INDEX planet_osm_line${col}_idx on planet_osm_line($col)"
+            done
+
+            echo "====== creation des index sur les colomnes terminées ======"
+
+
+            echo "====== IMPORT DE LA ZONE D'INTERET ======"
+
+            psql -d germany -c "DROP TABLE IF EXISTS temp_table;"
+            ogr2ogr -f "PostgreSQL" PG:"host=localhost user=postgres dbname=germany password=postgresgeosm"  $roi -nln temp_table -nlt MULTIPOLYGON  -lco GEOMETRY_NAME=geom -lco precision=NO
+            psql -d germany -c "UPDATE instances_gc SET geom = ST_Buffer(st_transform(limite.geom ,4326)::geography,10)::geometry, true_geom = st_transform(limite.geom,4326) FROM (SELECT * from temp_table limit 1) as limite WHERE instances_gc.id = 1;"
+            psql -d germany -c "TRUNCATE temp_table;"
+
+
+            echo "====== IMPORT DE LA ZONE D'INTERET TERMINE ======"
+
+            echo "====== CREATION DES REPERTOIRE POUR QGIS SERVEUR (GPKG,STYLE) ======"
+
+            mkdir -m 777 -p /var/www/geosm/germany/gpkg/
+            mkdir -m 777 -p /var/www/geosm/germany/style/
+            mkdir -m 777 -p /var/www/geosm/style/
+
+            echo "====== CREATION DES REPERTOIRE POUR QGIS SERVEUR TERMINE ======"
+
+            echo "====== TELECHARGEMENT DES STYLES PAR DEFAUT DE GEOSM ======"
+
+            rm -rf  ./backend_nodejs_temp
+            git clone https://github.com/GeOsmFamily/geosm-backend-nodejs.git/ ./backend_nodejs_temp
+            cp ./backend_nodejs_temp/python_script/style_default/*.qml /var/www/geosm/germany/style/
+            rm -rf  ./backend_nodejs_temp
+
+            echo "====== TELECHARGEMENT DES STYLES PAR DEFAUT DE GEOSM TERMINE ======"
+
+            echo "====== Telechargements des elements pour DOCKER ======"
+
+            rm -r /var/www/germany/docker/
+            mkdir -m 777 -p /var/www/germany/docker/
+            cp -r  ./docker/ $path_projet/
+
+            mkdir -m 777 -p /var/www/germany/docker/public/upload
+            mkdir -m 777 -p /var/www/germany/docker/public/assets/images
+            mkdir -m 777 -p /var/www/germany/docker/public/assets/admin/images
+
+            mkdir -m 777 -p /var/www/germany/docker/client/
+
+            rm -rf  ./GeoOSM_Backend
+            git clone -b v8 https://github.com/GeOsmFamily/geosm-backend.git ./GeoOSM_Backend
+            mv ./GeoOSM_Backend/.env.example /var/www/germany/docker/public/.env.example
+            mv ./GeoOSM_Backend/public/assets/config_template.js /var/www/germany/docker/public/assets/config_template.js
+            mv ./GeoOSM_Backend/public/assets/images /var/www/germany/docker/public/assets/
+            mv ./GeoOSM_Backend/public/assets/admin/images /var/www/germany/docker/public/assets/admin/
+            rm -rf  ./GeoOSM_Backend
+
+            rm -rf  ./GeoOSM_Frontend
+            git clone https://github.com/GeOsmFamily/geosm-frontend-final.git ./GeoOSM_Frontend
+            mv ./GeoOSM_Frontend/src/assets/ /var/www/germany/docker/client/
+            mv ./GeoOSM_Frontend/src/environments/ /var/www/germany/docker/client/environments/
+            cp /var/www/germany/docker/client/environments/environment-example.ts /var/www/germany/docker/client/environments/environment.prod.ts
+            sed -i "s+'path_qgis_value'+"'"'${geosm_dir}'"'"+g" /var/www/germany/docker/client/environments/environment.prod.ts
+            sed -i "s/'pojet_nodejs_value'/"'"'${db}'"'"/g" /var/www/germany/docker/client/environments/environment.prod.ts
+            cp /var/www/germany/docker/client/environments/environment.prod.ts /var/www/germany/docker/client/environments/environment.ts
+            chmod -R 755 /var/www/germany/docker/
+            rm -rf  ./GeoOSM_Frontend
+
+            cp ./docker/htaccess.txt /var/www/germany/docker/client/htaccess.txt
+
+            echo "Creation du GeoJSON"
+
+            ogr2ogr -t_srs EPSG:4326 -f GeoJSON /var/www/germany/docker/client/assets/country.geojson /var/www/backend_nodejs/shp/germany/DEU_adm0.shp
+
+            echo "=========== CREATION DU GEOJSON TERMINEE ==============="
+
+            echo "====== Telechargements des elements pour DOCKER TERMINE======"
+
+            echo "termne !!!!! !!! !"
