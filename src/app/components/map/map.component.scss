@@ -1,6 +1,7 @@
 @import "../../styles/theme.scss";
 @import '~@angular/material/theming';
 @import "~@angular/cdk/overlay-prebuilt.css";
+@import '../../styles/modal.scss';
 @include mat-core();
 
 input[type=range] {
