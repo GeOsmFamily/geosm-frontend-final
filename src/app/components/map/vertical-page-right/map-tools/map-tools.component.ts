@@ -21,6 +21,8 @@ import { DrawComponent } from './draw/draw.component';
 import { MeasureComponent } from './measure/measure.component';
 import * as $ from 'jquery';
 import { transform } from 'ol/proj';
+import { DataHelper } from 'src/app/helpers/dataHelper';
+import { MapHelper } from 'src/app/helpers/mapHelper';
 
 @Component({
   selector: 'app-map-tools',
@@ -71,6 +73,12 @@ export class MapToolsComponent {
       this.drawComp?.desactivateAllAddTool();
       this.drawComp?.desactivateAllModificationTool();
     }
+  }
+
+  removeProfilAlti() {
+    this.altimetrie.active = false;
+    this.map?.removeInteraction(this.draw);
+    $('#profil_alti').hide();
   }
 
   toogleProfilAlti() {
