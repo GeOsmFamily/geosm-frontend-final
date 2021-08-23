@@ -137,7 +137,6 @@ export class MeasureComponent implements OnInit {
     groupLayerShadow.getLayers().getArray().unshift(this.vector);
 
     this.translate.get('right_menu').subscribe((res: any) => {
-      console.log(res);
       this.continuePolygonMsg = res.tools.mesure.continuePolygonMsg;
       this.continueLineMsg = res.tools.mesure.continueLineMsg;
     });

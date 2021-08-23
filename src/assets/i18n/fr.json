@@ -153,7 +153,8 @@
       "infos_1": "Cliquer sur l'icone ",
       "infos_2": " pour positioner sur la carte",
       "start": "Départ",
-      "title": "Calcul d'itinéraire"
+      "title": "Calcul d'itinéraire",
+      "passage": "Point de Passage Obligatoire ?"
     },
     "table_of_contents": {
       "title": "Couches en cours"

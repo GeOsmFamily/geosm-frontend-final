@@ -25,6 +25,7 @@ import { LayersInMap } from 'src/app/interfaces/layersInMapInterface';
 import { ActivatedRoute } from '@angular/router';
 import { DataFromClickOnMapInterface } from 'src/app/interfaces/dataClickInterface';
 import { RightMenuClickComponent } from './right-menu-click/right-menu-click.component';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 const scaleControl = new ScaleLine();
 var attribution = new Attribution({ collapsible: false });
@@ -120,7 +121,8 @@ export class MapComponent implements OnInit {
     public componentHelper: ComponentHelper,
     public shareService: ShareServiceService,
     private activatedRoute: ActivatedRoute,
-    public zone: NgZone
+    public zone: NgZone,
+    private observer: BreakpointObserver
   ) {
     this.notifier = notifierService;
   }
@@ -131,6 +133,14 @@ export class MapComponent implements OnInit {
       'VerticalPageSecondaireComponent',
       this.verticalPagePrincipalComponent
     );
+
+    this.observer.observe(['(max-width: 767px)']).subscribe((res) => {
+      if (res.matches) {
+        this.sidenavContainer?.start?.close();
+      } else {
+        this.sidenavContainer?.start?.open();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -252,7 +262,6 @@ export class MapComponent implements OnInit {
 
   handleMapParamsUrl() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      console.log(params);
       if (params['layers']) {
         var layers = params['layers'].split(';');
         this.shareService.addLayersFromUrl(layers);
