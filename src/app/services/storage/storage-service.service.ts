@@ -49,7 +49,6 @@ export class StorageServiceService {
       ])
         .pipe(catchError((err) => of({ error: true, msg: err })))
         .subscribe((results) => {
-          console.log(results);
           this.groupThematiques.next(results[0]);
           this.groupCartes.next(results[1]);
           this.configProject.next({

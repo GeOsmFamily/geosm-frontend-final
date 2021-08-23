@@ -28,17 +28,17 @@
       <em *ngIf="!environment.global_logo" class="fas fa-globe fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button mat-mini-fab class="primaryColorBG" style="margin-top: 90px;" (click)="zoomTo()"
+    <button mat-mini-fab class="primaryColorBG zoomTo" style="margin-top: 90px;" (click)="zoomTo()"
       matTooltip="{{ 'naviguation_tools.zoom_to_coordinates' | translate }}">
       <em class="fas fa-map-marker fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button (click)="rollBack()" mat-mini-fab class="primaryColorBG"
+    <button (click)="rollBack()" mat-mini-fab class="primaryColorBG rollBack"
       matTooltip="{{ 'naviguation_tools.past_view' | translate }} ">
       <em class="fas fa-angle-left fa-lg" style="color: #fff;"></em>
     </button>
 
-    <button (click)="rollFront()" mat-mini-fab class="primaryColorBG"
+    <button (click)="rollFront()" mat-mini-fab class="primaryColorBG rollFront"
       matTooltip="{{ 'naviguation_tools.next_view' | translate }} ">
       <em class="fas fa-angle-right fa-lg" style="color: #fff;"></em>
     </button>

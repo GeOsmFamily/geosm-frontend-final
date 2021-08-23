@@ -145,7 +145,8 @@
       "infos_1": "Click on the icon ",
       "infos_2": "to position on the map",
       "start": "Start",
-      "title": "Map routing"
+      "title": "Map routing",
+      "passage": "Mandatory Passage ?"
     },
     "table_of_contents": {
       "title": "Current layers"

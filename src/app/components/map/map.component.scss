@@ -1,7 +1,6 @@
 @import "../../styles/theme.scss";
 @import '~@angular/material/theming';
 @import "~@angular/cdk/overlay-prebuilt.css";
-@import '../../styles/modal.scss';
 @include mat-core();
 
 input[type=range] {
@@ -357,4 +356,27 @@ $height: calc(100% - 60px);
   app-download {
     padding-bottom: 140px;
   }
+}
+
+@media (max-width : 767px) {
+  .sidenav-right {
+    width: 0px;
+
+    .sidenav-right-content {
+      display: none;
+    }
+
+    .sidenav-right-title {
+      display: none;
+    }
+
+    .sidenav-right-title-fake {
+      display: none;
+    }
+  }
+
+  .toogle-sidenav-right {
+    display: none;
+  }
+
 }

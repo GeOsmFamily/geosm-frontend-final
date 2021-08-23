@@ -40,3 +40,18 @@
   right: 65px;
   top: 15px;
 }
+
+@media (max-width : 767px) {
+  .search_bar {
+    width: 300px;
+  }
+
+
+  .Logos_GC_right,
+  .language_button,
+  .help-button,
+  .header_left {
+    display: none
+  }
+
+}

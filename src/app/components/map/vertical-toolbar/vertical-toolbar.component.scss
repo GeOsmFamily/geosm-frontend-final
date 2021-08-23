@@ -41,3 +41,12 @@
 .rotate_180 {
   transform: rotate(180deg) !important;
 }
+
+@media (max-width : 767px) {
+
+
+  .rollBack,
+  .rollFront {
+    display: none;
+  }
+}
