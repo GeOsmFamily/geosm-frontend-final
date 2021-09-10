@@ -148,7 +148,7 @@ export class MapComponent implements OnInit {
       (response) => {
         $('.loading-apps').hide();
         map.getView().fit(this.storageService.getConfigProjet().bbox, {
-          size: [map.getSize()?.[0]!, map.getSize()?.[1]!],
+          size: map.getSize(),
           duration: 1000,
         });
         //  this.notifier.notify('success', 'Téléchargement terminé');

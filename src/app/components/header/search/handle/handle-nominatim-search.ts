@@ -100,7 +100,6 @@ export class HandleNominatimSearch {
 
         feature.set('textLabel', textLabel);
         feature.setGeometry(emprise.geometry);
-        feature.setGeometry(emprise.geometry);
 
         searchResultLayer.getSource().clear();
 

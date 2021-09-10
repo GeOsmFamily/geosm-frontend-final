@@ -249,10 +249,6 @@ export class VerticalToolbarComponent implements OnInit {
         }
 
         if (this.previewPointMapillary) {
-          this.notifier.notify(
-            'success',
-            'Cliquer sur un point pour lancer la navigation'
-          );
           var st = new Style({
             image: new CircleStyle({
               radius: 4,
@@ -284,7 +280,7 @@ export class VerticalToolbarComponent implements OnInit {
 
   globalView() {
     this.map?.getView().fit(this.storageService.getConfigProjet().bbox, {
-      size: [this.map.getSize()?.[0]!, this.map.getSize()?.[1]!],
+      size: this.map.getSize(),
       duration: 1000,
     });
   }
@@ -665,6 +661,10 @@ export class VerticalToolbarComponent implements OnInit {
 
         this.zone?.run(() => {
           this.responseMapillary = data;
+          this.notifier.notify(
+            'success',
+            'Zoomez et Cliquez sur un point pour lancer la navigation'
+          );
         });
       });
 
