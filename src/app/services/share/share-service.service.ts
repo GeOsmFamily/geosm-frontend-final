@@ -333,7 +333,7 @@ export class ShareServiceService {
     $('#spinner_loading').show();
 
     this.apiService
-      .post_requete('geoportail/getDraw/', {
+      .post_requete('geoportail/getDraw', {
         code_dessin: parametersId,
       })
       .then((data) => {
