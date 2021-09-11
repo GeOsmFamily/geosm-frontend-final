@@ -27,9 +27,6 @@ import { DataFromClickOnMapInterface } from 'src/app/interfaces/dataClickInterfa
 import { RightMenuClickComponent } from './right-menu-click/right-menu-click.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
-const scaleControl = new ScaleLine();
-var attribution = new Attribution({ collapsible: false });
-
 var view = new View({
   center: [0, 0],
   zoom: 0,
@@ -114,6 +111,7 @@ export class MapComponent implements OnInit {
     },
   ];
 
+  //@ts-ignore
   constructor(
     public storageService: StorageServiceService,
     notifierService: NotifierService,
@@ -148,7 +146,7 @@ export class MapComponent implements OnInit {
       (response) => {
         $('.loading-apps').hide();
         map.getView().fit(this.storageService.getConfigProjet().bbox, {
-          size: [map.getSize()?.[0]!, map.getSize()?.[1]!],
+          size: map.getSize(),
           duration: 1000,
         });
         //  this.notifier.notify('success', 'Téléchargement terminé');
@@ -286,6 +284,9 @@ export class MapComponent implements OnInit {
     });
   }
 
+  /**
+   * Event if mapClicked
+   */
   mapClicked() {
     map.on('singleclick', (evt) => {
       console.log(evt);

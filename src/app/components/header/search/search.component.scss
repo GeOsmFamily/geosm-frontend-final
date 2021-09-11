@@ -60,3 +60,9 @@
     margin-right: 7px;
   }
 }
+
+@media (max-width : 767px) {
+  .header-search-form {
+    width: 300px;
+  }
+}
