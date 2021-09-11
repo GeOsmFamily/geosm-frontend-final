@@ -47,3 +47,5 @@ Thumbs.db
 /src/environments/environment.prod.ts
 /src/assets/country.geojson
 /src/assets/mnt.geojson
+/documentation
+tsconfig.doc.json
