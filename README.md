@@ -1,8 +1,8 @@
-# GeOsm Frontend v1.2.0
+# GeOsm Frontend v1.2.2
 
 <img src="geosm.png" alt="App Screen(light)"/>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.5.
 
 ## Instalation
 
