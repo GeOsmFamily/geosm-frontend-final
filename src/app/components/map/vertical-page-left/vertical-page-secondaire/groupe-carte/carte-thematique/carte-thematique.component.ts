@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CarteInterface } from 'src/app/interfaces/carteInterface';
 import { environment } from 'src/environments/environment';
 import * as $ from 'jquery';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-carte-thematique',
@@ -22,7 +23,8 @@ export class CarteThematiqueComponent implements OnInit {
 
   constructor(
     public geosmLayersService: GeosmLayersService,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +45,11 @@ export class CarteThematiqueComponent implements OnInit {
           // data
         }
       );
+      this.analyticService.addAnalytics({
+        type: 'fondCarte',
+        name: couche.nom,
+        ip: this.ipService.getIP(),
+      });
     } else {
       this.geosmLayersService.removeLayerCarte(couche);
     }

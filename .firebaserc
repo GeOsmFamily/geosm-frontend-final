@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "geosm-321710": {
+      "hosting": {
+        "geosm-frontend": [
+          "geosm-321710"
+        ]
+      }
+    }
+  }
+}

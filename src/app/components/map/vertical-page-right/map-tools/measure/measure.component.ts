@@ -25,6 +25,7 @@ import { environment } from 'src/environments/environment';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import * as $ from 'jquery';
 import OverlayPositioning from 'ol/OverlayPositioning';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-measure',
@@ -114,7 +115,8 @@ export class MeasureComponent implements OnInit {
     public apiService: ApiServiceService,
     public translate: TranslateService,
     public _ngZone: NgZone,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {
     this.environment = environment;
   }
@@ -154,6 +156,12 @@ export class MeasureComponent implements OnInit {
         // data
       }
     );
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'draw',
+      draw: type,
+      ip: this.ipService.getIP(),
+    });
     if (this.measureModel[type].active) {
       this.measureModel[type].active = false;
       this.clearDraw();
