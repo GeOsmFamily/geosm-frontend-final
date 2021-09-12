@@ -5,11 +5,15 @@ import { ConfigProjetInterface } from 'src/app/interfaces/configProjetInterface'
 import { FilterOptionInterface } from 'src/app/interfaces/filterOptionInterface';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { Feature, GeoJSON, getArea } from 'src/app/modules/ol';
+import { IpServiceService } from 'src/app/services/ip-service/ip-service.service';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 export class HandleEmpriseSearch {
   storageService: StorageServiceService = AppInjector.get(
     StorageServiceService
   );
+  ipService: IpServiceService = AppInjector.get(IpServiceService);
+  analyticService: AnalyticsService = AppInjector.get(AnalyticsService);
   apiService: ApiServiceService = AppInjector.get(ApiServiceService);
   configProject: ConfigProjetInterface = this.storageService.getConfigProjet();
 
@@ -132,6 +136,13 @@ export class HandleEmpriseSearch {
           emprise.ref +
           ') \n' +
           formatArea(emprise.geometry);
+
+        this.analyticService.addAnalytics({
+          type: 'tool',
+          name: 'search',
+          keyword: emprise.name,
+          ip: this.ipService.getIP(),
+        });
 
         feature.set('textLabel', textLabel);
         feature.setGeometry(emprise.geometry);

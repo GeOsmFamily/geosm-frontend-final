@@ -11,4 +11,13 @@ export const environment = {
   countrycode: 'code_country',
   avaible_language: ['fr', 'en'],
   default_language: 'langue',
+  firebase: {
+    apiKey: 'apikey',
+    authDomain: 'authdomain',
+    projectId: 'projectid',
+    storageBucket: 'storagebucket',
+    messagingSenderId: 'messagingsenderid',
+    appId: 'appid',
+    measurementId: 'measurementid',
+  },
 };

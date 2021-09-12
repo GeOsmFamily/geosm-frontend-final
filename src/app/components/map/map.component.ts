@@ -26,6 +26,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataFromClickOnMapInterface } from 'src/app/interfaces/dataClickInterface';
 import { RightMenuClickComponent } from './right-menu-click/right-menu-click.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 var view = new View({
   center: [0, 0],
@@ -120,7 +121,8 @@ export class MapComponent implements OnInit {
     public shareService: ShareServiceService,
     private activatedRoute: ActivatedRoute,
     public zone: NgZone,
-    private observer: BreakpointObserver
+    private observer: BreakpointObserver,
+    public analyticService: AnalyticsService
   ) {
     this.notifier = notifierService;
   }
@@ -149,6 +151,7 @@ export class MapComponent implements OnInit {
           size: map.getSize(),
           duration: 1000,
         });
+        this.analyticService.countView();
         //  this.notifier.notify('success', 'Téléchargement terminé');
       },
       (error) => {

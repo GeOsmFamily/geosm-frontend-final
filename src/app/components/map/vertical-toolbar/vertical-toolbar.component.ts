@@ -35,6 +35,7 @@ import { createXYZ } from 'ol/tilegrid';
 import { Viewer } from 'mapillary-js';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ButtonSheetComponent } from '../../button-sheet/button-sheet/button-sheet.component';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-vertical-toolbar',
@@ -90,7 +91,8 @@ export class VerticalToolbarComponent implements OnInit {
     public storageService: StorageServiceService,
     notifierService: NotifierService,
     private bottomSheet: MatBottomSheet,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {
     this.environment = environment;
     this.notifier = notifierService;
@@ -419,6 +421,11 @@ export class VerticalToolbarComponent implements OnInit {
         // data
       }
     );
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'mapillary',
+      ip: this.ipService.getIP(),
+    });
     if (!this.modeMapillary) {
       var data = {
         type: 'mapillary',
@@ -807,6 +814,11 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   toogleCompare() {
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'comparateur',
+      ip: this.ipService.getIP(),
+    });
     var swipe = document.getElementById('swipe');
     var mapHelper = new MapHelper();
     var layerInMap = mapHelper.getAllLayersInToc();

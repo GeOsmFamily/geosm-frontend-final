@@ -21,6 +21,7 @@ import {
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 @Component({
   selector: 'app-routing',
   templateUrl: './routing.component.html',
@@ -64,7 +65,8 @@ export class RoutingComponent implements OnInit {
     notifierService: NotifierService,
     public translate: TranslateService,
     public _ngZone: NgZone,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {
     this.notifier = notifierService;
   }
@@ -208,6 +210,11 @@ export class RoutingComponent implements OnInit {
         // data
       }
     );
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'itineraire',
+      ip: this.ipService.getIP(),
+    });
     if (
       this.data_itineraire.depart.coord.length == 2 &&
       this.data_itineraire.destination.coord.length == 2 &&

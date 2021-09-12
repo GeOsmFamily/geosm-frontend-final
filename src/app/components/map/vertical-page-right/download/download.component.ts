@@ -43,6 +43,7 @@ import * as $ from 'jquery';
 import { DataHelper } from 'src/app/helpers/dataHelper';
 import OverlayPositioning from 'ol/OverlayPositioning';
 import { ChartOverlayComponent } from './chartOverlay/chartOverlay.component';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-download',
@@ -82,7 +83,8 @@ export class DownloadComponent
     public fb: FormBuilder,
     public apiService: ApiServiceService,
     public componentHelper: ComponentHelper,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {
     super(storageService, fb);
   }
@@ -408,6 +410,12 @@ export class DownloadComponent
             // data
           }
         );
+        this.analyticService.addAnalytics({
+          type: 'tool',
+          name: 'download',
+          thematique: layer.nom,
+          ip: this.ipService.getIP(),
+        });
       }
 
       this.displayResultExport(
@@ -446,6 +454,12 @@ export class DownloadComponent
           // data
         }
       );
+      this.analyticService.addAnalytics({
+        type: 'tool',
+        name: 'download',
+        thematique: layer.nom,
+        ip: this.ipService.getIP(),
+      });
     }
     var parameters = {
       querry: listLayer,

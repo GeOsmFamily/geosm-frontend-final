@@ -6,11 +6,15 @@ import { StorageServiceService } from 'src/app/services/storage/storage-service.
 import { ConfigProjetInterface } from 'src/app/interfaces/configProjetInterface';
 import { FilterOptionInterface } from 'src/app/interfaces/filterOptionInterface';
 import { environment } from 'src/environments/environment';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
+import { IpServiceService } from 'src/app/services/ip-service/ip-service.service';
 
 export class HandleLayerSearch {
   storageService: StorageServiceService = AppInjector.get(
     StorageServiceService
   );
+  ipService: IpServiceService = AppInjector.get(IpServiceService);
+  analyticService: AnalyticsService = AppInjector.get(AnalyticsService);
   componentHelper: ComponentHelper = AppInjector.get(ComponentHelper);
   geosmLayer: GeosmLayersService = AppInjector.get(GeosmLayersService);
   configProject: ConfigProjetInterface = this.storageService.getConfigProjet();
@@ -67,6 +71,12 @@ export class HandleLayerSearch {
   }
 
   optionSelected(data: FilterOptionInterface) {
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'search',
+      keyword: data.name,
+      ip: this.ipService.getIP(),
+    });
     if (data.type == 'couche') {
       var couche = this.storageService.getCoucheFromKeyCouche(data.id);
       let groupThem = this.storageService.getGroupThematiqueFromIdCouche(

@@ -63,6 +63,11 @@ import { GeosignetComponent } from './components/geosignet/geosignet/geosignet.c
 import { ListGeosignetComponent } from './components/geosignet/list-geosignet/list-geosignet.component';
 import { CommentComponent } from './components/map/vertical-page-right/map-tools/comment/comment.component';
 import { AngularDraggableModule } from 'angular2-draggable';
+import { AnalyticsService } from './services/analytics/analytics.service';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
+import { environment } from 'src/environments/environment';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -118,6 +123,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CommentComponent,
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAnalyticsModule,
     AngularDraggableModule,
     NgpSortModule,
     BrowserModule,
@@ -163,6 +171,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ShareServiceService,
     PrintService,
     IpServiceService,
+    AnalyticsService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [MetadataModalComponent],

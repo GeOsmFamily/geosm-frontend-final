@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import * as $ from 'jquery';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 @Component({
   selector: 'app-vertical-page-principal',
   templateUrl: './vertical-page-principal.component.html',
@@ -33,7 +34,8 @@ export class VerticalPagePrincipalComponent implements OnInit {
   constructor(
     public storageService: StorageServiceService,
     public componentHelper: ComponentHelper,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -79,6 +81,12 @@ export class VerticalPagePrincipalComponent implements OnInit {
         // data
       }
     );
+
+    this.analyticService.addAnalytics({
+      type: 'libraries',
+      name: groupCarte.nom,
+      ip: this.ipService.getIP(),
+    });
   }
 
   tooglePrincipalMapLayer() {
@@ -195,5 +203,11 @@ export class VerticalPagePrincipalComponent implements OnInit {
         // data
       }
     );
+
+    this.analyticService.addAnalytics({
+      type: 'thematique',
+      name: groupThematique.nom,
+      ip: this.ipService.getIP(),
+    });
   }
 }

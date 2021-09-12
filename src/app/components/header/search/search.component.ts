@@ -36,6 +36,7 @@ import {
 import { from, merge as observerMerge, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import * as $ from 'jquery';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-search',
@@ -166,7 +167,8 @@ export class SearchComponent implements OnInit {
     public storageService: StorageServiceService,
     public apiService: ApiServiceService,
     public fb: FormBuilder,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -234,6 +236,7 @@ export class SearchComponent implements OnInit {
         // data
       }
     );
+
     var querryObs = [
       from(
         this.apiService.post_requete('searchCouche', {
