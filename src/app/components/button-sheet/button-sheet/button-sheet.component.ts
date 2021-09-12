@@ -10,6 +10,7 @@ import { transform } from 'ol/proj';
 import { boundingExtent } from 'src/app/modules/ol';
 import * as $ from 'jquery';
 import { environment } from 'src/environments/environment';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-button-sheet',
@@ -25,7 +26,8 @@ export class ButtonSheetComponent implements OnInit {
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private ngZone: NgZone,
     private builder: FormBuilder,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {}
 
   public chooseLayer = this.builder.group({
@@ -58,6 +60,11 @@ export class ButtonSheetComponent implements OnInit {
         // data
       }
     );
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'compare',
+      ip: this.ipService.getIP(),
+    });
     var index1 = this.chooseLayer.value['layer1'];
     var index2 = this.chooseLayer.value['layer2'];
 

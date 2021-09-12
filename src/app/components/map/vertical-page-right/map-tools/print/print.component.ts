@@ -6,6 +6,7 @@ import * as $ from 'jquery';
 import domtoimage from 'dom-to-image-more';
 import { environment } from 'src/environments/environment';
 import { transform } from 'ol/proj';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-print',
@@ -21,7 +22,8 @@ export class PrintComponent implements OnInit {
 
   constructor(
     public printService: PrintService,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,12 @@ export class PrintComponent implements OnInit {
         // data
       }
     );
+
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'print',
+      ip: this.ipService.getIP(),
+    });
 
     console.log(this.map?.getViewport());
     console.log(this.map?.getView().calculateExtent(this.map.getSize()));

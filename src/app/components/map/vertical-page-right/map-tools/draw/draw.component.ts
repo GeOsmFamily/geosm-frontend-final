@@ -34,6 +34,7 @@ import {
 import { environment } from 'src/environments/environment';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import * as $ from 'jquery';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-draw',
@@ -199,7 +200,8 @@ export class DrawComponent implements OnInit {
     public translate: TranslateService,
     public apiService: ApiServiceService,
     public componentHelper: ComponentHelper,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {
     this.notifier = notifierService;
   }
@@ -230,6 +232,12 @@ export class DrawComponent implements OnInit {
         // data
       }
     );
+    this.analyticService.addAnalytics({
+      type: 'tool',
+      name: 'draw',
+      draw: type,
+      ip: this.ipService.getIP(),
+    });
     this.desactivateAllModificationTool();
     if (this.drawTools[type].active) {
       this.desactivateAllAddTool();

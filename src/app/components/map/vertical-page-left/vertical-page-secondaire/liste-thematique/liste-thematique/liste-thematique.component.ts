@@ -8,6 +8,7 @@ import { CoucheInterface } from 'src/app/interfaces/coucheInterface';
 import { GroupThematiqueInterface } from 'src/app/interfaces/groupeInterface';
 import * as $ from 'jquery';
 import { environment } from 'src/environments/environment';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-liste-thematique',
@@ -21,7 +22,8 @@ export class ListeThematiqueComponent implements OnInit {
     public apiService: ApiServiceService,
     public storageService: StorageServiceService,
     public geosmLayerService: GeosmLayersService,
-    public ipService: IpServiceService
+    public ipService: IpServiceService,
+    public analyticService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +45,11 @@ export class ListeThematiqueComponent implements OnInit {
         // data
       }
     );
+    this.analyticService.addAnalytics({
+      type: 'couche',
+      name: couche.nom,
+      ip: this.ipService.getIP(),
+    });
   }
 
   toogleLayer(couche: CoucheInterface) {
