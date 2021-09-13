@@ -27,10 +27,16 @@ export class AnalyticsService {
 
   addAnalytics(analytics: Analytics) {
     analytics.timestamp = Date.now();
-    $.get('http://www.geoplugin.net/json.gp?ip=' + analytics.ip, (data) => {
-      sessionStorage.setItem('country', data['geoplugin_countryName']);
-      console.log(data['geoplugin_countryName']);
-    });
+    $.post(
+      environment.url_prefix + 'getcountry',
+      {
+        ip: analytics.ip,
+      },
+      (data) => {
+        sessionStorage.setItem('country', data['country']);
+        console.log(data['country']);
+      }
+    );
     analytics.country = sessionStorage.getItem('country')!;
     this.analyticCollection.add(analytics);
   }
