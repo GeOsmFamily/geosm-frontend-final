@@ -9,7 +9,7 @@ export const environment = {
   projet_nodejs: 'pojet_nodejs_value',
   nom: 'nomInstance',
   countrycode: 'code_country',
-  avaible_language: ['fr', 'en'],
+  avaible_language: ['fr', 'en', 'es'],
   default_language: 'langue',
   firebase: {
     apiKey: 'apikey',

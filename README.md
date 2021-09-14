@@ -76,11 +76,19 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Contributions
+<a name="contribute"></a>
 
-- This Project is open source and open to all your improvements.
+## Contribute
 
-Thank you for supporting our Project
+You can contribute us by filing issues, bugs and PRs.
+
+### Contributing:
+
+- Open issue regarding proposed change.
+- Repo owner will contact you there.
+- If your proposed change is approved, Fork this repo and do changes.
+- Open PR against latest `dev` branch. Add nice description in PR.
+- You're done!
 
 ## Join us
 

@@ -49,3 +49,7 @@ Thumbs.db
 /src/assets/mnt.geojson
 /documentation
 tsconfig.doc.json
+
+# Firebase
+.firebaserc
+firebase.json
