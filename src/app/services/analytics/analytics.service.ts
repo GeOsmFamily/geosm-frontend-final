@@ -21,7 +21,7 @@ export class AnalyticsService {
   count;
 
   constructor(private firestore: AngularFirestore) {
-    this.analyticCollection = firestore.collection<Analytics>('analytics');
+    this.analyticCollection = firestore.collection<Analytics>('kpi');
     this.viewsCollection = firestore.collection<Views>('views');
   }
 
@@ -38,7 +38,10 @@ export class AnalyticsService {
       }
     );
     analytics.country = sessionStorage.getItem('country')!;
-    this.analyticCollection.add(analytics);
+    this.analyticCollection
+      .doc(environment.nom.toLowerCase())
+      .collection(analytics.type.toLowerCase())
+      .add(analytics);
   }
 
   countView() {
