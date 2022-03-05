@@ -32,7 +32,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "@turf/turf": "^6.4.0",
+    "@turf/turf": "^6.5.0",
     "@types/ol": "^6.5.1",
     "angular-notifier": "9.0.1",
     "angular2-draggable": "^2.3.2",
