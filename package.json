@@ -47,7 +47,7 @@
     "ngx-color-picker": "^11.0.0",
     "ngx-sharebuttons": "^8.0.5",
     "ngx-translate-multi-http-loader": "^3.0.0",
-    "ol": "^6.5.0",
+    "ol": "^6.13.0",
     "rxjs": "~6.6.0",
     "tar": ">=6.1.9",
     "tslib": "^2.1.0",
