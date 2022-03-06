@@ -163,11 +163,11 @@ export class VerticalToolbarComponent implements OnInit {
             }
           );
 
-          if (hit) {
+          /*  if (hit) {
             jTarget.css('cursor', 'pointer');
           } else {
             jTarget.css('cursor', '');
-          }
+          }*/
         }
       });
 
@@ -204,8 +204,6 @@ export class VerticalToolbarComponent implements OnInit {
             }),
           }),
         });
-
-        var rotation = (Math.PI / 2 + Math.PI * this.point.cas) / -360;
 
         feature['setStyle'](stActive);
 
@@ -260,6 +258,7 @@ export class VerticalToolbarComponent implements OnInit {
           this.previewPointMapillary.setStyle(st);
           this.previewPointMapillary = undefined;
           this.map?.removeOverlay(popup_mapillary);
+          console.log(15);
           $('#img_mappilary').attr('src', '');
         }
       }
